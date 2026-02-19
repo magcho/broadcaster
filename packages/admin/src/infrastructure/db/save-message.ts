@@ -43,16 +43,10 @@ export const saveMessage = async (
       )
     }
 
-    // Query
-    const created = await db.query.message.findFirst({
+    // 作成したメッセージをIDで再取得して詳細情報を返す
+    const created = await tx.query.message.findFirst({
       where: {
-        scheduledAt: {
-          lte: new Date(),
-        },
-        sendImmediately: false,
-        sentAt: {
-          isNull: true,
-        },
+        id: messageId,
       },
       with: {
         targetLabels: {
@@ -68,6 +62,10 @@ export const saveMessage = async (
         },
       },
     })
-    return parseMessageRow(created!)
+    if (created == null) {
+      throw new Error("Failed to fetch created message")
+    }
+
+    return parseMessageRow(created)
   })
 }
