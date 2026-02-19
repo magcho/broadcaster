@@ -37,7 +37,7 @@ export const MultiCombobox = <Id extends string, Item extends SelectItem<Id>>({
     >
       <div className="flex w-full flex-col gap-1">
         <BaseCombobox.Chips
-          className="flex flex-wrap items-center gap-0.5 rounded-md border border-gray-200 px-1.5 py-1 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:border-slate-400"
+          className="flex flex-wrap items-center gap-0.5 rounded-md border border-slate-400 px-1.5 py-1 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100"
           ref={containerRef}
           style={{
             minHeight: BASE_HEIGHT,
@@ -51,7 +51,7 @@ export const MultiCombobox = <Id extends string, Item extends SelectItem<Id>>({
                   return (
                     <BaseCombobox.Chip
                       key={id}
-                      className="flex cursor-pointer items-center gap-0.5 rounded-lg border border-slate-200 p-0.5 text-gray-900 text-sm outline-none focus-within:bg-slate-400 focus-within:text-gray-50 [@media(hover:hover)]:data-highlighted:bg-blue-800 [@media(hover:hover)]:data-highlighted:text-gray-50"
+                      className="flex cursor-pointer items-center gap-0.5 rounded-lg border border-slate-400 p-0.5 text-gray-900 text-sm outline-none focus-within:bg-slate-400 focus-within:text-gray-50 [@media(hover:hover)]:data-highlighted:bg-blue-800 [@media(hover:hover)]:data-highlighted:text-gray-50"
                       aria-label={item.label}
                     >
                       {renderItem != null ? renderItem(item) : item.label}

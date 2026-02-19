@@ -54,7 +54,7 @@ export const Select = <Id extends string, Item extends SelectItem<Id>>({
       }}
     >
       <BaseSelect.Trigger
-        className="grid w-full grid-cols-[1fr_auto] items-center rounded-lg border border-slate-200 px-2.5 py-2 ring-slate-500 ring-offset-0 transition-[transform,scale,opacity] hover:not-focus-visible:border-slate-400 focus:outline-none focus-visible:ring-1 focus-visible:ring-offset-2"
+        className="grid w-full grid-cols-[1fr_auto] items-center rounded-lg border border-slate-400 px-2.5 py-2 ring-slate-500 ring-offset-0 transition-[transform,scale,opacity] hover:not-focus-visible:bg-slate-100 focus:outline-none focus-visible:ring-1 focus-visible:ring-offset-2"
         style={{
           height: BASE_HEIGHT,
         }}

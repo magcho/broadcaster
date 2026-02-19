@@ -32,7 +32,7 @@ export const Button = <Type extends React.ElementType = "button">({
         // variant=primary
         "data-[variant=primary]:border-slate-800 data-[variant=primary]:bg-slate-800 data-[variant=primary]:text-white data-[variant=primary]:disabled:bg-slate-600 data-[variant=primary]:not-disabled:hover:bg-slate-800/90",
         // variant=secondary
-        "data-[variant=secondary]:border-slate-200 data-[variant=secondary]:bg-white data-[variant=secondary]:text-slate-800 data-[variant=secondary]:disabled:bg-slate-200 data-[variant=secondary]:not-disabled:hover:bg-slate-100",
+        "data-[variant=secondary]:border-slate-400 data-[variant=secondary]:bg-white data-[variant=secondary]:text-slate-800 data-[variant=secondary]:disabled:bg-slate-200 data-[variant=secondary]:not-disabled:hover:bg-slate-100",
       )}
     >
       {Prefix}

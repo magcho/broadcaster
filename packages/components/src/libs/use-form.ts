@@ -82,6 +82,29 @@ export const useForm = <
     [values],
   )
 
+  const registerRadio = useCallback(
+    <K extends keyof State>(key: K, value: State[K], options?: InputOption) => {
+      return {
+        ...options,
+        type: "radio",
+        name: key,
+        value: value,
+        checked: values[key] === value,
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+          dartyMap.current.set(key, true)
+          if (e.target.checked) {
+            setValues((prev) => ({
+              ...prev,
+              [key]: value,
+            }))
+          }
+        },
+        onBlur: () => onceBluredMap.current.set(key, true),
+      }
+    },
+    [values],
+  )
+
   const registerSingleCheckbox = useCallback(
     <K extends keyof State>(key: K, options?: InputOption) => {
       return {
@@ -226,6 +249,7 @@ export const useForm = <
     registerInput,
     registerTextarea,
     registerCustom,
+    registerRadio,
     registerSingleCheckbox,
     registerMultipleCheckbox,
     errors,

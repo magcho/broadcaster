@@ -23,7 +23,7 @@ export const DatetimeInput = ({ value, onChange, ...rest }: Props) => {
         value={format(value, "yyyy-MM-dd'T'HH:mm")}
         onChange={handleChange}
       />
-      <span className="-translate-y-1/2 absolute top-1/2 right-2 pr-10 text-gray-500 text-xs">
+      <span className="-translate-y-1/2 pointer-events-none absolute top-1/2 right-2 pr-10 text-gray-500 text-xs">
         {distance}
       </span>
     </div>
