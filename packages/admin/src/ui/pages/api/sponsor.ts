@@ -1,5 +1,6 @@
 import z from "zod"
 import { upsertSponsorController } from "../../../controller/sponsor-upsert.js"
+import { toErrorResponse } from "../../../libs/error-response.js"
 import { m2mAuthClient } from "../../../libs/m2m-auth.js"
 
 const inputSchema = z.object({
@@ -14,18 +15,22 @@ const inputSchema = z.object({
 })
 
 export const POST = async (request: Request): Promise<Response> => {
-  await m2mAuthClient.verify(request.headers)
+  try {
+    await m2mAuthClient.verify(request.headers)
 
-  const json = await request.json()
-  const input = inputSchema.parse(json)
+    const json = await request.json()
+    const input = inputSchema.parse(json)
 
-  const sponsorId = await upsertSponsorController(null, {
-    name: input.name,
-    readableId: input.readableId,
-    slackUserIds: input.slackUserIds,
-    slackChannelId: input.slackChannelId,
-    labels: input.labels ?? [],
-  })
+    const sponsorId = await upsertSponsorController(null, {
+      name: input.name,
+      readableId: input.readableId,
+      slackUserIds: input.slackUserIds,
+      slackChannelId: input.slackChannelId,
+      labels: input.labels ?? [],
+    })
 
-  return Response.json({ id: sponsorId }, { status: 200 })
+    return Response.json({ id: sponsorId }, { status: 200 })
+  } catch (error) {
+    return toErrorResponse(error)
+  }
 }

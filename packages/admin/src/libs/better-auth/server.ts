@@ -8,6 +8,7 @@ import {
   verificationTable,
 } from "broadcaster-db/schema.js"
 import { z } from "zod"
+import { AuthError } from "../auth-error.js"
 import { urls } from "../vercel.js"
 import { verifiedPlugin } from "./verified-plugin.js"
 
@@ -64,6 +65,6 @@ export const getSession = async (headers: Record<string, string>) =>
 export const verifySession = async (headers: Record<string, string>) => {
   const session = await getSession(headers)
   if (session == null) {
-    throw new Error("Unauthorized")
+    throw new AuthError("Unauthorized", 401)
   }
 }
