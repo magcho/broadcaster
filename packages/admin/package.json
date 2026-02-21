@@ -10,7 +10,6 @@
     "check": "biome check",
     "fix": "biome check --write",
     "type-check": "tsgo -p tsconfig.json",
-    "slack-entry": "tsx --env-file-if-exists .env.local ./src/tmp-slack.ts",
     "build:cache": "tsx --env-file-if-exists .env.local ./scripts/cache/slack-channels.ts"
   },
   "dependencies": {

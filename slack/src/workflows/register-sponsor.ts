@@ -18,7 +18,7 @@ export const RegisterSponsorWorkflow = DefineWorkflow({
 })
 
 const form = RegisterSponsorWorkflow.addStep(Schema.slack.functions.OpenForm, {
-  title: "Send a greeting",
+  title: "スポンサー情報を登録",
   interactivity: RegisterSponsorWorkflow.inputs.interactivity,
   submit_label: "Create",
   fields: {

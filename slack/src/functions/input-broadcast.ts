@@ -3,9 +3,9 @@ import { getApiClient } from "../libs/api-client.ts"
 
 export const ListTagsFunctionDefinition = DefineFunction({
   callback_id: "list_tags_function",
-  title: "List tags",
-  description: "List tags",
-  source_file: "src/functions/list-tags.ts",
+  title: "🚧 一斉送信",
+  description: "一斉送信する内容を入力するモーダルを開きます",
+  source_file: "src/functions/input-broadcast.ts",
   input_parameters: {
     properties: {
       interactivity: {
@@ -32,22 +32,22 @@ export default SlackFunction(
         type: "modal",
         callback_id: "first-page",
         notify_on_close: true,
-        title: { type: "plain_text", text: "My App" },
-        submit: { type: "plain_text", text: "Next" },
-        close: { type: "plain_text", text: "Close" },
+        title: { type: "plain_text", text: "一斉送信" },
+        submit: { type: "plain_text", text: "送信" },
+        close: { type: "plain_text", text: "閉じる" },
         blocks: [
           {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: "Test block with multi static select",
+              text: "送信するタグを選択してください",
             },
             accessory: {
               action_id: "select_label",
               type: "multi_static_select",
               placeholder: {
                 type: "plain_text",
-                text: "Select items",
+                text: "タグを選択してください",
               },
               options:
                 labels?.map((label) => ({
@@ -67,7 +67,7 @@ export default SlackFunction(
             },
             label: {
               type: "plain_text",
-              text: "Label",
+              text: "メッセージ",
               emoji: true,
             },
             optional: false,

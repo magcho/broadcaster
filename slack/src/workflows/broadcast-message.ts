@@ -1,5 +1,5 @@
 import { DefineWorkflow, Schema } from "deno-slack-sdk/mod.ts"
-import { ListTagsFunctionDefinition } from "../functions/list-tags.ts"
+import { ListTagsFunctionDefinition } from "../functions/input-broadcast.ts"
 
 export const BroadcastMessageWorkflow = DefineWorkflow({
   callback_id: "broadcast_message_workflow",

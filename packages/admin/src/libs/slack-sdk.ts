@@ -27,6 +27,7 @@ export class SlackSdk {
     await this.#client.chat.postMessage({
       channel,
       text,
+      username: "一斉送信",
     })
   }
 

@@ -5,7 +5,7 @@ import { RegisterSponsorWorkflow } from "./src/workflows/register-sponsor.ts"
 
 export default Manifest({
   name: "Broadcaster",
-  description: "Slack上で一斉送信を行うアプリです。",
+  description: "一斉送信システム",
   icon: "assets/icon.png",
   functions: [GenerateBroadcasterWeb],
   workflows: [BroadcastMessageWorkflow, RegisterSponsorWorkflow],
