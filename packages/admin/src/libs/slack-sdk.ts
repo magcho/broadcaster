@@ -1,7 +1,7 @@
 import { WebClient } from "@slack/web-api"
 import type { SlackChannel } from "../domain/model/SlackChannel.js"
-import { chunk } from "../utils/chunk.js"
 import { safeLoop } from "../utils/loop.js"
+import { waitFor } from "../utils/wait.js"
 
 const SLACK_TOKEN = process.env.SLACK_TOKEN
 
@@ -32,15 +32,12 @@ export class SlackSdk {
   }
 
   async bulkPostMessage(items: PostMessageItem[]) {
-    for (const chunked of chunk(items, 5)) {
-      await Promise.all(
-        chunked.map((item) =>
-          this.postMessage({
-            channel: item.channel,
-            text: item.text,
-          }),
-        ),
-      )
+    for (const item of items) {
+      await this.postMessage({
+        channel: item.channel,
+        text: item.text,
+      })
+      await waitFor(1000 * 1.1)
     }
   }
 
