@@ -28,6 +28,7 @@ export class SlackSdk {
       channel,
       text,
       username: "一斉送信",
+      parse: "full",
     })
   }
 
