@@ -51,8 +51,9 @@ function normalizeBlock(
 ): SlackBlock | null {
   switch (block.kind) {
     case "paragraph": {
-      // NOTE: 改行をTrimしない（入力中は改行を許容するため）
-      const inlines = normalizeInlines(block.inlines, diagnostics)
+      const inlines = trimLineBreaks(
+        normalizeInlines(block.inlines, diagnostics),
+      )
       if (inlines.length === 0) {
         return null
       }

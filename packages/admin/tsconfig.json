@@ -15,7 +15,8 @@
     "jsx": "react-jsx",
     "paths": {
       "broadcaster-components/*": ["../components/src/*"],
-      "broadcaster-db/*": ["../db/src/*"]
+      "broadcaster-db/*": ["../db/src/*"],
+      "slack-parser/*": ["../../slack-parser/src/*"]
     }
   },
   "include": ["src", "scripts"]

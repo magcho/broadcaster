@@ -1,0 +1,36 @@
+{
+  "name": "slack-parser",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "knip": "knip",
+    "test": "pnpm test:unit && pnpm test:e2e",
+    "test:e2e": "playwright test",
+    "test:unit": "node --import tsx --test ./test/**/*.test.ts",
+    "type-check": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "knip": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "volta": {
+    "extends": "../../package.json"
+  }
+}

@@ -21,7 +21,7 @@ export const useForm = <
   Schema extends StandardSchemaV1<State>,
 >(
   inputSchema: Schema,
-  init: Initializer<State>,
+  init: Initializer<StandardSchemaV1.InferInput<Schema>>,
 ) => {
   const [schema] = useState(() => inputSchema)
   const [values, setValues] = useState(() => resolveInitializer(init))

@@ -1,5 +1,15 @@
 import type { ComponentProps } from "react"
 
-export const Form = (props: ComponentProps<"form">) => (
-  <form {...props} className="flex w-full max-w-[600px] flex-col gap-6 p-4" />
+type Props = {
+  fullWidth?: boolean
+}
+
+export const Form = ({
+  fullWidth,
+  ...props
+}: ComponentProps<"form"> & Props) => (
+  <form
+    {...props}
+    className={`flex w-full ${fullWidth ? "max-w-full" : "max-w-[600px]"} flex-col gap-6 p-4`}
+  />
 )

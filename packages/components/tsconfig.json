@@ -12,7 +12,10 @@
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "slack-parser/*": ["../slack-parser/src/*"]
+    }
   },
   "include": ["src"]
 }

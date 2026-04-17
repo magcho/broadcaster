@@ -58,6 +58,99 @@ test("parseMrkdwn imports nested marks and HTML entity decoding", () => {
   assert.deepEqual(result.diagnostics, [])
 })
 
+test("parseMrkdwn imports bare broadcast mentions from natural text", () => {
+  const result = parseMrkdwn("Heads up @channel, please check this")
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [
+        { kind: "text", text: "Heads up " },
+        { kind: "broadcast", range: "channel" },
+        { kind: "text", text: ", please check this" },
+      ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn imports bare user and channel references from natural text", () => {
+  const result = parseMrkdwn("Ping @alice in #ops")
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [
+        { kind: "text", text: "Ping " },
+        { kind: "user", userId: "alice" },
+        { kind: "text", text: " in " },
+        { kind: "channel", channelId: "ops" },
+      ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn does not treat email-like text as a broadcast mention", () => {
+  const result = parseMrkdwn("contact me at dev@channel.example.com")
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [
+        { kind: "text", text: "contact me at dev@channel.example.com" },
+      ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn imports colon emoji by default", () => {
+  const result = parseMrkdwn("thanks :pray: for the help")
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [
+        { kind: "text", text: "thanks " },
+        { kind: "emoji", name: "pray" },
+        { kind: "text", text: " for the help" },
+      ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn autolinks bare URLs by default", () => {
+  const result = parseMrkdwn("visit https://example.com now")
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [
+        { kind: "text", text: "visit " },
+        { kind: "link", url: "https://example.com" },
+        { kind: "text", text: " now" },
+      ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn can disable autolink when requested", () => {
+  const result = parseMrkdwn("visit https://example.com now", {
+    autolink: false,
+  })
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "paragraph",
+      inlines: [{ kind: "text", text: "visit https://example.com now" }],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
 test("parseMrkdwn imports quotes, code fences, entities, and retrieved emoji", () => {
   const input = [
     "> quoted",
@@ -102,6 +195,74 @@ test("parseMrkdwn imports quotes, code fences, entities, and retrieved emoji", (
         { kind: "text", text: " " },
         { kind: "emoji", name: "tada" },
       ],
+    },
+  ])
+  assert.deepEqual(result.diagnostics, [])
+})
+
+test("parseMrkdwn imports mixed multi-block authoring input including lists", () => {
+  const input = [
+    "- first item",
+    "  continued",
+    "- second item",
+    "",
+    "3. ordered one",
+    "4. ordered two",
+    "",
+    "> quoted",
+    "> line",
+    "",
+    "```ts",
+    "const x = 1",
+    "```",
+  ].join("\n")
+
+  const result = parseMrkdwn(input)
+
+  assert.deepEqual(result.document.blocks, [
+    {
+      kind: "list",
+      style: "bullet",
+      indent: 0,
+      items: [
+        {
+          inlines: [
+            { kind: "text", text: "first item" },
+            { kind: "linebreak" },
+            { kind: "text", text: "continued" },
+          ],
+        },
+        {
+          inlines: [{ kind: "text", text: "second item" }],
+        },
+      ],
+    },
+    {
+      kind: "list",
+      style: "ordered",
+      indent: 0,
+      offset: 3,
+      items: [
+        {
+          inlines: [{ kind: "text", text: "ordered one" }],
+        },
+        {
+          inlines: [{ kind: "text", text: "ordered two" }],
+        },
+      ],
+    },
+    {
+      kind: "quote",
+      inlines: [
+        { kind: "text", text: "quoted" },
+        { kind: "linebreak" },
+        { kind: "text", text: "line" },
+      ],
+    },
+    {
+      kind: "preformatted",
+      text: "const x = 1",
+      language: "ts",
     },
   ])
   assert.deepEqual(result.diagnostics, [])

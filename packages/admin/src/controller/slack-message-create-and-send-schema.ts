@@ -5,7 +5,7 @@ export const CreateAndSendSlackMessageSchema = z
     message: z.string().min(1, "本文は必須です"),
     addMention: z.boolean(),
     scheduledAt: z.union([z.date(), z.literal("Immediate")]),
-    targetType: z.enum(["Sponsor", "Label"]),
+    targetType: z.enum(["Sponsor", "Label", "Test"]),
     sponsorIds: z.array(z.string()),
     labelIds: z.array(z.string()),
   })

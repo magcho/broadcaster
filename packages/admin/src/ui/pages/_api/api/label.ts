@@ -1,6 +1,6 @@
-import { listLabelsController } from "../../../controller/label-list.js"
-import { toErrorResponse } from "../../../libs/error-response.js"
-import { m2mAuthClient } from "../../../libs/m2m-auth.js"
+import { listLabelsController } from "../../../../controller/label-list.js"
+import { toErrorResponse } from "../../../../libs/error-response.js"
+import { m2mAuthClient } from "../../../../libs/m2m-auth.js"
 
 export const GET = async (request: Request): Promise<Response> => {
   try {

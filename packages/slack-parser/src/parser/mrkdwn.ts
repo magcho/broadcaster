@@ -41,6 +41,14 @@ type InlineParseResult = {
   closed: boolean
 }
 
+type ListMarker = {
+  style: "bullet" | "ordered"
+  indent: number
+  body: string
+  contentOffset: number
+  offset?: number
+}
+
 export function parseMrkdwn(
   text: string,
   options: ParseMrkdwnOptions = {},
@@ -51,7 +59,7 @@ export function parseMrkdwn(
     source: options.source ?? "publish",
     surface: options.surface ?? "message_text",
     mode: options.mode ?? "compat",
-    autolink: options.autolink ?? false,
+    autolink: options.autolink ?? true,
   } as const
 
   const blocks = parseBlocks(normalizedText, resolvedOptions, diagnostics)
@@ -125,13 +133,28 @@ function parseBlocks(
       continue
     }
 
+    const listMarker = parseListMarker(line)
+    if (listMarker) {
+      const { block, nextIndex } = parseListBlock(
+        lines,
+        lineOffsets,
+        index,
+        options,
+        diagnostics,
+      )
+      blocks.push(block)
+      index = nextIndex
+      continue
+    }
+
     const paragraphLines: string[] = []
     const start = lineOffsets[index] ?? 0
     while (
       index < lines.length &&
       (lines[index] ?? "").trim() !== "" &&
       !(lines[index] ?? "").startsWith(">") &&
-      !(lines[index] ?? "").startsWith("```")
+      !(lines[index] ?? "").startsWith("```") &&
+      !parseListMarker(lines[index] ?? "")
     ) {
       paragraphLines.push(lines[index] ?? "")
       index += 1
@@ -161,6 +184,123 @@ function buildLineOffsets(text: string): number[] {
     }
   }
   return offsets
+}
+
+function parseListBlock(
+  lines: string[],
+  lineOffsets: number[],
+  startIndex: number,
+  options: Required<
+    Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">
+  >,
+  diagnostics: Diagnostic[],
+): { block: SlackBlock; nextIndex: number } {
+  const firstMarker = parseListMarker(lines[startIndex] ?? "")
+  if (!firstMarker) {
+    throw new Error("Expected list marker at startIndex.")
+  }
+
+  const items: { inlines: SlackInline[] }[] = []
+  let index = startIndex
+
+  while (index < lines.length) {
+    const marker = parseListMarker(lines[index] ?? "")
+    if (
+      !marker ||
+      marker.style !== firstMarker.style ||
+      marker.indent !== firstMarker.indent
+    ) {
+      break
+    }
+
+    const itemStart = index
+    const itemLines = [marker.body]
+    index += 1
+
+    while (index < lines.length) {
+      const current = lines[index] ?? ""
+      if (
+        current.trim() === "" ||
+        current.startsWith(">") ||
+        current.startsWith("```")
+      ) {
+        break
+      }
+
+      if (parseListMarker(current)) {
+        break
+      }
+
+      const continuation = parseListContinuation(current, marker.indent)
+      if (continuation === null) {
+        break
+      }
+
+      itemLines.push(continuation)
+      index += 1
+    }
+
+    const parsed = parseInlineSequence({
+      text: itemLines.join("\n"),
+      pos: 0,
+      diagnostics,
+      options,
+      baseOffset: (lineOffsets[itemStart] ?? 0) + marker.contentOffset,
+    })
+
+    items.push({
+      inlines: parsed.inlines,
+    })
+  }
+
+  return {
+    block: {
+      kind: "list",
+      style: firstMarker.style,
+      indent: firstMarker.indent,
+      ...(firstMarker.offset !== undefined
+        ? { offset: firstMarker.offset }
+        : {}),
+      items,
+    },
+    nextIndex: index,
+  }
+}
+
+function parseListMarker(line: string): ListMarker | null {
+  const bulletMatch = /^(\s*)-\s+(.*)$/.exec(line)
+  if (bulletMatch) {
+    const leading = bulletMatch[1] ?? ""
+    return {
+      style: "bullet",
+      indent: Math.floor(leading.length / 2),
+      body: bulletMatch[2] ?? "",
+      contentOffset: leading.length + 2,
+    }
+  }
+
+  const orderedMatch = /^(\s*)(\d+)\.\s+(.*)$/.exec(line)
+  if (orderedMatch) {
+    const leading = orderedMatch[1] ?? ""
+    const offset = Number(orderedMatch[2])
+    return {
+      style: "ordered",
+      indent: Math.floor(leading.length / 2),
+      offset: Number.isInteger(offset) ? offset : 1,
+      body: orderedMatch[3] ?? "",
+      contentOffset: leading.length + (orderedMatch[2] ?? "").length + 2,
+    }
+  }
+
+  return null
+}
+
+function parseListContinuation(line: string, indent: number): string | null {
+  const prefix = "  ".repeat(Math.max(0, indent) + 1)
+  if (!line.startsWith(prefix)) {
+    return null
+  }
+  return line.slice(prefix.length)
 }
 
 function parseInlineSequence(
@@ -196,11 +336,30 @@ function parseInlineSequence(
       return { inlines, closed: true }
     }
 
-    if (state.options.source === "retrieved" && current === ":") {
+    if (current === ":") {
       const emoji = parseColonEmoji(state)
       if (emoji) {
         flush()
         inlines.push(emoji)
+        continue
+      }
+    }
+
+    if (state.options.mode !== "strict" && current === "@") {
+      const bareEntity =
+        parseBareBroadcastMention(state) ?? parseBareUserMention(state)
+      if (bareEntity) {
+        flush()
+        inlines.push(bareEntity)
+        continue
+      }
+    }
+
+    if (state.options.mode !== "strict" && current === "#") {
+      const channel = parseBareChannelReference(state)
+      if (channel) {
+        flush()
+        inlines.push(channel)
         continue
       }
     }
@@ -289,7 +448,7 @@ function parseInlineSequence(
   flush()
   return {
     inlines,
-    closed: stopMarker === undefined ? true : false,
+    closed: stopMarker === undefined,
   }
 }
 
@@ -304,6 +463,79 @@ function parseColonEmoji(state: InlineState): EmojiInline | null {
     name: match[1] ?? "",
   }
 }
+
+function parseBareBroadcastMention(state: InlineState): BroadcastInline | null {
+  const body = state.text.slice(state.pos)
+  const match = /^@(here|channel|everyone)(?=$|[^A-Za-z0-9_.-])/i.exec(body)
+  if (!match) {
+    return null
+  }
+
+  if (!hasBareMentionBoundary(state.text[state.pos - 1])) {
+    return null
+  }
+
+  state.pos += match[0].length
+  return {
+    kind: "broadcast",
+    range: match[1]?.toLowerCase() as BroadcastInline["range"],
+  }
+}
+
+function parseBareUserMention(state: InlineState): UserInline | null {
+  const body = state.text.slice(state.pos)
+  const match = /^@([A-Za-z0-9._-]+)(?=$|[^A-Za-z0-9_.-])/i.exec(body)
+  if (!match) {
+    return null
+  }
+
+  if (!hasBareMentionBoundary(state.text[state.pos - 1])) {
+    return null
+  }
+
+  const name = match[1]
+  if (!name || BROADCAST_NAMES.has(name.toLowerCase())) {
+    return null
+  }
+
+  state.pos += match[0].length
+  return {
+    kind: "user",
+    userId: name,
+  }
+}
+
+function parseBareChannelReference(state: InlineState): ChannelInline | null {
+  const body = state.text.slice(state.pos)
+  const match = /^#([A-Za-z][A-Za-z0-9_-]*)(?=$|[^A-Za-z0-9_-])/i.exec(body)
+  if (!match) {
+    return null
+  }
+
+  if (!hasBareMentionBoundary(state.text[state.pos - 1])) {
+    return null
+  }
+
+  const channelName = match[1]
+  if (!channelName) {
+    return null
+  }
+
+  state.pos += match[0].length
+  return {
+    kind: "channel",
+    channelId: channelName,
+  }
+}
+
+function hasBareMentionBoundary(previous: string | undefined): boolean {
+  if (previous == null) {
+    return true
+  }
+  return !/[A-Za-z0-9_./@#-]/.test(previous)
+}
+
+const BROADCAST_NAMES = new Set(["here", "channel", "everyone"])
 
 function parseAngleEntity(state: InlineState): SlackInline | null {
   const start = state.pos

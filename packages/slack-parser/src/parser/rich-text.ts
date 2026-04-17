@@ -18,6 +18,7 @@ import type {
   SlackRichTextText,
   SlackStyle,
 } from "../types.js"
+import { ExhaustiveError } from "../utils/exhaustive.js"
 
 export function parseRichText(
   block: SlackRichTextBlock,
@@ -312,6 +313,7 @@ function renderPlainText(inlines: SlackInline[]): string {
         case "emoji":
           return `:${inline.name}:`
       }
+      throw new ExhaustiveError(inline)
     })
     .join("")
 }

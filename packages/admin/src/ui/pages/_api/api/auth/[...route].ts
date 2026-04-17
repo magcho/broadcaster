@@ -1,4 +1,4 @@
-import { auth } from "../../../../libs/better-auth/server.js"
+import { auth } from "../../../../../libs/better-auth/server.js"
 
 export const GET = async (request: Request): Promise<Response> => {
   return auth.handler(request)

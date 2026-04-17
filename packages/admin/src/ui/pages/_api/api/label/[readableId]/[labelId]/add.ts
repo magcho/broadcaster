@@ -1,6 +1,6 @@
-import { assignLabelWithReadableIdController } from "../../../../../../controller/label-assign-with-readable-id.js"
-import { toErrorResponse } from "../../../../../../libs/error-response.js"
-import { m2mAuthClient } from "../../../../../../libs/m2m-auth.js"
+import { assignLabelWithReadableIdController } from "../../../../../../../controller/label-assign-with-readable-id.js"
+import { toErrorResponse } from "../../../../../../../libs/error-response.js"
+import { m2mAuthClient } from "../../../../../../../libs/m2m-auth.js"
 
 export const POST = async (request: Request): Promise<Response> => {
   try {

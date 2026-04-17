@@ -1,7 +1,7 @@
 import z from "zod"
-import { upsertSponsorController } from "../../../controller/sponsor-upsert.js"
-import { toErrorResponse } from "../../../libs/error-response.js"
-import { m2mAuthClient } from "../../../libs/m2m-auth.js"
+import { upsertSponsorController } from "../../../../controller/sponsor-upsert.js"
+import { toErrorResponse } from "../../../../libs/error-response.js"
+import { m2mAuthClient } from "../../../../libs/m2m-auth.js"
 
 const inputSchema = z.object({
   name: z.string(),

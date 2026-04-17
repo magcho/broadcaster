@@ -1,6 +1,7 @@
 import { join } from "node:path"
+import babel from "@rolldown/plugin-babel"
 import tailwindcss from "@tailwindcss/vite"
-import viteReact from "@vitejs/plugin-react"
+import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react"
 import Inspect from "vite-plugin-inspect"
 import { defineConfig } from "waku/config"
 
@@ -9,13 +10,13 @@ export default defineConfig({
     server: {
       port: Number.parseInt(process.env.PORT || "3000", 10),
     },
+    devtools: true,
     plugins: [
       tailwindcss(),
       Inspect(),
-      viteReact({
-        babel: {
-          plugins: ["babel-plugin-react-compiler"],
-        },
+      viteReact(),
+      babel({
+        presets: [reactCompilerPreset()],
       }),
     ],
     resolve: {
@@ -26,6 +27,7 @@ export default defineConfig({
           "../components/src",
         ),
         "broadcaster-db": join(import.meta.dirname, "../db/src"),
+        "slack-parser": join(import.meta.dirname, "../slack-parser/src"),
       },
     },
   },

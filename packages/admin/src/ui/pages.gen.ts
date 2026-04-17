@@ -25,6 +25,8 @@ import type { getConfig as File_AuthedSponsorsSponsorIdEdit_getConfig } from './
 import type { getConfig as File_AuthedSponsorsIndex_getConfig } from './pages/(authed)/sponsors/index';
 // prettier-ignore
 import type { getConfig as File_AuthedSponsorsNew_getConfig } from './pages/(authed)/sponsors/new';
+// prettier-ignore
+import type { getConfig as File_Tmp_getConfig } from './pages/tmp';
 
 // prettier-ignore
 type Page =
@@ -33,16 +35,17 @@ type Page =
 | ({ path: '/labels/[labelId]/edit' } & GetConfigResponse<typeof File_AuthedLabelsLabelIdEdit_getConfig>)
 | ({ path: '/labels/assign' } & GetConfigResponse<typeof File_AuthedLabelsAssign_getConfig>)
 | ({ path: '/labels' } & GetConfigResponse<typeof File_AuthedLabelsIndex_getConfig>)
-| { path: '/labels/new'; render: 'dynamic' }
+| { path: '/labels/new'; render: 'static' }
 | ({ path: '/message' } & GetConfigResponse<typeof File_AuthedMessageIndex_getConfig>)
 | ({ path: '/message/send' } & GetConfigResponse<typeof File_AuthedMessageSend_getConfig>)
-| { path: '/signout'; render: 'dynamic' }
+| { path: '/signout'; render: 'static' }
 | ({ path: '/sponsors/[sponsorId]/delete' } & GetConfigResponse<typeof File_AuthedSponsorsSponsorIdDelete_getConfig>)
 | ({ path: '/sponsors/[sponsorId]/edit' } & GetConfigResponse<typeof File_AuthedSponsorsSponsorIdEdit_getConfig>)
 | ({ path: '/sponsors' } & GetConfigResponse<typeof File_AuthedSponsorsIndex_getConfig>)
 | ({ path: '/sponsors/new' } & GetConfigResponse<typeof File_AuthedSponsorsNew_getConfig>)
-| { path: '/'; render: 'dynamic' }
-| { path: '/signin'; render: 'dynamic' };
+| { path: '/'; render: 'static' }
+| { path: '/signin'; render: 'static' }
+| ({ path: '/tmp' } & GetConfigResponse<typeof File_Tmp_getConfig>);
 
 // prettier-ignore
 declare module 'waku/router' {

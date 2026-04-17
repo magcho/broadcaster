@@ -15,6 +15,21 @@ type Props = {
   sponsors: Sponsor[]
 }
 
+const getLabelSponsorMap = (sponsors: Sponsor[]) => {
+  return sponsors.reduce(
+    (acc, sponsor) => {
+      sponsor.labels.forEach((label) => {
+        if (acc[label.id] == null) {
+          acc[label.id] = []
+        }
+        acc[label.id]!.push(sponsor.id)
+      })
+      return acc
+    },
+    {} as Record<string, string[]>,
+  )
+}
+
 export const SponsorTargetInput = ({
   targetType,
   onChangeTargetType,
@@ -26,6 +41,13 @@ export const SponsorTargetInput = ({
   sponsors,
 }: Props) => {
   const id = useId()
+  const labelSponsorMap = getLabelSponsorMap(sponsors)
+
+  const selectedSponsorCount =
+    targetType === "Label"
+      ? new Set(labelIds.flatMap((labelId) => labelSponsorMap[labelId] ?? []))
+          .size
+      : sponsorIds.length
 
   return (
     <div>
@@ -39,6 +61,9 @@ export const SponsorTargetInput = ({
             }
           }}
           label="ラベルで指定する"
+          trailing={
+            targetType === "Label" ? `${selectedSponsorCount}社` : undefined
+          }
         >
           <div className="flex flex-wrap gap-4">
             {labels.map((label) => {
@@ -72,6 +97,9 @@ export const SponsorTargetInput = ({
             }
           }}
           label="個別に指定する"
+          trailing={
+            targetType === "Sponsor" ? `${selectedSponsorCount}社` : undefined
+          }
         >
           <div className="flex flex-wrap gap-4">
             {sponsors.map((sponsor) => (
