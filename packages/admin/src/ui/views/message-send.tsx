@@ -75,14 +75,14 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
     <Form action={handleSubmit} fullWidth>
       <div className="flex flex-col">
         <FormControl label="メッセージ" required>
-          {/** biome-ignore lint/a11y/noStaticElementInteractions: 補助的な役割のonClickなので許容する */}
-          {/** biome-ignore lint/a11y/useKeyWithClickEvents: 補助的な役割のonClickなので許容する */}
-          <div
-            className="flex w-full max-w-[600px] cursor-text flex-col items-start gap-4 rounded-lg border border-slate-200 p-4"
-            onClick={() => textareaRef.current?.focus()}
-          >
+          <div className="flex w-full max-w-[600px] cursor-text flex-col items-start gap-4 rounded-lg border border-slate-200 p-4">
             {/* 入力欄 */}
-            <div className="min-h-[72px] w-full pb-4">
+            {/** biome-ignore lint/a11y/noStaticElementInteractions: 補助的な役割のonClickなので許容する */}
+            {/** biome-ignore lint/a11y/useKeyWithClickEvents: 補助的な役割のonClickなので許容する */}
+            <div
+              className="min-h-[72px] w-full pb-4"
+              onClick={() => textareaRef.current?.focus()}
+            >
               <textarea
                 {...registerTextarea("message")}
                 className="field-sizing-content w-full resize-none placeholder:text-slate-400 focus:outline-none"

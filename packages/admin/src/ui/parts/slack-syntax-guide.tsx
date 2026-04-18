@@ -1,3 +1,5 @@
+import { CopyButton } from "broadcaster-components/copy-button.js"
+
 export const SlackSyntaxGuide = () => {
   return (
     <section
@@ -9,37 +11,55 @@ export const SlackSyntaxGuide = () => {
         <tbody>
           <tr>
             <td className="pr-4">リンク</td>
-            <td>
-              <code>{`<altテキスト|https://example.com>`}</code>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="<テキスト|https://example.com>" />
+              </div>
+              <code>{`<テキスト|https://example.com>`}</code>
             </td>
           </tr>
           <tr>
             <td className="pr-4">ユーザーメンション</td>
-            <td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="<@ユーザーID>" />
+              </div>
               <code>{`<@ユーザーID>`}</code>
             </td>
           </tr>
           <tr>
             <td className="pr-4">チャンネル</td>
-            <td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="<#チャンネルID>" />
+              </div>
               <code>{`<#チャンネルID>`}</code>
             </td>
           </tr>
           <tr>
             <td className="pr-4">太字</td>
-            <td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="*太字*" />
+              </div>
               <code>*太字*</code>
             </td>
           </tr>
           <tr>
             <td className="pr-4">イタリック体</td>
-            <td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="_イタリック体_" />
+              </div>
               <code>_イタリック体_</code>
             </td>
           </tr>
           <tr>
             <td className="pr-4">打ち消し</td>
-            <td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="~打ち消し~" />
+              </div>
               <code>~打ち消し~</code>
             </td>
           </tr>
