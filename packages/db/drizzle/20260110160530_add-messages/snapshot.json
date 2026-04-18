@@ -2,9 +2,7 @@
   "version": "8",
   "dialect": "postgres",
   "id": "c93202a8-0296-46eb-a85e-98834de8b69c",
-  "prevIds": [
-    "f2589f1e-58df-47bf-bfd3-95845f3419ac"
-  ],
+  "prevIds": ["f2589f1e-58df-47bf-bfd3-95845f3419ac"],
   "ddl": [
     {
       "isRlsEnabled": false,
@@ -1008,14 +1006,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "user_id"
-      ],
+      "columns": ["user_id"],
       "schemaTo": "public",
       "tableTo": "user",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
       "name": "account_user_id_user_id_fkey",
@@ -1025,14 +1019,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "message_id"
-      ],
+      "columns": ["message_id"],
       "schemaTo": "public",
       "tableTo": "messages",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "message_labels_message_id_messages_id_fkey",
@@ -1042,14 +1032,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "label_id"
-      ],
+      "columns": ["label_id"],
       "schemaTo": "public",
       "tableTo": "labels",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "message_labels_label_id_labels_id_fkey",
@@ -1059,14 +1045,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "message_id"
-      ],
+      "columns": ["message_id"],
       "schemaTo": "public",
       "tableTo": "messages",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "message_sponsors_message_id_messages_id_fkey",
@@ -1076,14 +1058,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "sponsor_id"
-      ],
+      "columns": ["sponsor_id"],
       "schemaTo": "public",
       "tableTo": "sponsors",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "message_sponsors_sponsor_id_sponsors_id_fkey",
@@ -1093,14 +1071,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "user_id"
-      ],
+      "columns": ["user_id"],
       "schemaTo": "public",
       "tableTo": "user",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
       "name": "session_user_id_user_id_fkey",
@@ -1110,14 +1084,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "sponsor_id"
-      ],
+      "columns": ["sponsor_id"],
       "schemaTo": "public",
       "tableTo": "sponsors",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "sponsor_labels_sponsor_id_sponsors_id_fkey",
@@ -1127,14 +1097,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "label_id"
-      ],
+      "columns": ["label_id"],
       "schemaTo": "public",
       "tableTo": "labels",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "sponsor_labels_label_id_labels_id_fkey",
@@ -1144,14 +1110,10 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "sponsor_id"
-      ],
+      "columns": ["sponsor_id"],
       "schemaTo": "public",
       "tableTo": "sponsors",
-      "columnsTo": [
-        "id"
-      ],
+      "columnsTo": ["id"],
       "onUpdate": "CASCADE",
       "onDelete": "CASCADE",
       "name": "sponsor_slack_users_sponsor_id_sponsors_id_fkey",
@@ -1160,9 +1122,7 @@
       "table": "sponsor_slack_users"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "account_pkey",
       "schema": "public",
@@ -1170,9 +1130,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "labels_pkey",
       "schema": "public",
@@ -1180,9 +1138,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "messages_pkey",
       "schema": "public",
@@ -1190,9 +1146,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "session_pkey",
       "schema": "public",
@@ -1200,9 +1154,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "slack_user_id"
-      ],
+      "columns": ["slack_user_id"],
       "nameExplicit": false,
       "name": "sponsor_slack_users_pkey",
       "schema": "public",
@@ -1210,9 +1162,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "sponsors_pkey",
       "schema": "public",
@@ -1220,9 +1170,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "user_pkey",
       "schema": "public",
@@ -1230,9 +1178,7 @@
       "entityType": "pks"
     },
     {
-      "columns": [
-        "id"
-      ],
+      "columns": ["id"],
       "nameExplicit": false,
       "name": "verification_pkey",
       "schema": "public",
@@ -1241,10 +1187,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "message_id",
-        "label_id"
-      ],
+      "columns": ["message_id", "label_id"],
       "nullsNotDistinct": false,
       "name": "message_labels_message_id_label_id_unique",
       "entityType": "uniques",
@@ -1253,10 +1196,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "message_id",
-        "sponsor_id"
-      ],
+      "columns": ["message_id", "sponsor_id"],
       "nullsNotDistinct": false,
       "name": "message_sponsors_message_id_sponsor_id_unique",
       "entityType": "uniques",
@@ -1265,10 +1205,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "sponsor_id",
-        "label_id"
-      ],
+      "columns": ["sponsor_id", "label_id"],
       "nullsNotDistinct": false,
       "name": "sponsor_labels_sponsor_id_label_id_unique",
       "entityType": "uniques",
@@ -1277,9 +1214,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "label"
-      ],
+      "columns": ["label"],
       "nullsNotDistinct": false,
       "name": "labels_label_key",
       "schema": "public",
@@ -1288,9 +1223,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "token"
-      ],
+      "columns": ["token"],
       "nullsNotDistinct": false,
       "name": "session_token_key",
       "schema": "public",
@@ -1299,9 +1232,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "readable_id"
-      ],
+      "columns": ["readable_id"],
       "nullsNotDistinct": false,
       "name": "sponsors_readable_id_key",
       "schema": "public",
@@ -1310,9 +1241,7 @@
     },
     {
       "nameExplicit": false,
-      "columns": [
-        "email"
-      ],
+      "columns": ["email"],
       "nullsNotDistinct": false,
       "name": "user_email_key",
       "schema": "public",

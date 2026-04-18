@@ -22,7 +22,7 @@ export const FormControl = ({
 }: Props) => {
   return (
     <div
-      className="before:-left-4 relative flex w-full flex-col gap-1 before:absolute before:inset-y-0 before:w-1 before:rounded-sm data-error:before:bg-red-500"
+      className="relative flex w-full flex-col gap-1 before:absolute before:inset-y-0 before:-left-4 before:w-1 before:rounded-sm data-error:before:bg-red-500"
       data-error={error != null ? "" : undefined}
     >
       <label htmlFor={id} className="block text-md">

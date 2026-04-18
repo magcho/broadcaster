@@ -1,13 +1,13 @@
-"use client"
-
 import { MultiCombobox } from "broadcaster-components/control/multi-combobox.js"
 import { Form } from "broadcaster-components/form/form.js"
 import { FormControl } from "broadcaster-components/form/form-control.js"
 import { SubmitButton } from "broadcaster-components/form/form-submit-button.js"
 import { useForm } from "broadcaster-components/libs/use-form.js"
 import { useTransition } from "react"
-import { assignLabelsController } from "../../controller/label-assign.js"
-import { LabelAssignSchema } from "../../controller/label-assign-schema.js"
+import {
+  assignLabelsController,
+  LabelAssignSchema,
+} from "../../controller/label-assign.js"
 import type { Label, Sponsor } from "../../domain/model/Sponsor.js"
 import { LabelDisplay } from "../components/label-display.js"
 import { SponsorInput } from "../parts/SponsorInput.js"
@@ -32,7 +32,7 @@ export const LabelAssignForm = ({ labels, sponsors, onComplete }: Props) => {
       return
     }
     startTransition(async () => {
-      await assignLabelsController(value)
+      await assignLabelsController({ data: value })
       await onComplete?.()
     })
   }

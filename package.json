@@ -10,12 +10,6 @@
     "build:admin": "VERCEL=1 pnpm -F broadcaster-admin build",
     "start:admin": "pnpm -F broadcaster-admin start"
   },
-  "dependencies": {
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-server-dom-webpack": "catalog:",
-    "waku": "catalog:"
-  },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "emulate": "catalog:",

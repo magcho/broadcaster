@@ -60,11 +60,6 @@ type EditorRange = {
   end: EditorPoint
 }
 
-type InlineContainerBlock = Extract<
-  SlackBlock,
-  { kind: "paragraph" | "quote" | "list" }
->
-
 type InlineSlice = {
   before: SlackInline[]
   after: SlackInline[]
@@ -108,10 +103,9 @@ export function getDocumentEndPoint(document: SlackDocument): EditorPoint {
   }
 }
 
-export function createEditorState(input: {
-  document?: SlackDocument
-  selection?: EditorSelection
-} = {}): EditorState {
+export function createEditorState(
+  input: { document?: SlackDocument; selection?: EditorSelection } = {},
+): EditorState {
   const document = ensureEditableDocument(input.document ?? createDocument())
   return {
     document,
@@ -158,7 +152,10 @@ export function applyCommand(
       break
 
     case "insert_mention":
-      next = insertContent(state, inlineDocument(mentionToInline(command.mention)))
+      next = insertContent(
+        state,
+        inlineDocument(mentionToInline(command.mention)),
+      )
       break
 
     case "toggle_mark":
@@ -231,7 +228,10 @@ function applyRedo(state: EditorState): EditorState {
   }
 }
 
-function insertContent(state: EditorState, content: SlackDocument): EditorState {
+function insertContent(
+  state: EditorState,
+  content: SlackDocument,
+): EditorState {
   const range = getSelectionRange(state.selection)
   return replaceRange(state, range, content)
 }
@@ -309,13 +309,15 @@ function toggleMark(state: EditorState, mark: keyof MarkSet): EditorState {
       activeMarks[mark] = true
     }
     const { activeMarks: _ignored, ...rest } = state
-    return Object.keys(activeMarks).length > 0
-      ? { ...rest, activeMarks }
-      : rest
+    return Object.keys(activeMarks).length > 0 ? { ...rest, activeMarks } : rest
   }
 
   const normalizedRange = normalizeRange(range)
-  const shouldAdd = !allSelectedTextHasMark(state.document, normalizedRange, mark)
+  const shouldAdd = !allSelectedTextHasMark(
+    state.document,
+    normalizedRange,
+    mark,
+  )
   const blocks = state.document.blocks.map((block, blockIndex) => {
     if (
       blockIndex < normalizedRange.start.path[0] ||
@@ -339,7 +341,10 @@ function toggleMark(state: EditorState, mark: keyof MarkSet): EditorState {
         : endPointForInlines(blockIndex, inlines)
 
     const startSlice = splitInlines(inlines, startPoint)
-    const selectedSlice = splitInlines(startSlice.after, rebasePoint(endPoint, startSlice.before.length))
+    const selectedSlice = splitInlines(
+      startSlice.after,
+      rebasePoint(endPoint, startSlice.before.length),
+    )
 
     return setBlockInlines(block, [
       ...startSlice.before,
@@ -783,14 +788,18 @@ function mergeReplacementBlocks(
   }
 
   const blocks = [
-    ...(prefix.length > 0 && startKind ? [makeInlineBlock(startKind, prefix)] : []),
+    ...(prefix.length > 0 && startKind
+      ? [makeInlineBlock(startKind, prefix)]
+      : []),
     ...replacementBlocks.map((block) => cloneBlock(block)),
     ...(suffix.length > 0 && endKind ? [makeInlineBlock(endKind, suffix)] : []),
   ]
   const prefixBlockCount = prefix.length > 0 && startKind ? 1 : 0
   if (replacementBlocks.length > 0) {
     const lastReplacement = replacementBlocks.at(-1)
-    const lastInlines = lastReplacement ? getEditableInlines(lastReplacement) : null
+    const lastInlines = lastReplacement
+      ? getEditableInlines(lastReplacement)
+      : null
     return {
       blocks,
       caret: {
@@ -809,7 +818,10 @@ function mergeReplacementBlocks(
   }
 }
 
-function getBlockEndPoint(block: SlackBlock | undefined, blockIndex: number): EditorPoint {
+function getBlockEndPoint(
+  block: SlackBlock | undefined,
+  blockIndex: number,
+): EditorPoint {
   if (!block) {
     return { path: [Math.max(0, blockIndex), 0], offset: 0 }
   }
@@ -824,10 +836,10 @@ function getBlockEndPoint(block: SlackBlock | undefined, blockIndex: number): Ed
   }
 }
 
-function getEditableBlockKind(
-  block: SlackBlock,
-): "paragraph" | "quote" | null {
-  return block.kind === "paragraph" || block.kind === "quote" ? block.kind : null
+function getEditableBlockKind(block: SlackBlock): "paragraph" | "quote" | null {
+  return block.kind === "paragraph" || block.kind === "quote"
+    ? block.kind
+    : null
 }
 
 function getEditableInlines(block: SlackBlock): SlackInline[] | null {
@@ -842,7 +854,10 @@ function getEditableInlines(block: SlackBlock): SlackInline[] | null {
   }
 }
 
-function setBlockInlines(block: SlackBlock, inlines: SlackInline[]): SlackBlock {
+function setBlockInlines(
+  block: SlackBlock,
+  inlines: SlackInline[],
+): SlackBlock {
   switch (block.kind) {
     case "paragraph":
       return { kind: "paragraph", inlines: cloneInlines(inlines) }
@@ -881,7 +896,11 @@ function allSelectedTextHasMark(
   mark: keyof MarkSet,
 ): boolean {
   let sawText = false
-  for (let blockIndex = range.start.path[0]; blockIndex <= range.end.path[0]; blockIndex += 1) {
+  for (
+    let blockIndex = range.start.path[0];
+    blockIndex <= range.end.path[0];
+    blockIndex += 1
+  ) {
     const block = document.blocks[blockIndex]
     const inlines = block ? getEditableInlines(block) : null
     if (!inlines) {
@@ -898,7 +917,10 @@ function allSelectedTextHasMark(
         : endPointForInlines(blockIndex, inlines)
 
     const startSlice = splitInlines(inlines, startPoint)
-    const selectedSlice = splitInlines(startSlice.after, rebasePoint(endPoint, startSlice.before.length))
+    const selectedSlice = splitInlines(
+      startSlice.after,
+      rebasePoint(endPoint, startSlice.before.length),
+    )
     for (const inline of selectedSlice.before) {
       if (inline.kind === "text" || inline.kind === "link") {
         sawText = true
@@ -936,7 +958,10 @@ function applyMarkToInlines(
   })
 }
 
-function endPointForInlines(blockIndex: number, inlines: SlackInline[]): EditorPoint {
+function endPointForInlines(
+  blockIndex: number,
+  inlines: SlackInline[],
+): EditorPoint {
   if (inlines.length === 0) {
     return { path: [blockIndex, 0], offset: 0 }
   }
@@ -947,7 +972,10 @@ function endPointForInlines(blockIndex: number, inlines: SlackInline[]): EditorP
   }
 }
 
-function rebasePoint(point: EditorPoint, removedLeadingInlines: number): EditorPoint {
+function rebasePoint(
+  point: EditorPoint,
+  removedLeadingInlines: number,
+): EditorPoint {
   return {
     path: [point.path[0], Math.max(0, point.path[1] - removedLeadingInlines)],
     offset: point.offset,
@@ -1015,7 +1043,9 @@ function takeSnapshot(state: EditorState): EditorSnapshot {
   }
 }
 
-function restoreSnapshot(snapshot: EditorSnapshot): Omit<EditorState, "history"> {
+function restoreSnapshot(
+  snapshot: EditorSnapshot,
+): Omit<EditorState, "history"> {
   return {
     document: cloneDocument(snapshot.document),
     selection: cloneSelection(snapshot.selection),

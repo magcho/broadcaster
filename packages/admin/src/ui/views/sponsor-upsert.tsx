@@ -1,5 +1,3 @@
-"use client"
-
 import { Combobox } from "broadcaster-components/control/combobox.js"
 import { Input } from "broadcaster-components/control/input.js"
 import { MultiCombobox } from "broadcaster-components/control/multi-combobox.js"
@@ -62,7 +60,12 @@ export const SponsorUpsertForm = ({
       if (value == null) {
         return
       }
-      await upsertSponsorControllerFn(sponsor?.id ?? null, value)
+      await upsertSponsorControllerFn({
+        data: {
+          rawId: sponsor?.id ?? null,
+          raw: value,
+        },
+      })
       onComplete?.()
     })
   }
@@ -118,7 +121,7 @@ export const SponsorUpsertForm = ({
       >
         <MultiInput
           {...registerCustom("slackUserIds", {
-            encode: (value) => value.join("\n"),
+            encode: (value) => (value as string[]).join("\n"),
             decode: (e) =>
               e.target.value
                 .split("\n")

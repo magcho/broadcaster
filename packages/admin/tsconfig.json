@@ -1,23 +1,26 @@
 {
+  "include": ["src", "scripts", "vite.config.ts"],
+  "exclude": ["src/ui/pages/**/*", "src/ui/pages.gen.ts"],
   "compilerOptions": {
     "strict": true,
-    "target": "esnext",
-    "types": ["node"],
+    "target": "ES2024",
+    "lib": ["DOM", "DOM.Iterable", "ES2024"],
+    "types": ["node", "vite/client"],
     "noEmit": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "downlevelIteration": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
     "jsx": "react-jsx",
     "paths": {
       "broadcaster-components/*": ["../components/src/*"],
       "broadcaster-db/*": ["../db/src/*"],
-      "slack-parser/*": ["../../slack-parser/src/*"]
+      "slack-parser/*": ["../slack-parser/src/*"]
     }
-  },
-  "include": ["src", "scripts"]
+  }
 }

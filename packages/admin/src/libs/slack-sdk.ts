@@ -1,4 +1,4 @@
-import { WebClient } from "@slack/web-api"
+import { type Block, WebClient } from "@slack/web-api"
 import type { SlackChannel } from "../domain/model/SlackChannel.js"
 import { safeLoop } from "../utils/loop.js"
 import { waitFor } from "../utils/wait.js"
@@ -11,9 +11,10 @@ if (SLACK_TOKEN == null) {
 
 const slack = new WebClient(SLACK_TOKEN)
 
-type PostMessageItem = {
+export type PostMessageItem = {
   channel: string
-  text: string
+  text?: string
+  blocks?: Block[]
 }
 
 export class SlackSdk {
@@ -23,12 +24,13 @@ export class SlackSdk {
     this.#client = client
   }
 
-  async postMessage({ channel, text }: PostMessageItem) {
+  async postMessage({ channel, text, blocks }: PostMessageItem) {
     await this.#client.chat.postMessage({
       channel,
       text,
       username: "一斉送信",
       parse: "full",
+      blocks: blocks ?? [],
     })
   }
 
@@ -37,6 +39,7 @@ export class SlackSdk {
       await this.postMessage({
         channel: item.channel,
         text: item.text,
+        blocks: item.blocks,
       })
       await waitFor(1000 * 1.1)
     }

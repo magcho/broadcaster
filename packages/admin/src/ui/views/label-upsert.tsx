@@ -1,5 +1,3 @@
-"use client"
-
 import { Input } from "broadcaster-components/control/input.js"
 import { Form } from "broadcaster-components/form/form.js"
 import { FormControl } from "broadcaster-components/form/form-control.js"
@@ -36,7 +34,12 @@ export const LabelUpsertForm = ({ label, initValue, onComplete }: Props) => {
       if (value == null) {
         return
       }
-      await upsertLabelController(label?.id ?? null, value)
+      await upsertLabelController({
+        data: {
+          labelId: label?.id ?? null,
+          raw: value,
+        },
+      })
       onComplete?.()
     })
   }

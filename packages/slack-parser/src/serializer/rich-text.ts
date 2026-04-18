@@ -117,6 +117,8 @@ function serializeInlines(inlines: SlackInline[]): SlackRichTextInline[] {
           type: "text",
           text: "\n",
         }
+      default:
+        throw new Error(`Unsupported inline type: ${inline}`)
     }
   })
 }

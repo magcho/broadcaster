@@ -1,5 +1,3 @@
-"use client"
-
 import { Form } from "broadcaster-components/form/form.js"
 import { SubmitButton } from "broadcaster-components/form/form-submit-button.js"
 import { deleteSponsorController } from "../../controller/sponsor-delete.js"
@@ -11,7 +9,7 @@ type Props = {
 }
 export const SponsorDeleteForm = ({ sponsor, onComplete }: Props) => {
   const handleSubmit = async () => {
-    await deleteSponsorController(sponsor.id)
+    await deleteSponsorController({ data: sponsor.id })
     onComplete?.()
   }
 

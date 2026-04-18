@@ -14,6 +14,18 @@ export const SlackSyntaxGuide = () => {
             </td>
           </tr>
           <tr>
+            <td className="pr-4">ユーザーメンション</td>
+            <td>
+              <code>{`<@ユーザーID>`}</code>
+            </td>
+          </tr>
+          <tr>
+            <td className="pr-4">チャンネル</td>
+            <td>
+              <code>{`<#チャンネルID>`}</code>
+            </td>
+          </tr>
+          <tr>
             <td className="pr-4">太字</td>
             <td>
               <code>*太字*</code>

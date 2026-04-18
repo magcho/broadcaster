@@ -1,14 +1,18 @@
-"use server"
-
-import { unstable_getHeaders } from "waku/server"
+import { createServerFn } from "@tanstack/react-start"
+import { getRequestHeaders } from "@tanstack/react-start/server"
+import z from "zod"
 import { createSponsorLabels } from "../infrastructure/db/create-sponsor-label.js"
 import { verifySession } from "../libs/better-auth/server.js"
-import { LabelAssignSchema } from "./label-assign-schema.js"
 
-export const assignLabelsController = async (raw: LabelAssignSchema) => {
-  await verifySession(unstable_getHeaders())
+export const LabelAssignSchema = z.object({
+  sponsorIds: z.array(z.uuid()).min(1, "スポンサーを選択してください"),
+  labelIds: z.array(z.uuid()).min(1, "ラベルを選択してください"),
+})
 
-  const input = LabelAssignSchema.parse(raw)
+export const assignLabelsController = createServerFn({ method: "POST" })
+  .inputValidator(LabelAssignSchema)
+  .handler(async ({ data: input }) => {
+    await verifySession(getRequestHeaders())
 
-  await createSponsorLabels(input.sponsorIds, input.labelIds)
-}
+    await createSponsorLabels(input.sponsorIds, input.labelIds)
+  })

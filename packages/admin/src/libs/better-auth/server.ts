@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { tanstackStartCookies } from "better-auth/tanstack-start"
 import { db } from "broadcaster-db/db.js"
 import {
   accountTable,
@@ -54,15 +55,16 @@ export const auth = betterAuth({
     verifiedPlugin({
       whitelistDomains: WHITELIST_ACCOUNT_DOMAINS,
     }),
+    tanstackStartCookies(),
   ],
 })
 
-export const getSession = async (headers: Record<string, string>) =>
+export const getSession = async (headers: HeadersInit) =>
   await auth.api.getSession({
     headers: new Headers(headers),
   })
 
-export const verifySession = async (headers: Record<string, string>) => {
+export const verifySession = async (headers: HeadersInit) => {
   const session = await getSession(headers)
   if (session == null) {
     throw new AuthError("Unauthorized", 401)

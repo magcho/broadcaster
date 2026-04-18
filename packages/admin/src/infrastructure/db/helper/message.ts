@@ -1,4 +1,4 @@
-import type { MessageTemplateWithDetail } from "../../../domain/model/Message"
+import type { MessageTemplateWithDetail } from "../../../domain/model/Message.js"
 
 type Row = {
   scheduledAt: Date | null

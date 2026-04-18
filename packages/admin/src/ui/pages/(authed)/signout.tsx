@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "broadcaster-components/button.js"
 import { authClient } from "../../../libs/better-auth/client.js"
 

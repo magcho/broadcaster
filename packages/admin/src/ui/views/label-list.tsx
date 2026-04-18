@@ -1,10 +1,8 @@
-"use client"
-
+import { Link, useRouter } from "@tanstack/react-router"
 import { Button } from "broadcaster-components/button.js"
 import { Table } from "broadcaster-components/table.js"
 import { useOptimistic, useTransition } from "react"
 import { TbEdit, TbTrash } from "react-icons/tb"
-import { Link, useRouter } from "waku"
 import { changeLabelsOrderController } from "../../controller/label-order.js"
 import type { Label } from "../../domain/model/Sponsor.js"
 import { SortableItem, SortableRoot, SortHandle } from "../../libs/sortable.js"
@@ -21,8 +19,10 @@ export const LabelListView = ({ labels: rawLabels }: Props) => {
   const handleChangeItemOrders = (updatedLabels: Label[]) => {
     setOptimisticLabels(updatedLabels)
     startTransition(async () => {
-      await changeLabelsOrderController(updatedLabels.map((label) => label.id))
-      await router.reload()
+      await changeLabelsOrderController({
+        data: updatedLabels.map((label) => label.id),
+      })
+      await router.invalidate()
     })
   }
 

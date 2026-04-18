@@ -1,7 +1,7 @@
+import { Link } from "@tanstack/react-router"
 import { Button } from "broadcaster-components/button.js"
 import { Table } from "broadcaster-components/table.js"
 import { TbEdit, TbTrash } from "react-icons/tb"
-import { Link } from "waku"
 import type { Sponsor } from "../../domain/model/Sponsor.js"
 import { LabelDisplay } from "../components/label-display.js"
 

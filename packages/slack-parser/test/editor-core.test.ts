@@ -166,7 +166,10 @@ test("integration: delete_backward at block start merges adjacent paragraphs", (
     selection: createCollapsedSelection({ path: [1, 0], offset: 0 }),
   })
 
-  state = applyCommand(state, { type: "delete_backward", unit: "character" }).state
+  state = applyCommand(state, {
+    type: "delete_backward",
+    unit: "character",
+  }).state
 
   assert.deepEqual(state.document.blocks, [
     {
@@ -187,7 +190,10 @@ test("integration: delete_forward at block end merges adjacent paragraphs", () =
     selection: createCollapsedSelection({ path: [0, 0], offset: 5 }),
   })
 
-  state = applyCommand(state, { type: "delete_forward", unit: "character" }).state
+  state = applyCommand(state, {
+    type: "delete_forward",
+    unit: "character",
+  }).state
 
   assert.deepEqual(state.document.blocks, [
     {

@@ -1,4 +1,4 @@
-import { Link } from "waku"
+import { Link } from "@tanstack/react-router"
 
 export const UnauthorizedDisplay = () => {
   return (

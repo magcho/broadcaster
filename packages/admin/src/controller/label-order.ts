@@ -1,18 +1,20 @@
-"use server"
-
-import { unstable_getHeaders } from "waku/server"
+import { createServerFn } from "@tanstack/react-start"
+import { getRequestHeaders } from "@tanstack/react-start/server"
 import z from "zod"
 import { changeLabelsOrder } from "../infrastructure/db/change-labels-order.js"
 import { verifySession } from "../libs/better-auth/server.js"
 
-export const changeLabelsOrderController = async (rawIds: string[]) => {
-  await verifySession(unstable_getHeaders())
+const LabelOrderSchema = z.array(z.string().uuid())
 
-  const ids = z.array(z.uuid()).parse(rawIds)
-  try {
-    await changeLabelsOrder(ids)
-  } catch (e) {
-    console.error("Failed to change labels order:", e)
-    throw e
-  }
-}
+export const changeLabelsOrderController = createServerFn({ method: "POST" })
+  .inputValidator(LabelOrderSchema)
+  .handler(async ({ data: ids }) => {
+    await verifySession(getRequestHeaders())
+
+    try {
+      await changeLabelsOrder(ids)
+    } catch (e) {
+      console.error("Failed to change labels order:", e)
+      throw e
+    }
+  })

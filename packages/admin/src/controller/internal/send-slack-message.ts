@@ -1,3 +1,4 @@
+import { parseMrkdwn, serializeForChatPostMessage } from "slack-parser/index.js"
 import {
   type MessageTemplateWithDetail,
   resolveMessageTemplate,
@@ -15,8 +16,17 @@ export const sendSlackMessage = async (message: MessageTemplateWithDetail) => {
           message.target.labels.map((label) => label.id),
         )
 
+  if (sponsors.length === 0) {
+    console.info(
+      "No sponsors found for the message target. Skipping message sending.",
+    )
+    // 送信済み扱いにする
+    await updateMessageAsAlreadySent(message.id)
+    return
+  }
+
   const messageItems = sponsors.flatMap((sponsor) => {
-    if (sponsor.slackChannelId == null) {
+    if (sponsor.slackChannelId == null || sponsor.slackChannelId === "") {
       return []
     }
 
@@ -29,9 +39,18 @@ export const sendSlackMessage = async (message: MessageTemplateWithDetail) => {
 
     return {
       channel: sponsor.slackChannelId,
-      text: resolveMessageTemplate(baseMessage, variables),
+      blocks: serializeForChatPostMessage(
+        parseMrkdwn(resolveMessageTemplate(baseMessage, variables)).document,
+      ).blocks,
     }
   })
+
+  if (messageItems.length === 0) {
+    console.info("No valid sponsors with Slack channel to send message.")
+    // 送信済み扱いにする
+    await updateMessageAsAlreadySent(message.id)
+    return
+  }
 
   await slackSdk.bulkPostMessage(messageItems)
 

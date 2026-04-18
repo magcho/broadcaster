@@ -9,3 +9,5 @@ dist
 .idea/
 .vercel/
 .slack/apps.dev.json
+.output
+.pnpm-store

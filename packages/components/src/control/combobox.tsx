@@ -65,7 +65,7 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
           align="start"
           anchor={containerRef}
         >
-          <BaseCombobox.Popup className="dark:-outline-offset-1 max-h-96 max-w-(--available-width) origin-(--transform-origin) overflow-y-auto rounded-lg bg-[canvas] text-gray-900 shadow-gray-200 shadow-lg outline-1 outline-gray-200 transition-[transform,scale,opacity] [--input-container-height:3rem] data-ending-style:scale-90 data-starting-style:scale-90 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:shadow-none dark:outline-gray-300">
+          <BaseCombobox.Popup className="max-h-96 max-w-(--available-width) origin-(--transform-origin) overflow-y-auto rounded-lg bg-[canvas] text-gray-900 shadow-gray-200 shadow-lg outline-1 outline-gray-200 transition-[transform,scale,opacity] [--input-container-height:3rem] data-ending-style:scale-90 data-starting-style:scale-90 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:shadow-none dark:outline-gray-300 dark:-outline-offset-1">
             <div className="sticky top-0 flex items-center border-b border-b-slate-200 bg-white pl-2.5">
               <TbSearch size={18} className="shrink-0" />
               <div className="mr-1 ml-3 shrink-0 text-slate-800">

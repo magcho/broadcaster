@@ -1,5 +1,3 @@
-"use client"
-
 import { Form } from "broadcaster-components/form/form.js"
 import { SubmitButton } from "broadcaster-components/form/form-submit-button.js"
 import { deleteLabelController } from "../../controller/label-delete.js"
@@ -12,7 +10,7 @@ type Props = {
 }
 export const LabelDeleteForm = ({ label, onComplete }: Props) => {
   const handleSubmit = async () => {
-    await deleteLabelController(label.id)
+    await deleteLabelController({ data: label.id })
     onComplete?.()
   }
 

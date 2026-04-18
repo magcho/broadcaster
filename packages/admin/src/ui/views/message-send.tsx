@@ -1,5 +1,3 @@
-"use client"
-
 import { Form } from "broadcaster-components/form/form.js"
 import { FormControl } from "broadcaster-components/form/form-control.js"
 import { SubmitButton } from "broadcaster-components/form/form-submit-button.js"
@@ -16,28 +14,17 @@ import { ScheduleInput } from "../parts/ScheduleInput.js"
 import { SponsorTargetInput } from "../parts/SponsorTargetInput.js"
 import { SlackSyntaxGuide } from "../parts/slack-syntax-guide.js"
 
-const SLACK_WORKSPACE_DOMAIN = process.env.WAKU_PUBLIC_SLACK_WORKSPACE_DOMAIN
-if (SLACK_WORKSPACE_DOMAIN == null) {
-  throw new Error("WAKU_PUBLIC_SLACK_WORKSPACE_DOMAIN is not defined")
-}
-
 type Props = {
   sponsors: Sponsor[]
   labels: Label[]
   onComplete?: () => void
-  initMessage?: string
 }
 
-export const SendMessageForm = ({
-  sponsors,
-  labels,
-  initMessage,
-  onComplete,
-}: Props) => {
+export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
   const { values, setValue, registerTextarea, getValidValues } = useForm(
     CreateAndSendSlackMessageSchema,
     {
-      message: initMessage ?? "",
+      message: "",
       addMention: true,
       scheduledAt: "Immediate" as Date | "Immediate",
       targetType: "Label" as "Label" | "Sponsor",
@@ -54,7 +41,7 @@ export const SendMessageForm = ({
       if (value == null) {
         return
       }
-      await createAndSendSlackMessageController(value)
+      await createAndSendSlackMessageController({ data: value })
       onComplete?.()
     })
   }
@@ -66,13 +53,16 @@ export const SendMessageForm = ({
         window.alert("メッセージが空です。メッセージを入力してください。")
         return
       }
+
       await createAndSendSlackMessageController({
-        message: message,
-        addMention: false,
-        scheduledAt: "Immediate",
-        targetType: "Test",
-        sponsorIds: [],
-        labelIds: [],
+        data: {
+          message,
+          addMention: false,
+          scheduledAt: "Immediate",
+          targetType: "Test",
+          sponsorIds: [],
+          labelIds: [],
+        },
       })
     })
   }
@@ -136,6 +126,7 @@ export const SendMessageForm = ({
                 {isPending ? "テスト送信中..." : "テスト送信する →"}
               </button>
             </div>
+
             {showSyntaxGuide && <SlackSyntaxGuide />}
           </div>
         </FormControl>
