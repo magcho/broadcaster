@@ -13,9 +13,18 @@ export const SlackSyntaxGuide = () => {
             <td className="pr-4">リンク</td>
             <td className="flex items-center gap-1">
               <div>
-                <CopyButton text="<テキスト|https://example.com>" />
+                <CopyButton text="<https://example.com|テキスト>" />
               </div>
-              <code>{`<テキスト|https://example.com>`}</code>
+              <code>{`<https://example.com|テキスト>`}</code>
+            </td>
+          </tr>
+          <tr>
+            <td className="pr-4">リンク（単体）</td>
+            <td className="flex items-center gap-1">
+              <div>
+                <CopyButton text="<https://example.com>" />
+              </div>
+              <code>{`<https://example.com>`}</code>
             </td>
           </tr>
           <tr>
