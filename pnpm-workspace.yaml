@@ -14,9 +14,9 @@ catalog:
   '@rolldown/plugin-babel': ^0.2.2
   '@slack/web-api': ^7.13.0
   '@standard-schema/spec': ^1.0.0
+  '@tailwindcss/vite': 4.2.2
   '@tanstack/react-router': ^1.131.35
   '@tanstack/react-start': ^1.131.35
-  '@tailwindcss/vite': 4.2.2
   '@types/google-apps-script': ^2.0.8
   '@types/node': 24.10.1
   '@types/pg': 8.15.6
@@ -35,6 +35,7 @@ catalog:
   emulate: ^0.4.1
   fast-fuzzy: ^1.12.0
   knip: ^6.4.0
+  nitro: 3.0.260415-beta
   pg: 8.16.3
   postgres: 3.4.7
   react: 19.2.5

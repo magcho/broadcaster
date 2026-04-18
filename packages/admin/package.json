@@ -24,6 +24,7 @@
     "date-fns": "catalog:",
     "drizzle-orm": "catalog:",
     "fast-fuzzy": "catalog:",
+    "nitro": "catalog:",
     "pg": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
