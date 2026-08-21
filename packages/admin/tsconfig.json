@@ -9,7 +9,6 @@
     "noEmit": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "downlevelIteration": true,
     "esModuleInterop": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",

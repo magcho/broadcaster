@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "react/exhaustive-deps": [
+      "error",
+      {
+        "additionalHooks": "useAsyncIterator"
+      }
+    ]
+  },
+  "options": {
+    "typeAware": true
+  },
+  "env": {
+    "builtin": true
+  }
+}

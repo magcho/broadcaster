@@ -4,15 +4,21 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "check": "biome check",
-    "fix": "biome check --write",
     "type-check": "pnpm -r type-check",
     "build:admin": "VERCEL=1 pnpm -F broadcaster-admin build",
-    "start:admin": "pnpm -F broadcaster-admin start"
+    "start:admin": "pnpm -F broadcaster-admin start",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt --check",
+    "fmt:fix": "oxfmt",
+    "fix": "pnpm run /.+:fix/"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "emulate": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
     "vercel": "catalog:"
   },
   "packageManager": "pnpm@10.33.0",

@@ -1,4 +1,4 @@
-// biome-ignore lint/correctness/noUnusedVariables: entry point
+// oxlint-disable-next-line no-unused-vars
 const main = () => {
   const baseUrl =
     PropertiesService.getScriptProperties().getProperty("API_BASE_URL")
@@ -20,6 +20,7 @@ const main = () => {
     console.log(`Response Body: ${responseBody}`)
   } catch (e) {
     console.error(
+      // oxlint-disable-next-line typescript/restrict-template-expressions
       `Error: ${e != null && typeof e === "object" && "message" in e ? e.message : e}`,
     )
   }

@@ -1,11 +1,5 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec"
-import {
-  type ComponentProps,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { type ComponentProps, useCallback, useMemo, useRef, useState } from "react"
 
 type Initializer<State> = State | (() => State)
 const resolveInitializer = <State>(init: Initializer<State>): State =>
@@ -28,16 +22,13 @@ export const useForm = <
   const dartyMap = useRef(new Map<keyof State, boolean>())
   const onceBluredMap = useRef(new Map<keyof State, boolean>())
 
-  const setValue = useCallback(
-    <K extends keyof State>(key: K, value: State[K]) => {
-      dartyMap.current.set(key, true)
-      setValues((prev) => ({
-        ...prev,
-        [key]: value,
-      }))
-    },
-    [],
-  )
+  const setValue = useCallback(<K extends keyof State>(key: K, value: State[K]) => {
+    dartyMap.current.set(key, true)
+    setValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }))
+  }, [])
 
   const registerInput = useCallback(
     <K extends keyof State>(
@@ -218,6 +209,7 @@ export const useForm = <
     const errorMap = {} as Record<keyof State, string | undefined>
     for (const item of issue) {
       if (item.path != null && 0 < item.path.length) {
+        // oxlint-disable-next-line typescript/no-base-to-string
         const key = item.path[0]!.toString()
         if (
           values[key] != null &&
