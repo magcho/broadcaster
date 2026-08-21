@@ -4,9 +4,7 @@ import { getSponsorController } from "../../../../../controller/sponsor-get.js"
 import { PageSection } from "../../../../components/page-section.js"
 import { SponsorDeleteForm } from "../../../../views/sponsor-delete.js"
 
-const Page = async ({
-  sponsorId,
-}: PageProps<"/sponsors/[sponsorId]/delete">) => {
+const Page = async ({ sponsorId }: PageProps<"/sponsors/[sponsorId]/delete">) => {
   const sponsor = await getSponsorController(sponsorId)
 
   return (

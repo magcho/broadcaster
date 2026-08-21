@@ -1,5 +1,5 @@
 import z from "zod"
-import { upsertSponsor } from "../infrastructure/db/upsert-sponsor.js"
+import { upsertSponsor2 } from "../infrastructure/db/upsert-sponsor.js"
 import { SponsorUpsertFormSchema } from "./sponsor-upsert-schema.js"
 
 export const upsertSponsorController = async (
@@ -11,7 +11,7 @@ export const upsertSponsorController = async (
     const input = SponsorUpsertFormSchema.parse(raw)
 
     const sponsorId = id ?? crypto.randomUUID()
-    await upsertSponsor(sponsorId, input)
+    await upsertSponsor2(sponsorId, input)
     return sponsorId
   } catch (e) {
     console.error(e)

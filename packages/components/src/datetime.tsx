@@ -17,10 +17,7 @@ export const Datetime = ({ children, format, fallback }: Props) => {
   if (children != null) {
     return (
       <Tooltip hint={children.toISOString()}>
-        <time
-          dateTime={children.toISOString()}
-          className="flex items-center gap-1"
-        >
+        <time dateTime={children.toISOString()} className="flex items-center gap-1">
           <TbClock />
           {format != null
             ? formatDate(children, format)

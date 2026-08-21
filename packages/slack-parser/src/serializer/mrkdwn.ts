@@ -14,9 +14,7 @@ export function serializeToMrkdwn(
 ): SerializeMrkdwnResult {
   const diagnostics: Diagnostic[] = []
   return {
-    text: document.blocks
-      .map((block) => serializeBlock(block, diagnostics))
-      .join("\n\n"),
+    text: document.blocks.map((block) => serializeBlock(block, diagnostics)).join("\n\n"),
     diagnostics,
   }
 }
@@ -46,27 +44,18 @@ function serializeBlock(block: SlackBlock, diagnostics: Diagnostic[]): string {
           const body = serializeInlines(item.inlines, diagnostics)
           return body
             .split("\n")
-            .map(
-              (line, lineIndex) =>
-                `${lineIndex === 0 ? prefix : `${prefixBase}  `}${line}`,
-            )
+            .map((line, lineIndex) => `${lineIndex === 0 ? prefix : `${prefixBase}  `}${line}`)
             .join("\n")
         })
         .join("\n")
   }
 }
 
-function serializeInlines(
-  inlines: SlackInline[],
-  diagnostics: Diagnostic[],
-): string {
+function serializeInlines(inlines: SlackInline[], diagnostics: Diagnostic[]): string {
   return inlines.map((inline) => serializeInline(inline, diagnostics)).join("")
 }
 
-function serializeInline(
-  inline: SlackInline,
-  diagnostics: Diagnostic[],
-): string {
+function serializeInline(inline: SlackInline, diagnostics: Diagnostic[]): string {
   switch (inline.kind) {
     case "text":
       return wrapMarks(escapeText(inline.text), inline.marks)
@@ -80,9 +69,7 @@ function serializeInline(
         })
       }
       const target =
-        inline.isMailto && !inline.url.startsWith("mailto:")
-          ? `mailto:${inline.url}`
-          : inline.url
+        inline.isMailto && !inline.url.startsWith("mailto:") ? `mailto:${inline.url}` : inline.url
       if (inline.label) {
         return `<${target}|${inline.label}>`
       }
@@ -134,8 +121,5 @@ function wrapMarks(text: string, marks?: MarkSet): string {
 }
 
 function escapeText(text: string): string {
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
+  return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
 }

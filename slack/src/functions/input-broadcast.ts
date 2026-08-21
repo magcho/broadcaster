@@ -20,75 +20,72 @@ export const ListTagsFunctionDefinition = DefineFunction({
   },
 })
 
-export default SlackFunction(
-  ListTagsFunctionDefinition,
-  async ({ inputs, event, client, env }) => {
-    const apiClient = getApiClient(env.M2M_API_TOKEN)
+export default SlackFunction(ListTagsFunctionDefinition, async ({ inputs, event, client, env }) => {
+  const apiClient = getApiClient(env.M2M_API_TOKEN)
 
-    const labels = await apiClient.getLabels()
-    const resp = await client.views.open({
-      interactivity_pointer: inputs.interactivity.interactivity_pointer,
-      view: {
-        type: "modal",
-        callback_id: "first-page",
-        notify_on_close: true,
-        title: { type: "plain_text", text: "一斉送信" },
-        submit: { type: "plain_text", text: "送信" },
-        close: { type: "plain_text", text: "閉じる" },
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: "送信するタグを選択してください",
-            },
-            accessory: {
-              action_id: "select_label",
-              type: "multi_static_select",
-              placeholder: {
-                type: "plain_text",
-                text: "タグを選択してください",
-              },
-              options:
-                labels?.map((label) => ({
-                  value: label.id,
-                  text: {
-                    type: "plain_text",
-                    text: label.label,
-                  },
-                })) ?? [],
-            },
+  const labels = await apiClient.getLabels()
+  const resp = await client.views.open({
+    interactivity_pointer: inputs.interactivity.interactivity_pointer,
+    view: {
+      type: "modal",
+      callback_id: "first-page",
+      notify_on_close: true,
+      title: { type: "plain_text", text: "一斉送信" },
+      submit: { type: "plain_text", text: "送信" },
+      close: { type: "plain_text", text: "閉じる" },
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: "送信するタグを選択してください",
           },
-          {
-            type: "input",
-            element: {
-              type: "rich_text_input",
-              action_id: "rich_text_input-action",
-            },
-            label: {
+          accessory: {
+            action_id: "select_label",
+            type: "multi_static_select",
+            placeholder: {
               type: "plain_text",
-              text: "メッセージ",
-              emoji: true,
+              text: "タグを選択してください",
             },
-            optional: false,
+            options:
+              labels?.map((label) => ({
+                value: label.id,
+                text: {
+                  type: "plain_text",
+                  text: label.label,
+                },
+              })) ?? [],
           },
-        ],
-      },
+        },
+        {
+          type: "input",
+          element: {
+            type: "rich_text_input",
+            action_id: "rich_text_input-action",
+          },
+          label: {
+            type: "plain_text",
+            text: "メッセージ",
+            emoji: true,
+          },
+          optional: false,
+        },
+      ],
+    },
+  })
+
+  if (!resp.ok) {
+    const res = await client.functions.completeError({
+      function_execution_id: event.function_execution_id,
+      error: `could not post message: ${JSON.stringify(resp)}`,
     })
-
-    if (!resp.ok) {
-      const res = await client.functions.completeError({
-        function_execution_id: event.function_execution_id,
-        error: `could not post message: ${JSON.stringify(resp)}`,
-      })
-      return {
-        ...res,
-        error: res.error ?? "Error",
-      }
-    }
-
     return {
-      completed: false,
+      ...res,
+      error: res.error ?? "Error",
     }
-  },
-)
+  }
+
+  return {
+    completed: false,
+  }
+})

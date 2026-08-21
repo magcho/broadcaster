@@ -1,10 +1,6 @@
 export { createDocument } from "./document/create-document.js"
 export { normalizeDocument } from "./document/normalize-document.js"
-export type {
-  EditorPoint,
-  EditorSelection,
-  EditorState,
-} from "./editor-core.js"
+export type { EditorPoint, EditorSelection, EditorState } from "./editor-core.js"
 export {
   applyCommand,
   createCollapsedSelection,

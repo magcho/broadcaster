@@ -1,8 +1,8 @@
 {
   "name": "slack-parser",
   "version": "1.0.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "exports": {
     ".": {
       "import": "./src/index.ts"
@@ -29,8 +29,8 @@
     "typescript": "catalog:",
     "vite": "catalog:"
   },
-  "packageManager": "pnpm@10.33.0",
   "volta": {
     "extends": "../../package.json"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }

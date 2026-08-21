@@ -30,9 +30,7 @@ type InlineState = {
   text: string
   pos: number
   diagnostics: Diagnostic[]
-  options: Required<
-    Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">
-  >
+  options: Required<Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">>
   baseOffset: number
 }
 
@@ -49,10 +47,7 @@ type ListMarker = {
   offset?: number
 }
 
-export function parseMrkdwn(
-  text: string,
-  options: ParseMrkdwnOptions = {},
-): ParseResult {
+export function parseMrkdwn(text: string, options: ParseMrkdwnOptions = {}): ParseResult {
   const normalizedText = text.replaceAll("\r\n", "\n").replaceAll("\r", "\n")
   const diagnostics: Diagnostic[] = []
   const resolvedOptions = {
@@ -72,9 +67,7 @@ export function parseMrkdwn(
 
 function parseBlocks(
   text: string,
-  options: Required<
-    Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">
-  >,
+  options: Required<Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">>,
   diagnostics: Diagnostic[],
 ): SlackBlock[] {
   const lines = text.split("\n")
@@ -113,9 +106,7 @@ function parseBlocks(
       const start = lineOffsets[index] ?? 0
       while (index < lines.length && (lines[index] ?? "").startsWith(">")) {
         const current = lines[index] ?? ""
-        quoteLines.push(
-          current.startsWith("> ") ? current.slice(2) : current.slice(1),
-        )
+        quoteLines.push(current.startsWith("> ") ? current.slice(2) : current.slice(1))
         index += 1
       }
       const combined = quoteLines.join("\n")
@@ -135,13 +126,7 @@ function parseBlocks(
 
     const listMarker = parseListMarker(line)
     if (listMarker) {
-      const { block, nextIndex } = parseListBlock(
-        lines,
-        lineOffsets,
-        index,
-        options,
-        diagnostics,
-      )
+      const { block, nextIndex } = parseListBlock(lines, lineOffsets, index, options, diagnostics)
       blocks.push(block)
       index = nextIndex
       continue
@@ -190,9 +175,7 @@ function parseListBlock(
   lines: string[],
   lineOffsets: number[],
   startIndex: number,
-  options: Required<
-    Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">
-  >,
+  options: Required<Pick<ParseMrkdwnOptions, "source" | "mode" | "surface" | "autolink">>,
   diagnostics: Diagnostic[],
 ): { block: SlackBlock; nextIndex: number } {
   const firstMarker = parseListMarker(lines[startIndex] ?? "")
@@ -205,11 +188,7 @@ function parseListBlock(
 
   while (index < lines.length) {
     const marker = parseListMarker(lines[index] ?? "")
-    if (
-      !marker ||
-      marker.style !== firstMarker.style ||
-      marker.indent !== firstMarker.indent
-    ) {
+    if (!marker || marker.style !== firstMarker.style || marker.indent !== firstMarker.indent) {
       break
     }
 
@@ -219,11 +198,7 @@ function parseListBlock(
 
     while (index < lines.length) {
       const current = lines[index] ?? ""
-      if (
-        current.trim() === "" ||
-        current.startsWith(">") ||
-        current.startsWith("```")
-      ) {
+      if (current.trim() === "" || current.startsWith(">") || current.startsWith("```")) {
         break
       }
 
@@ -258,9 +233,7 @@ function parseListBlock(
       kind: "list",
       style: firstMarker.style,
       indent: firstMarker.indent,
-      ...(firstMarker.offset !== undefined
-        ? { offset: firstMarker.offset }
-        : {}),
+      ...(firstMarker.offset !== undefined ? { offset: firstMarker.offset } : {}),
       items,
     },
     nextIndex: index,
@@ -303,10 +276,7 @@ function parseListContinuation(line: string, indent: number): string | null {
   return line.slice(prefix.length)
 }
 
-function parseInlineSequence(
-  state: InlineState,
-  stopMarker?: Marker,
-): InlineParseResult {
+function parseInlineSequence(state: InlineState, stopMarker?: Marker): InlineParseResult {
   const inlines: SlackInline[] = []
   let buffer = ""
   const _startPos = state.pos
@@ -346,8 +316,7 @@ function parseInlineSequence(
     }
 
     if (state.options.mode !== "strict" && current === "@") {
-      const bareEntity =
-        parseBareBroadcastMention(state) ?? parseBareUserMention(state)
+      const bareEntity = parseBareBroadcastMention(state) ?? parseBareUserMention(state)
       if (bareEntity) {
         flush()
         inlines.push(bareEntity)
@@ -584,11 +553,7 @@ function parseAngleEntity(state: InlineState): SlackInline | null {
   }
 
   if (body.startsWith("!date^")) {
-    const date = parseDateEntity(
-      body,
-      state.diagnostics,
-      state.baseOffset + start,
-    )
+    const date = parseDateEntity(body, state.diagnostics, state.baseOffset + start)
     if (date) {
       return date
     }
@@ -753,10 +718,7 @@ function looksLikeUrl(value: string): boolean {
   return candidate.startsWith("http://") || candidate.startsWith("https://")
 }
 
-function splitOnce(
-  text: string,
-  separator: string,
-): [string, string | undefined] {
+function splitOnce(text: string, separator: string): [string, string | undefined] {
   const index = text.indexOf(separator)
   if (index === -1) {
     return [text, undefined]
@@ -764,10 +726,7 @@ function splitOnce(
   return [text.slice(0, index), text.slice(index + separator.length)]
 }
 
-function decodeHtmlEntity(
-  text: string,
-  index: number,
-): { value: string; length: number } | null {
+function decodeHtmlEntity(text: string, index: number): { value: string; length: number } | null {
   if (text.startsWith("&amp;", index)) {
     return { value: "&", length: 5 }
   }
@@ -780,11 +739,7 @@ function decodeHtmlEntity(
   return null
 }
 
-function spanFromState(
-  state: InlineState,
-  start: number,
-  end: number,
-): SourceSpan {
+function spanFromState(state: InlineState, start: number, end: number): SourceSpan {
   return {
     start: state.baseOffset + start,
     end: state.baseOffset + end,

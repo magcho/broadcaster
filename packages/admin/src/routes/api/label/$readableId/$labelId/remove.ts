@@ -19,10 +19,7 @@ export const Route = createFileRoute("/api/label/$readableId/$labelId/remove")({
             return Response.json({ message: "Success" }, { status: 200 })
           }
 
-          return Response.json(
-            { message: "Sponsor or label not found" },
-            { status: 404 },
-          )
+          return Response.json({ message: "Sponsor or label not found" }, { status: 404 })
         } catch (error) {
           return toErrorResponse(error)
         }

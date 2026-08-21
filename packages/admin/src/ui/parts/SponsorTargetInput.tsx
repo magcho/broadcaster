@@ -45,8 +45,7 @@ export const SponsorTargetInput = ({
 
   const selectedSponsorCount =
     targetType === "Label"
-      ? new Set(labelIds.flatMap((labelId) => labelSponsorMap[labelId] ?? []))
-          .size
+      ? new Set(labelIds.flatMap((labelId) => labelSponsorMap[labelId] ?? [])).size
       : sponsorIds.length
 
   return (
@@ -61,9 +60,7 @@ export const SponsorTargetInput = ({
             }
           }}
           label="ラベルで指定する"
-          trailing={
-            targetType === "Label" ? `${selectedSponsorCount}社` : undefined
-          }
+          trailing={targetType === "Label" ? `${selectedSponsorCount}社` : undefined}
         >
           <div className="flex flex-wrap gap-4">
             {labels.map((label) => {
@@ -97,9 +94,7 @@ export const SponsorTargetInput = ({
             }
           }}
           label="個別に指定する"
-          trailing={
-            targetType === "Sponsor" ? `${selectedSponsorCount}社` : undefined
-          }
+          trailing={targetType === "Sponsor" ? `${selectedSponsorCount}社` : undefined}
         >
           <div className="flex flex-wrap gap-4">
             {sponsors.map((sponsor) => (
@@ -110,9 +105,7 @@ export const SponsorTargetInput = ({
                   if (e.target.checked) {
                     onChangeSponsorIds([...sponsorIds, sponsor.id])
                   } else {
-                    onChangeSponsorIds(
-                      sponsorIds.filter((id) => id !== sponsor.id),
-                    )
+                    onChangeSponsorIds(sponsorIds.filter((id) => id !== sponsor.id))
                   }
                 }}
               >

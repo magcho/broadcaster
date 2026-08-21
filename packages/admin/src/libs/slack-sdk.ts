@@ -45,13 +45,7 @@ export class SlackSdk {
     }
   }
 
-  async getMessage({
-    channel,
-    timestamp,
-  }: {
-    channel: string
-    timestamp: string
-  }) {
+  async getMessage({ channel, timestamp }: { channel: string; timestamp: string }) {
     const res = await this.#client.conversations.history({
       channel,
       latest: timestamp,
@@ -78,9 +72,7 @@ export class SlackSdk {
             : {
                 id: channel.id,
                 name: channel.name,
-                kind: channel.is_private
-                  ? ("private" as const)
-                  : ("public" as const),
+                kind: channel.is_private ? ("private" as const) : ("public" as const),
                 isExtShared: channel.is_ext_shared || false,
               },
         ) ?? []),

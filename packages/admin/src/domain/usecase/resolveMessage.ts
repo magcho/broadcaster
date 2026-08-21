@@ -8,10 +8,7 @@ const variablesSchema = z.object({
 
 type Variable = z.infer<typeof variablesSchema>
 
-export const resolveMessageTemplate = (
-  messageTemplate: string,
-  variables: Variable,
-) => {
+export const resolveMessageTemplate = (messageTemplate: string, variables: Variable) => {
   const templateVars = variablesSchema.parse(variables)
   const resolved = messageTemplate
     .replaceAll(/{{\s+mentions\s+}}/, templateVars.mentions.join(" "))

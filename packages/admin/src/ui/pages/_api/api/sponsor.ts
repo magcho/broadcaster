@@ -6,8 +6,7 @@ import { m2mAuthClient } from "../../../../libs/m2m-auth.js"
 const inputSchema = z.object({
   name: z.string(),
   readableId: z.string().refine((val) => /^[a-zA-Z0-9-_]+$/.test(val), {
-    message:
-      "readableId must contain only alphanumeric characters, hyphens, or underscores",
+    message: "readableId must contain only alphanumeric characters, hyphens, or underscores",
   }),
   slackUserIds: z.array(z.string()),
   slackChannelId: z.string(),

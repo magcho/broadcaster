@@ -1583,7 +1583,7 @@ export const EMOJI_ALIAS: Record<string, string> = {
   information_source: "ℹ️",
   id: "🆔",
   m: "Ⓜ️",
-  "new": "🆕",
+  new: "🆕",
   ng: "🆖",
   o2: "🅾️",
   ok: "🆗",

@@ -30,10 +30,7 @@ export const verifiedPlugin = (option: Option) =>
                 before: async (user) => {
                   return {
                     data: {
-                      verified: checkEmailDomain(
-                        user.email,
-                        option.whitelistDomains,
-                      ),
+                      verified: checkEmailDomain(user.email, option.whitelistDomains),
                       ...user,
                     } as User,
                   }
@@ -46,10 +43,9 @@ export const verifiedPlugin = (option: Option) =>
                   if (context == null) {
                     return
                   }
-                  const user =
-                    (await context.context.internalAdapter.findUserById(
-                      session.userId,
-                    )) as UserWithRole | null
+                  const user = (await context.context.internalAdapter.findUserById(
+                    session.userId,
+                  )) as UserWithRole | null
                   if (user == null || user.verified !== true) {
                     throw new APIError("FORBIDDEN")
                   }

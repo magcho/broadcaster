@@ -30,9 +30,7 @@ type UseQueryReturn<Data> = {
     }
 )
 
-export const useQuery = <Data>(
-  fetcher: Fetcher<Data>,
-): UseQueryReturn<Data> => {
+export const useQuery = <Data>(fetcher: Fetcher<Data>): UseQueryReturn<Data> => {
   const [state, setState] = useState<PromiseState<Data>>({
     status: "loading",
   })

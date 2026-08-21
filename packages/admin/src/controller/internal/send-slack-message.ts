@@ -12,14 +12,10 @@ export const sendSlackMessage = async (message: MessageTemplateWithDetail) => {
   const sponsors =
     message.target.type === "Sponsor"
       ? message.target.sponsors
-      : await getSponsorsByLabels(
-          message.target.labels.map((label) => label.id),
-        )
+      : await getSponsorsByLabels(message.target.labels.map((label) => label.id))
 
   if (sponsors.length === 0) {
-    console.info(
-      "No sponsors found for the message target. Skipping message sending.",
-    )
+    console.info("No sponsors found for the message target. Skipping message sending.")
     // 送信済み扱いにする
     await updateMessageAsAlreadySent(message.id)
     return

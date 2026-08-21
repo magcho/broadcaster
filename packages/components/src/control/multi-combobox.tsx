@@ -77,11 +77,7 @@ export const MultiCombobox = <Id extends string, Item extends SelectItem<Id>>({
       </div>
 
       <BaseCombobox.Portal>
-        <BaseCombobox.Positioner
-          className="z-50 outline-none"
-          sideOffset={4}
-          anchor={containerRef}
-        >
+        <BaseCombobox.Positioner className="z-50 outline-none" sideOffset={4} anchor={containerRef}>
           <BaseCombobox.Popup className="max-h-[min(var(--available-height),23rem)] w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) scroll-pt-2 scroll-pb-2 overflow-y-auto overscroll-contain rounded-md bg-[canvas] py-2 text-gray-900 shadow-gray-200 shadow-lg outline-1 outline-gray-200 transition-[transform,scale,opacity] data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0 dark:shadow-none dark:outline-gray-300 dark:-outline-offset-1">
             <BaseCombobox.Empty className="px-4 py-2 empty:m-0 empty:p-0">
               見つかりません。

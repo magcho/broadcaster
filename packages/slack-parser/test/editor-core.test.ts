@@ -10,14 +10,8 @@ import {
   serializeForChatPostMessage,
 } from "../src/index.js"
 
-function run(
-  state: EditorState,
-  ...commands: Parameters<typeof applyCommand>[1][]
-) {
-  return commands.reduce(
-    (current, command) => applyCommand(current, command).state,
-    state,
-  )
+function run(state: EditorState, ...commands: Parameters<typeof applyCommand>[1][]) {
+  return commands.reduce((current, command) => applyCommand(current, command).state, state)
 }
 
 test("integration: author text, toggle bold, insert mention, and serialize", () => {
@@ -149,10 +143,7 @@ test("integration: paste_text inserts line breaks and end selection remains vali
       ],
     },
   ])
-  assert.deepEqual(
-    state.selection,
-    createCollapsedSelection(getDocumentEndPoint(state.document)),
-  )
+  assert.deepEqual(state.selection, createCollapsedSelection(getDocumentEndPoint(state.document)))
 })
 
 test("integration: delete_backward at block start merges adjacent paragraphs", () => {
@@ -278,9 +269,7 @@ test("integration: replace_range can collapse content across blocks into one con
 test("integration: replacing a middle range keeps the caret at the replacement point after normalization", () => {
   let state = createEditorState({
     document: createDocument({
-      blocks: [
-        { kind: "paragraph", inlines: [{ kind: "text", text: "abcdef" }] },
-      ],
+      blocks: [{ kind: "paragraph", inlines: [{ kind: "text", text: "abcdef" }] }],
     }),
   })
 
@@ -292,11 +281,7 @@ test("integration: replacing a middle range keeps the caret at the replacement p
     },
   }).state
 
-  state = run(
-    state,
-    { type: "insert_text", text: "X" },
-    { type: "insert_text", text: "Y" },
-  )
+  state = run(state, { type: "insert_text", text: "X" }, { type: "insert_text", text: "Y" })
 
   assert.deepEqual(state.document.blocks, [
     {

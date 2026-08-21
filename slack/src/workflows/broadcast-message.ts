@@ -14,12 +14,9 @@ export const BroadcastMessageWorkflow = DefineWorkflow({
   },
 })
 
-const BroadcastMessageForm = BroadcastMessageWorkflow.addStep(
-  ListTagsFunctionDefinition,
-  {
-    channel_id: "C08FTJQLX8F",
-    interactivity: BroadcastMessageWorkflow.inputs.interactivity,
-  },
-)
+const BroadcastMessageForm = BroadcastMessageWorkflow.addStep(ListTagsFunctionDefinition, {
+  channel_id: "C08FTJQLX8F",
+  interactivity: BroadcastMessageWorkflow.inputs.interactivity,
+})
 
 export default BroadcastMessageForm

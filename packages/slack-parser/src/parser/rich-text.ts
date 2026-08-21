@@ -25,9 +25,7 @@ export function parseRichText(
   _options: ParseRichTextOptions = {},
 ): ParseResult {
   const diagnostics: Diagnostic[] = []
-  const blocks = block.elements.flatMap((element) =>
-    parseBlockElement(element, diagnostics),
-  )
+  const blocks = block.elements.flatMap((element) => parseBlockElement(element, diagnostics))
   const normalized = normalizeDocument(createDocument({ blocks }))
   return {
     document: normalized.document,
@@ -35,10 +33,7 @@ export function parseRichText(
   }
 }
 
-function parseBlockElement(
-  element: SlackRichTextElement,
-  diagnostics: Diagnostic[],
-): SlackBlock[] {
+function parseBlockElement(element: SlackRichTextElement, diagnostics: Diagnostic[]): SlackBlock[] {
   switch (element.type) {
     case "rich_text_section": {
       const section = element as SlackRichTextSection
@@ -65,9 +60,7 @@ function parseBlockElement(
       return [
         {
           kind: "preformatted",
-          text: renderPlainText(
-            parseInlineElements(preformatted.elements, diagnostics),
-          ),
+          text: renderPlainText(parseInlineElements(preformatted.elements, diagnostics)),
           ...(preformatted.language ? { language: preformatted.language } : {}),
         },
       ]
@@ -151,10 +144,7 @@ function parseInlineElements(
       }
 
       case "broadcast": {
-        const broadcast = element as Extract<
-          SlackRichTextInline,
-          { type: "broadcast" }
-        >
+        const broadcast = element as Extract<SlackRichTextInline, { type: "broadcast" }>
         inlines.push({
           kind: "broadcast",
           range: broadcast.range,
@@ -163,10 +153,7 @@ function parseInlineElements(
       }
 
       case "channel": {
-        const channel = element as Extract<
-          SlackRichTextInline,
-          { type: "channel" }
-        >
+        const channel = element as Extract<SlackRichTextInline, { type: "channel" }>
         inlines.push({
           kind: "channel",
           channelId: channel.channel_id,
@@ -186,10 +173,7 @@ function parseInlineElements(
       }
 
       case "usergroup": {
-        const usergroup = element as Extract<
-          SlackRichTextInline,
-          { type: "usergroup" }
-        >
+        const usergroup = element as Extract<SlackRichTextInline, { type: "usergroup" }>
         inlines.push({
           kind: "usergroup",
           usergroupId: usergroup.usergroup_id,
@@ -259,12 +243,7 @@ function styleToMarks(
     marks.code = true
   }
 
-  if (
-    style.underline ||
-    style.highlight ||
-    style.client_highlight ||
-    style.unlink
-  ) {
+  if (style.underline || style.highlight || style.client_highlight || style.unlink) {
     diagnostics.push({
       severity: "warning",
       code: "unsupported_rich_text_style",

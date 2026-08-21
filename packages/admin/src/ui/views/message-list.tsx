@@ -30,9 +30,7 @@ export const MessageListView = ({ messages }: MessageListViewProps) => {
             </Table.Td>
             <Table.Td>
               <Datetime fallback="即時" format={FORMATS.datetime}>
-                {message.scheduledAt === "Immediate"
-                  ? null
-                  : message.scheduledAt}
+                {message.scheduledAt === "Immediate" ? null : message.scheduledAt}
               </Datetime>
             </Table.Td>
             <Table.Td>

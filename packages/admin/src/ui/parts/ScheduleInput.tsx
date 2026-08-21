@@ -67,14 +67,6 @@ export const ScheduleInput = ({ scheduledAt, onChangeScheduledAt }: Props) => {
 
 const getTomorrowMorning = () => {
   const now = new Date()
-  const tomorrow = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
-    8,
-    0,
-    0,
-    0,
-  )
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 0, 0, 0)
   return tomorrow
 }

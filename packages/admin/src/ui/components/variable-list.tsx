@@ -29,10 +29,7 @@ const CopyButton = ({ text }: { text: string }) => {
       {hasCopied ? (
         <TbCheck size={16} className="inline text-green-700" />
       ) : (
-        <TbClipboard
-          size={16}
-          className="inline transition-transform group-hover:scale-110"
-        />
+        <TbClipboard size={16} className="inline transition-transform group-hover:scale-110" />
       )}
     </button>
   )

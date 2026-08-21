@@ -4,10 +4,7 @@ import { FormControl } from "broadcaster-components/form/form-control.js"
 import { SubmitButton } from "broadcaster-components/form/form-submit-button.js"
 import { useForm } from "broadcaster-components/libs/use-form.js"
 import { useTransition } from "react"
-import {
-  assignLabelsController,
-  LabelAssignSchema,
-} from "../../controller/label-assign.js"
+import { assignLabelsController, LabelAssignSchema } from "../../controller/label-assign.js"
 import type { Label, Sponsor } from "../../domain/model/Sponsor.js"
 import { LabelDisplay } from "../components/label-display.js"
 import { SponsorInput } from "../parts/SponsorInput.js"
@@ -20,8 +17,8 @@ type Props = {
 
 export const LabelAssignForm = ({ labels, sponsors, onComplete }: Props) => {
   const { values, setValue, getValidValues } = useForm(LabelAssignSchema, {
-    sponsorIds: [] as string[],
-    labelIds: [] as string[],
+    sponsorIds: [],
+    labelIds: [],
   })
 
   const [_, startTransition] = useTransition()
@@ -43,18 +40,11 @@ export const LabelAssignForm = ({ labels, sponsors, onComplete }: Props) => {
     <Form action={handleSubmit}>
       <FormControl label="追加するラベル" required>
         <MultiCombobox
-          items={labels.map(({ label }) => ({
-            id: label,
-            label: label,
-          }))}
+          items={labels}
           value={values.labelIds}
           onValueChange={(value) => setValue("labelIds", value)}
           renderItem={(item) => (
-            <LabelDisplay
-              key={item.id}
-              style="dot"
-              label={labelMap.get(item.label)!}
-            />
+            <LabelDisplay key={item.id} style="dot" label={labelMap.get(item.label)!} />
           )}
           placeholder="ラベル名"
         />

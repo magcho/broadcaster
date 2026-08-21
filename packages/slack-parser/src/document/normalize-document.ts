@@ -45,15 +45,10 @@ export function normalizeDocument(
   }
 }
 
-function normalizeBlock(
-  block: SlackBlock,
-  diagnostics: Diagnostic[],
-): SlackBlock | null {
+function normalizeBlock(block: SlackBlock, diagnostics: Diagnostic[]): SlackBlock | null {
   switch (block.kind) {
     case "paragraph": {
-      const inlines = trimLineBreaks(
-        normalizeInlines(block.inlines, diagnostics),
-      )
+      const inlines = trimLineBreaks(normalizeInlines(block.inlines, diagnostics))
       if (inlines.length === 0) {
         return null
       }
@@ -63,9 +58,7 @@ function normalizeBlock(
       }
     }
     case "quote": {
-      const inlines = trimLineBreaks(
-        normalizeInlines(block.inlines, diagnostics),
-      )
+      const inlines = trimLineBreaks(normalizeInlines(block.inlines, diagnostics))
       if (inlines.length === 0) {
         return null
       }
@@ -102,19 +95,13 @@ function normalizeBlock(
   }
 }
 
-function normalizeListItem(
-  item: ListItem,
-  diagnostics: Diagnostic[],
-): ListItem {
+function normalizeListItem(item: ListItem, diagnostics: Diagnostic[]): ListItem {
   return {
     inlines: trimLineBreaks(normalizeInlines(item.inlines, diagnostics)),
   }
 }
 
-function normalizeInlines(
-  inlines: SlackInline[],
-  diagnostics: Diagnostic[],
-): SlackInline[] {
+function normalizeInlines(inlines: SlackInline[], diagnostics: Diagnostic[]): SlackInline[] {
   const normalized: SlackInline[] = []
 
   for (const inline of inlines) {

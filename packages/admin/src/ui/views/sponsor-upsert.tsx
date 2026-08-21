@@ -33,20 +33,11 @@ const defaultValue = {
   labels: [] as string[],
 } satisfies z.infer<typeof SponsorUpsertFormSchema>
 
-export const SponsorUpsertForm = ({
-  sponsor,
-  labels,
-  initValue,
-  onComplete,
-}: Props) => {
-  const {
-    values,
-    setValue,
-    registerCustom,
-    getValidValues,
-    registerInput,
-    errors,
-  } = useForm(SponsorUpsertFormSchema, initValue ?? defaultValue)
+export const SponsorUpsertForm = ({ sponsor, labels, initValue, onComplete }: Props) => {
+  const { values, setValue, registerCustom, getValidValues, registerInput, errors } = useForm(
+    SponsorUpsertFormSchema,
+    initValue ?? defaultValue,
+  )
 
   const { data: slackChannels } = useQuery(() => listSlackChannelsController())
 
@@ -76,10 +67,7 @@ export const SponsorUpsertForm = ({
     <Form action={handleSubmit}>
       {/* タイトル */}
       <FormControl label="スポンサー名" required error={errors.name}>
-        <Input
-          {...registerInput("text", "name")}
-          placeholder="テスト株式会社"
-        />
+        <Input {...registerInput("text", "name")} placeholder="テスト株式会社" />
       </FormControl>
 
       {/* スポンサーID（readbaleId） */}
@@ -89,10 +77,7 @@ export const SponsorUpsertForm = ({
         support="英数字、ハイフン、アンダースコアが使用可能です"
         error={errors.readableId}
       >
-        <Input
-          {...registerInput("text", "readableId")}
-          placeholder="test-corp"
-        />
+        <Input {...registerInput("text", "readableId")} placeholder="test-corp" />
       </FormControl>
 
       {/* SlackチャンネルID */}
@@ -108,17 +93,12 @@ export const SponsorUpsertForm = ({
           value={values.slackChannelId}
           onValueChange={(value) => setValue("slackChannelId", value)}
           placeholder="チャンネル名を入力して検索"
-          renderItem={({ channel }) => (
-            <SlackChannelDisplay channel={channel} />
-          )}
+          renderItem={({ channel }) => <SlackChannelDisplay channel={channel} />}
         />
       </FormControl>
 
       {/* SlackユーザーID */}
-      <FormControl
-        label="SlackユーザーID（複数可、改行区切り）"
-        error={errors.slackUserIds}
-      >
+      <FormControl label="SlackユーザーID（複数可、改行区切り）" error={errors.slackUserIds}>
         <MultiInput
           {...registerCustom("slackUserIds", {
             encode: (value) => (value as string[]).join("\n"),
@@ -142,20 +122,14 @@ export const SponsorUpsertForm = ({
           value={values.labels}
           onValueChange={(value) => setValue("labels", value)}
           renderItem={(item) => (
-            <LabelDisplay
-              key={item.id}
-              style="dot"
-              label={labelMap.get(item.label)!}
-            />
+            <LabelDisplay key={item.id} style="dot" label={labelMap.get(item.label)!} />
           )}
           placeholder="ラベル名"
         />
       </FormControl>
 
       <div>
-        <SubmitButton type="submit">
-          {sponsor == null ? "作成" : "更新"}
-        </SubmitButton>
+        <SubmitButton type="submit">{sponsor == null ? "作成" : "更新"}</SubmitButton>
       </div>
     </Form>
   )

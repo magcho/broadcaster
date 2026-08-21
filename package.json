@@ -1,8 +1,8 @@
 {
   "name": "broadcaster",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "type-check": "pnpm -r type-check",
     "build:admin": "VERCEL=1 pnpm -F broadcaster-admin build",
@@ -21,8 +21,8 @@
     "oxlint-tsgolint": "catalog:",
     "vercel": "catalog:"
   },
-  "packageManager": "pnpm@10.33.0",
   "volta": {
     "node": "24.11.0"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }

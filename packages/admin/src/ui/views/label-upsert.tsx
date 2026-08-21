@@ -48,10 +48,7 @@ export const LabelUpsertForm = ({ label, initValue, onComplete }: Props) => {
     <Form action={handleSubmit}>
       {/* タイトル */}
       <FormControl label="ラベル名" required error={errors.label}>
-        <Input
-          {...registerInput("text", "label")}
-          placeholder="プラチナスポンサー"
-        />
+        <Input {...registerInput("text", "label")} placeholder="プラチナスポンサー" />
       </FormControl>
 
       {/* スポンサーID（readbaleId） */}
@@ -60,9 +57,7 @@ export const LabelUpsertForm = ({ label, initValue, onComplete }: Props) => {
       </FormControl>
 
       <div>
-        <SubmitButton type="submit">
-          {label == null ? "作成" : "更新"}
-        </SubmitButton>
+        <SubmitButton type="submit">{label == null ? "作成" : "更新"}</SubmitButton>
       </div>
     </Form>
   )

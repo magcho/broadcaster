@@ -41,40 +41,22 @@ function AuthedLayout() {
         }}
         className="flex flex-col gap-1 border-r border-r-slate-200 p-1"
       >
-        <Link
-          to="/message/send"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/message/send" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Send Message
         </Link>
-        <Link
-          to="/message"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/message" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Messages
         </Link>
-        <Link
-          to="/sponsors"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/sponsors" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Sponsors
         </Link>
-        <Link
-          to="/labels/assign"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/labels/assign" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Label Assign
         </Link>
-        <Link
-          to="/labels"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/labels" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Labels
         </Link>
-        <Link
-          to="/signout"
-          className="w-full rounded px-3 py-3 hover:bg-slate-100"
-        >
+        <Link to="/signout" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Sign Out
         </Link>
       </nav>

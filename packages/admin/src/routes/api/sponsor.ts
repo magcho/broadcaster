@@ -8,8 +8,7 @@ const inputSchema = z.object({
   labels: z.array(z.string()).nullish(),
   name: z.string(),
   readableId: z.string().refine((value) => /^[a-zA-Z0-9-_]+$/.test(value), {
-    message:
-      "readableId must contain only alphanumeric characters, hyphens, or underscores",
+    message: "readableId must contain only alphanumeric characters, hyphens, or underscores",
   }),
   slackChannelId: z.string(),
   slackUserIds: z.array(z.string()),

@@ -20,10 +20,7 @@ const debounceSearch = (text: string, sponsors: Sponsor[]) => {
 export const SponsorInput = ({ sponsors, value, onChange }: Props) => {
   const [searchText, setSearchText] = useState("")
 
-  const filtered =
-    searchText.trim().length === 0
-      ? sponsors
-      : debounceSearch(searchText, sponsors)
+  const filtered = searchText.trim().length === 0 ? sponsors : debounceSearch(searchText, sponsors)
 
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200">
@@ -65,9 +62,7 @@ export const SponsorInput = ({ sponsors, value, onChange }: Props) => {
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="mx-auto text-slate-600 text-sm">
-            条件に一致する項目が見つかりません
-          </div>
+          <div className="mx-auto text-slate-600 text-sm">条件に一致する項目が見つかりません</div>
         )}
       </div>
     </div>

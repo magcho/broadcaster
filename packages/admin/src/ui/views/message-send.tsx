@@ -79,10 +79,7 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
             {/* 入力欄 */}
             {/** biome-ignore lint/a11y/noStaticElementInteractions: 補助的な役割のonClickなので許容する */}
             {/** biome-ignore lint/a11y/useKeyWithClickEvents: 補助的な役割のonClickなので許容する */}
-            <div
-              className="min-h-[72px] w-full pb-4"
-              onClick={() => textareaRef.current?.focus()}
-            >
+            <div className="min-h-[72px] w-full pb-4" onClick={() => textareaRef.current?.focus()}>
               <textarea
                 {...registerTextarea("message")}
                 className="field-sizing-content w-full resize-none placeholder:text-slate-400 focus:outline-none"
@@ -96,9 +93,7 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
               <img src="/slack-icon.png" alt="Slack Icon" className="size-8" />
               <div className="flex flex-col gap-1">
                 <div className="font-bold text-[13px]">プレビュー</div>
-                <UnstyledSlackPreview
-                  message={parseMrkdwn(values.message).document}
-                />
+                <UnstyledSlackPreview message={parseMrkdwn(values.message).document} />
               </div>
             </div>
 
@@ -112,9 +107,7 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
                 onClick={() => setShowSyntaxGuide((prev) => !prev)}
                 className="flex items-center gap-1 rounded px-2 py-1 text-slate-600 text-sm hover:underline"
               >
-                <TbChevronRight
-                  className={cn(showSyntaxGuide && "rotate-90", "transition")}
-                />
+                <TbChevronRight className={cn(showSyntaxGuide && "rotate-90", "transition")} />
                 文法を確認
               </button>
               <button

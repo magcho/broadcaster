@@ -1,7 +1,4 @@
-export const parseSlackPermalink = (
-  url: string,
-  slackWorkspaceDomain: string,
-) => {
+export const parseSlackPermalink = (url: string, slackWorkspaceDomain: string) => {
   const slackLinkRegex = new RegExp(
     `^\\s*https://${slackWorkspaceDomain}/archives/(?<channel>.+)/p(?<timestamp>\\d{16})\\s*$`,
   )

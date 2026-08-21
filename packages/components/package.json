@@ -1,11 +1,14 @@
 {
   "name": "broadcaster-components",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "check": "biome check",
     "fix": "biome check --write",
     "type-check": "tsgo -p tsconfig.json"
+  },
+  "dependencies": {
+    "date-fns": "catalog:"
   },
   "devDependencies": {
     "@standard-schema/spec": "catalog:",
@@ -22,8 +25,5 @@
   },
   "volta": {
     "extends": "../../package.json"
-  },
-  "dependencies": {
-    "date-fns": "catalog:"
   }
 }

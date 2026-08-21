@@ -1,7 +1,6 @@
 // oxlint-disable-next-line no-unused-vars
 const main = () => {
-  const baseUrl =
-    PropertiesService.getScriptProperties().getProperty("API_BASE_URL")
+  const baseUrl = PropertiesService.getScriptProperties().getProperty("API_BASE_URL")
   const apiKey = PropertiesService.getScriptProperties().getProperty("API_KEY")
 
   try {

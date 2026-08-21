@@ -41,10 +41,7 @@ export const Checkbox = ({ indeterminate, ...props }: Props) => {
   )
 }
 
-export const CheckboxOption = ({
-  children,
-  ...props
-}: Props & { children: React.ReactNode }) => {
+export const CheckboxOption = ({ children, ...props }: Props & { children: React.ReactNode }) => {
   return (
     <label className="group/checkbox grid cursor-pointer select-none grid-cols-[auto_1fr] items-center gap-2">
       <Checkbox {...props} />

@@ -1,10 +1,5 @@
 import type { ReactNode } from "react"
-import type {
-  MarkSet,
-  SlackBlock,
-  SlackDocument,
-  SlackInline,
-} from "slack-parser"
+import type { MarkSet, SlackBlock, SlackDocument, SlackInline } from "slack-parser"
 import { EMOJI_ALIAS } from "./libs/emoji-alias.js"
 import { cn } from "./utils/cn.js"
 
@@ -22,9 +17,7 @@ export const SlackPreview = ({ message, className }: Props) => {
       )}
     >
       <div className="border-slate-200 border-b bg-white/80 px-4 py-3 backdrop-blur-sm">
-        <div className="font-semibold text-slate-700 text-sm tracking-wide">
-          Slack Preview
-        </div>
+        <div className="font-semibold text-slate-700 text-sm tracking-wide">Slack Preview</div>
         <div className="text-slate-500 text-xs">
           {message.blocks.length} block{message.blocks.length === 1 ? "" : "s"}
         </div>
@@ -83,11 +76,7 @@ function PreviewQuote({ inlines }: { inlines: SlackInline[] }) {
   )
 }
 
-function PreviewCode({
-  block,
-}: {
-  block: Extract<SlackBlock, { kind: "preformatted" }>
-}) {
+function PreviewCode({ block }: { block: Extract<SlackBlock, { kind: "preformatted" }> }) {
   return (
     <div className="my-2 w-full rounded border border-gray-300 bg-[#F6F6F6] p-1 font-mono text-[12px] text-black">
       <code>{block.text}</code>
@@ -95,11 +84,7 @@ function PreviewCode({
   )
 }
 
-function PreviewList({
-  block,
-}: {
-  block: Extract<SlackBlock, { kind: "list" }>
-}) {
+function PreviewList({ block }: { block: Extract<SlackBlock, { kind: "list" }> }) {
   const style = { paddingLeft: `${Math.max(1, block.indent + 1) * 1.25}rem` }
   if (block.style === "ordered") {
     return (
@@ -111,9 +96,7 @@ function PreviewList({
       >
         {block.items.map((item, index) => (
           <li key={index} data-slack-type="list-item" className="m-0">
-            <div className="whitespace-pre-wrap">
-              {renderInlines(item.inlines)}
-            </div>
+            <div className="whitespace-pre-wrap">{renderInlines(item.inlines)}</div>
           </li>
         ))}
       </ol>
@@ -128,9 +111,7 @@ function PreviewList({
     >
       {block.items.map((item, index) => (
         <li key={index} data-slack-type="list-item" className="m-0">
-          <div className="whitespace-pre-wrap">
-            {renderInlines(item.inlines)}
-          </div>
+          <div className="whitespace-pre-wrap">{renderInlines(item.inlines)}</div>
         </li>
       ))}
     </ul>
@@ -149,11 +130,7 @@ function Inline({ inline }: { inline: SlackInline }) {
       return (
         <a
           data-slack-type="link"
-          href={
-            inline.isMailto
-              ? `mailto:${inline.url.replace(/^mailto:/, "")}`
-              : inline.url
-          }
+          href={inline.isMailto ? `mailto:${inline.url.replace(/^mailto:/, "")}` : inline.url}
           target="_blank"
           rel="noreferrer"
           className={cn(
@@ -161,8 +138,7 @@ function Inline({ inline }: { inline: SlackInline }) {
             inline.marks?.bold && "font-semibold",
             inline.marks?.italic && "italic",
             inline.marks?.strike && "line-through",
-            inline.marks?.code &&
-              "rounded bg-slate-800 px-1 font-mono text-slate-100 no-underline",
+            inline.marks?.code && "rounded bg-slate-800 px-1 font-mono text-slate-100 no-underline",
           )}
         >
           {inline.label ?? inline.url}
@@ -171,17 +147,9 @@ function Inline({ inline }: { inline: SlackInline }) {
     case "user":
       return <MentionChip type="user">@{inline.userId}</MentionChip>
     case "usergroup":
-      return (
-        <MentionChip type="usergroup">
-          @{inline.label ?? inline.usergroupId}
-        </MentionChip>
-      )
+      return <MentionChip type="usergroup">@{inline.label ?? inline.usergroupId}</MentionChip>
     case "channel":
-      return (
-        <MentionChip type="channel">
-          #{inline.label ?? inline.channelId}
-        </MentionChip>
-      )
+      return <MentionChip type="channel">#{inline.label ?? inline.channelId}</MentionChip>
     case "broadcast":
       return <MentionChip type="broadcast">@{inline.range}</MentionChip>
     case "date":
@@ -200,10 +168,7 @@ function Inline({ inline }: { inline: SlackInline }) {
           {emoji}
         </span>
       ) : (
-        <span
-          data-slack-type="emoji"
-          className="font-medium text-slate-500 tracking-tighter"
-        >
+        <span data-slack-type="emoji" className="font-medium text-slate-500 tracking-tighter">
           :{inline.name}:
         </span>
       )

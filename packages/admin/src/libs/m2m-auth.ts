@@ -8,9 +8,7 @@ if (M2M_API_TOKENS == null) {
   throw new Error("M2M_API_TOKENS is not set in environment variables.")
 }
 
-const result = z
-  .record(z.string(), z.string())
-  .safeParse(safeParseJson(M2M_API_TOKENS))
+const result = z.record(z.string(), z.string()).safeParse(safeParseJson(M2M_API_TOKENS))
 
 if (!result.success) {
   console.error(result)
@@ -24,9 +22,7 @@ const createM2mAuthClient = (apiKeys: Record<string, string>) => {
       if (token == null) {
         throw new AuthError("Unauthorized", 401)
       }
-      const apiKeyEntry = Object.entries(apiKeys).find(
-        ([, value]) => value === token,
-      )
+      const apiKeyEntry = Object.entries(apiKeys).find(([, value]) => value === token)
       if (apiKeyEntry == null) {
         throw new AuthError("Unauthorized", 401)
       }

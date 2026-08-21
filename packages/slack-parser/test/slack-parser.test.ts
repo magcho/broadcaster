@@ -97,9 +97,7 @@ test("parseMrkdwn does not treat email-like text as a broadcast mention", () => 
   assert.deepEqual(result.document.blocks, [
     {
       kind: "paragraph",
-      inlines: [
-        { kind: "text", text: "contact me at dev@channel.example.com" },
-      ],
+      inlines: [{ kind: "text", text: "contact me at dev@channel.example.com" }],
     },
   ])
   assert.deepEqual(result.diagnostics, [])

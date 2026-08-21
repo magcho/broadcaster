@@ -55,12 +55,7 @@ const form = RegisterSponsorWorkflow.addStep(Schema.slack.functions.OpenForm, {
         default: RegisterSponsorWorkflow.inputs.channel,
       },
     ],
-    required: [
-      "sponsor_name",
-      "sponsor_readable_id",
-      "sponsor_slack_user_ids",
-      "channel",
-    ],
+    required: ["sponsor_name", "sponsor_readable_id", "sponsor_slack_user_ids", "channel"],
   },
 })
 

@@ -33,12 +33,7 @@ export const RegisterSponsorFunction = DefineFunction({
         description: "改行区切りで複数入力可能です",
       },
     },
-    required: [
-      "channel_id",
-      "sponsor_name",
-      "sponsor_readable_id",
-      "sponsor_slack_user_ids",
-    ],
+    required: ["channel_id", "sponsor_name", "sponsor_readable_id", "sponsor_slack_user_ids"],
   },
   output_parameters: {
     properties: {
@@ -51,26 +46,23 @@ export const RegisterSponsorFunction = DefineFunction({
   },
 })
 
-export default SlackFunction(
-  RegisterSponsorFunction,
-  async ({ inputs, env }) => {
-    const apiClient = getApiClient(env.M2M_API_TOKEN)
+export default SlackFunction(RegisterSponsorFunction, async ({ inputs, env }) => {
+  const apiClient = getApiClient(env.M2M_API_TOKEN)
 
-    const res = await apiClient.createSponsor({
-      name: inputs.sponsor_name,
-      readableId: inputs.sponsor_readable_id,
-      slackUserIds: inputs.sponsor_slack_user_ids,
-      slackChannelId: inputs.channel_id,
-      labels: inputs.labels
-        ?.split("\n")
-        .map((label) => label.trim())
-        .filter((label) => label.length > 0),
-    })
+  const res = await apiClient.createSponsor({
+    name: inputs.sponsor_name,
+    readableId: inputs.sponsor_readable_id,
+    slackUserIds: inputs.sponsor_slack_user_ids,
+    slackChannelId: inputs.channel_id,
+    labels: inputs.labels
+      ?.split("\n")
+      .map((label) => label.trim())
+      .filter((label) => label.length > 0),
+  })
 
-    return {
-      outputs: {
-        broadcaster_url: `https://broadcaster-slack.vercel.app/sponsors/${encodeURIComponent(res.id)}`,
-      },
-    }
-  },
-)
+  return {
+    outputs: {
+      broadcaster_url: `https://broadcaster-slack.vercel.app/sponsors/${encodeURIComponent(res.id)}`,
+    },
+  }
+})

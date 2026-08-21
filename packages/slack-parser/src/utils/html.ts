@@ -30,27 +30,18 @@ function closestLeaf(node: Node): HTMLElement | null {
   return node.parentElement?.closest("[data-editor-path]") ?? null
 }
 
-export function resolveTextOffset(
-  leaf: HTMLElement,
-  node: Node,
-  offset: number,
-): number {
+export function resolveTextOffset(leaf: HTMLElement, node: Node, offset: number): number {
   if (node.nodeType === Node.TEXT_NODE) {
     return offset
   }
   if (node === leaf) {
-    const textLength =
-      leaf.textContent === "\u200b" ? 0 : (leaf.textContent?.length ?? 0)
+    const textLength = leaf.textContent === "\u200b" ? 0 : (leaf.textContent?.length ?? 0)
     return offset <= 0 ? 0 : textLength
   }
   return 0
 }
 
-export function resolveAtomicOffset(
-  leaf: HTMLElement,
-  node: Node,
-  offset: number,
-): 0 | 1 {
+export function resolveAtomicOffset(leaf: HTMLElement, node: Node, offset: number): 0 | 1 {
   if (node === leaf) {
     return offset <= 0 ? 0 : 1
   }
@@ -64,16 +55,10 @@ export function resolveAtomicOffset(
   return 1
 }
 
-export function selectionBelongsToNode(
-  selection: Selection,
-  baseNode: HTMLDivElement,
-): boolean {
+export function selectionBelongsToNode(selection: Selection, baseNode: HTMLDivElement): boolean {
   const anchorNode = selection.anchorNode
   const focusNode = selection.focusNode
   return Boolean(
-    anchorNode &&
-      focusNode &&
-      baseNode.contains(anchorNode) &&
-      baseNode.contains(focusNode),
+    anchorNode && focusNode && baseNode.contains(anchorNode) && baseNode.contains(focusNode),
   )
 }

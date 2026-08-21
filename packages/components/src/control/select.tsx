@@ -74,10 +74,7 @@ export const Select = <Id extends string, Item extends SelectItem<Id>>({
         </BaseSelect.Icon>
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
-        <BaseSelect.Positioner
-          sideOffset={1}
-          className="z-10 select-none outline-none"
-        >
+        <BaseSelect.Positioner sideOffset={1} className="z-10 select-none outline-none">
           <BaseSelect.Popup className="broder w-full min-w-(--anchor-width) origin-(--transform-origin) rounded-lg border border-slate-200 bg-white bg-clip-padding p-1 shadow">
             <BaseSelect.ScrollUpArrow />
             <BaseSelect.List>

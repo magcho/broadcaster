@@ -26,16 +26,13 @@ export const GenerateBroadcasterWeb = DefineFunction({
   },
 })
 
-export default SlackFunction(
-  GenerateBroadcasterWeb,
-  ({ inputs: { message_ctx }, env }) => {
-    const slackDomain = env.SLACK_WORKSPACE_DOMAIN
-    const permalink = `https://${slackDomain}/archives/${message_ctx.channel_id}/p${message_ctx.message_ts.replace(".", "")}`
+export default SlackFunction(GenerateBroadcasterWeb, ({ inputs: { message_ctx }, env }) => {
+  const slackDomain = env.SLACK_WORKSPACE_DOMAIN
+  const permalink = `https://${slackDomain}/archives/${message_ctx.channel_id}/p${message_ctx.message_ts.replace(".", "")}`
 
-    return {
-      outputs: {
-        broadcaster_url: `https://broadcaster-slack.vercel.app/message/send?slack=${encodeURIComponent(permalink)}`,
-      },
-    }
-  },
-)
+  return {
+    outputs: {
+      broadcaster_url: `https://broadcaster-slack.vercel.app/message/send?slack=${encodeURIComponent(permalink)}`,
+    },
+  }
+})

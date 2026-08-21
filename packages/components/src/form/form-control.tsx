@@ -27,13 +27,9 @@ export const FormControl = ({
     >
       <label htmlFor={id} className="block text-md">
         {label}
-        {required && (
-          <span className="ml-2 text-red-600 text-xs">{"必須"}</span>
-        )}
+        {required && <span className="ml-2 text-red-600 text-xs">{"必須"}</span>}
       </label>
-      {description && (
-        <div className="text-slate-600 text-sm">{description}</div>
-      )}
+      {description && <div className="text-slate-600 text-sm">{description}</div>}
       <div>{children}</div>
       {support && (
         <div className="flex items-center text-slate-600 text-sm">

@@ -8,10 +8,7 @@ type Props<Type extends React.ElementType> = {
   type?: ComponentProps<"button">["type"]
   prefix?: React.ReactNode
   as?: Type
-} & Omit<
-  ComponentProps<Type>,
-  "type" | "children" | "prefix" | "as" | "variant"
->
+} & Omit<ComponentProps<Type>, "type" | "children" | "prefix" | "as" | "variant">
 
 export const Button = <Type extends React.ElementType = "button">({
   children,

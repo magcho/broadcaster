@@ -2,12 +2,7 @@ import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
 import { db } from "broadcaster-db/db.js"
-import {
-  accountTable,
-  sessionTable,
-  userTable,
-  verificationTable,
-} from "broadcaster-db/schema.js"
+import { accountTable, sessionTable, userTable, verificationTable } from "broadcaster-db/schema.js"
 import { z } from "zod"
 import { AuthError } from "../auth-error.js"
 import { urls } from "../vercel.js"
@@ -17,9 +12,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
 if (GOOGLE_CLIENT_ID == null || GOOGLE_CLIENT_SECRET == null) {
-  throw new Error(
-    "Google OAuth credentials are not set in environment variables.",
-  )
+  throw new Error("Google OAuth credentials are not set in environment variables.")
 }
 
 const WHITELIST_ACCOUNT_DOMAINS = z
@@ -45,10 +38,7 @@ export const auth = betterAuth({
     google: {
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      redirectURI: new URL(
-        "/api/auth/callback/google",
-        urls.productionUrl,
-      ).toString(),
+      redirectURI: new URL("/api/auth/callback/google", urls.productionUrl).toString(),
     },
   },
   plugins: [

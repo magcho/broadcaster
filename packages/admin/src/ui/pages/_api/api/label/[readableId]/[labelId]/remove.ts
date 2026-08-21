@@ -25,10 +25,7 @@ export const POST = async (request: Request): Promise<Response> => {
     if (success) {
       return Response.json({ message: "Success" }, { status: 200 })
     } else {
-      return Response.json(
-        { message: "Sponsor or label not found" },
-        { status: 404 },
-      )
+      return Response.json({ message: "Sponsor or label not found" }, { status: 404 })
     }
   } catch (error) {
     return toErrorResponse(error)

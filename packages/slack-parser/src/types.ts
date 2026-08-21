@@ -3,11 +3,7 @@ export type SlackDocument = {
   blocks: SlackBlock[]
 }
 
-export type SlackBlock =
-  | ParagraphBlock
-  | QuoteBlock
-  | PreformattedBlock
-  | ListBlock
+export type SlackBlock = ParagraphBlock | QuoteBlock | PreformattedBlock | ListBlock
 
 export type ParagraphBlock = {
   kind: "paragraph"
