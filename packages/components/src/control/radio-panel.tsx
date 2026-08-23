@@ -2,7 +2,7 @@ import { Activity } from "react"
 import { RadioOption } from "./radio.js"
 
 const Root = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex flex-col rounded-lg border border-slate-200">{children}</div>
+  <div className="flex flex-col rounded-lg bg-white border border-slate-200">{children}</div>
 )
 
 const Hr = () => <hr className="border-t border-t-slate-200" />

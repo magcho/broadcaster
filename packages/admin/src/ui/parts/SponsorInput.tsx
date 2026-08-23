@@ -23,7 +23,7 @@ export const SponsorInput = ({ sponsors, value, onChange }: Props) => {
   const filtered = searchText.trim().length === 0 ? sponsors : debounceSearch(searchText, sponsors)
 
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-200">
+    <div className="overflow-hidden rounded-lg bg-white border border-slate-200">
       <div className="group flex items-center">
         <div className="shrink-0 px-3 pr-0 text-slate-600 transition-[padding]">
           <TbSearch size={18} />

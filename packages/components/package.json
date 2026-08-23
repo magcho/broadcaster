@@ -3,8 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "biome check",
-    "fix": "biome check --write",
     "type-check": "tsgo -p tsconfig.json"
   },
   "dependencies": {

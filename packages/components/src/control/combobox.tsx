@@ -39,7 +39,7 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
     >
       <BaseCombobox.Trigger
         id={id}
-        className="flex w-full items-center gap-1 rounded-md border border-slate-400 bg-transparent px-1.5 py-1 pl-2 text-base text-gray-900 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100 data-popup-open:ring-1 data-popup-open:ring-offset-2"
+        className="flex w-full items-center gap-1 rounded-md bg-white border border-slate-400 bg-transparent px-1.5 py-1 pl-2 text-base text-gray-900 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100 data-popup-open:ring-1 data-popup-open:ring-offset-2"
         style={{
           minHeight: BASE_HEIGHT,
         }}

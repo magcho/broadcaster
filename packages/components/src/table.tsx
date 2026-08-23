@@ -4,7 +4,7 @@ import { cn } from "./utils/cn.js"
 const Root = (props: ComponentProps<"table">) => (
   <table
     className={cn(
-      "border-separate border-spacing-0 overflow-hidden rounded-lg border border-slate-200",
+      "border-separate border-spacing-0 overflow-hidden rounded-lg bg-white border border-slate-200",
       "[&>thead>tr>th]:bg-stone-100 [&>thead>tr>th]:px-3 [&>thead>tr>th]:py-2 [&>thead>tr>th]:text-start [&>thead>tr>th]:font-bold [&>thead>tr>th]:text-sm",
       "[&>tbody>tr]:even:bg-slate-100 [&>tbody>tr]:hover:bg-slate-200",
       "[&>tbody>tr>td]:px-3 [&>tbody>tr>td]:py-2 [&>thead>tr>td]:text-sm",

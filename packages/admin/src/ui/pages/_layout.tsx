@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-// biome-ignore lint/correctness/useImportExtensions: css import
+// @ts-expect-error
 import "../styles.css"
 
 type RootLayoutProps = { children: ReactNode }

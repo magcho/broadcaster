@@ -35,7 +35,7 @@ export const MultiCombobox = <Id extends string, Item extends SelectItem<Id>>({
       onValueChange={(value) => onValueChange?.(value)}
       multiple
     >
-      <div className="flex w-full flex-col gap-1">
+      <div className="flex w-full flex-col gap-1 bg-white">
         <BaseCombobox.Chips
           className="flex flex-wrap items-center gap-0.5 rounded-md border border-slate-400 px-1.5 py-1 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100"
           ref={containerRef}
