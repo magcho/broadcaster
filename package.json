@@ -14,7 +14,6 @@
     "fix": "pnpm run /.+:fix/"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
     "emulate": "catalog:",
     "oxfmt": "catalog:",
     "oxlint": "catalog:",

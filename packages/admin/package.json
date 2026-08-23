@@ -7,8 +7,6 @@
     "build": "pnpm build:cache && pnpm build:app",
     "build:app": "vite build",
     "start": "vite preview --host 0.0.0.0",
-    "check": "biome check",
-    "fix": "biome check --write",
     "type-check": "tsgo -p tsconfig.json",
     "build:cache": "tsx --env-file-if-exists .env.local ./scripts/cache/slack-channels.ts"
   },

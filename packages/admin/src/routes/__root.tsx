@@ -1,7 +1,6 @@
 import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router"
 import type { ReactNode } from "react"
 
-// biome-ignore lint/correctness/useImportExtensions: CSSインポート
 import appCss from "../ui/styles.css?url"
 
 export const Route = createRootRoute({
