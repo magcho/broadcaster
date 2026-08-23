@@ -5,7 +5,7 @@ import { useForm } from "broadcaster-components/libs/use-form.js"
 import { UnstyledSlackPreview } from "broadcaster-components/slack-preview.js"
 import { cn } from "broadcaster-components/utils/cn.js"
 import { useRef, useState, useTransition } from "react"
-import { TbChevronRight } from "react-icons/tb"
+import { TbChevronRight, TbCode } from "react-icons/tb"
 import { parseMrkdwn } from "slack-parser"
 import { createAndSendSlackMessageController } from "../../controller/slack-message-create-and-send.js"
 import { CreateAndSendSlackMessageSchema } from "../../controller/slack-message-create-and-send-schema.js"
@@ -69,16 +69,15 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
+  const [showJson, setShowJson] = useState(false)
   const [showSyntaxGuide, setShowSyntaxGuide] = useState(false)
 
   return (
     <Form action={handleSubmit} fullWidth>
       <div className="flex flex-col">
         <FormControl label="メッセージ" required>
-          <div className="flex w-full max-w-[600px] cursor-text flex-col items-start gap-4 rounded-lg border border-slate-200 p-4">
+          <div className="flex w-full bg-white max-w-[600px] cursor-text flex-col items-start gap-4 rounded-lg border border-slate-200 p-4">
             {/* 入力欄 */}
-            {/** biome-ignore lint/a11y/noStaticElementInteractions: 補助的な役割のonClickなので許容する */}
-            {/** biome-ignore lint/a11y/useKeyWithClickEvents: 補助的な役割のonClickなので許容する */}
             <div className="min-h-[72px] w-full pb-4" onClick={() => textareaRef.current?.focus()}>
               <textarea
                 {...registerTextarea("message")}
@@ -91,9 +90,26 @@ export const SendMessageForm = ({ sponsors, labels, onComplete }: Props) => {
             {/* プレビュー */}
             <div className="flex w-full gap-3 rounded-lg p-4 shadow-main">
               <img src="/slack-icon.png" alt="Slack Icon" className="size-8" />
-              <div className="flex flex-col gap-1">
-                <div className="font-bold text-[13px]">プレビュー</div>
+              <div className="flex flex-col gap-1 w-full">
+                <div className="flex justify-between w-full items-center">
+                  <div className="font-bold text-[13px]">プレビュー</div>
+                  <button
+                    type="button"
+                    className="group/json aria-pressed:animate-reveal-left p-1 rounded hover:bg-slate-100 text-slate-300 hover:text-slate-600 border border-transparent aria-pressed:border-blue-200 aria-pressed:bg-blue-50 aria-pressed:text-blue-500 flex items-center gap-1"
+                    aria-label="JSONを表示する"
+                    aria-pressed={showJson ? "true" : "false"}
+                    onClick={() => setShowJson((prev) => !prev)}
+                  >
+                    <TbCode />
+                    {showJson && <div className="text-xs">JSON表示中</div>}
+                  </button>
+                </div>
                 <UnstyledSlackPreview message={parseMrkdwn(values.message).document} />
+                {showJson && (
+                  <div className="p-2 max-h-[400px] overflow-y-auto text-[10px] whitespace-pre-wrap bg-blue-50 border border-blue-200 text-blue-900 leading-tight font-mono rounded-lg">
+                    {JSON.stringify(parseMrkdwn(values.message).document, null, 2)}
+                  </div>
+                )}
               </div>
             </div>
 

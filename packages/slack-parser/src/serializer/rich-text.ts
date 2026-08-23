@@ -1,6 +1,5 @@
 import type {
   MarkSet,
-  SerializeRichTextOptions,
   SlackBlock,
   SlackDocument,
   SlackInline,
@@ -10,10 +9,7 @@ import type {
   SlackStyle,
 } from "../types.js"
 
-export function serializeToRichText(
-  document: SlackDocument,
-  _options: SerializeRichTextOptions = {},
-): SlackRichTextBlock {
+export function serializeToRichText(document: SlackDocument): SlackRichTextBlock {
   return {
     type: "rich_text",
     elements: document.blocks.map(serializeBlock),
@@ -118,6 +114,7 @@ function serializeInlines(inlines: SlackInline[]): SlackRichTextInline[] {
           text: "\n",
         }
       default:
+        // oxlint-disable-next-line typescript/restrict-template-expressions
         throw new Error(`Unsupported inline type: ${inline}`)
     }
   })

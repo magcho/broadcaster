@@ -77,11 +77,6 @@ function parseBlocks(
 
   while (index < lines.length) {
     const line = lines[index] ?? ""
-    if (line.trim() === "") {
-      index += 1
-      continue
-    }
-
     if (line.startsWith("```")) {
       const language = line.slice(3).trim() || undefined
       const body: string[] = []
@@ -136,12 +131,12 @@ function parseBlocks(
     const start = lineOffsets[index] ?? 0
     while (
       index < lines.length &&
-      (lines[index] ?? "").trim() !== "" &&
-      !(lines[index] ?? "").startsWith(">") &&
-      !(lines[index] ?? "").startsWith("```") &&
-      !parseListMarker(lines[index] ?? "")
+      // lines[index]!.trim() !== "" &&
+      !lines[index]!.startsWith(">") &&
+      !lines[index]!.startsWith("```") &&
+      !parseListMarker(lines[index]!)
     ) {
-      paragraphLines.push(lines[index] ?? "")
+      paragraphLines.push(lines[index]!)
       index += 1
     }
 
@@ -157,6 +152,8 @@ function parseBlocks(
       inlines: parsed.inlines,
     })
   }
+
+  console.log(blocks)
 
   return blocks
 }
@@ -279,7 +276,6 @@ function parseListContinuation(line: string, indent: number): string | null {
 function parseInlineSequence(state: InlineState, stopMarker?: Marker): InlineParseResult {
   const inlines: SlackInline[] = []
   let buffer = ""
-  const _startPos = state.pos
 
   const flush = () => {
     if (buffer.length === 0) {
