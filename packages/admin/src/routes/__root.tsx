@@ -48,20 +48,12 @@ function RootComponent() {
 
 function NotFoundPage() {
   return (
-    <section className="rounded-3xl border border-slate-300 border-dashed bg-white p-8 text-center shadow-sm">
-      <p className="font-medium text-slate-500 text-sm uppercase tracking-[0.24em]">404</p>
-      <h1 className="mt-3 font-semibold text-3xl text-slate-950">Page not found.</h1>
-      <p className="mx-auto mt-3 max-w-2xl text-slate-600 text-sm leading-6">
-        指定した管理画面のルートは見つかりませんでした。
-      </p>
-      <div className="mt-6">
-        <Link
-          to="/message/send"
-          className="inline-flex rounded-full bg-slate-950 px-4 py-2 font-medium text-white transition hover:bg-slate-800"
-        >
-          Back to Bootstrap
-        </Link>
-      </div>
+    <section className="p-4">
+      Not found
+      <br />
+      <Link className="text-blue-600 underline hover:no-underline" to="/">
+        Home
+      </Link>
     </section>
   )
 }
