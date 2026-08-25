@@ -18,7 +18,7 @@ function RouteComponent() {
         sponsors={sponsors}
         labels={labels}
         onComplete={() => {
-          void navigate({ to: "/sponsors" })
+          void navigate({ to: "/message" })
         }}
       />
     </PageSection>
