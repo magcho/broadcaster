@@ -18,7 +18,6 @@
     "type-check": "tsgo -p tsconfig.json"
   },
   "dependencies": {
-    "better-auth": "catalog:",
     "drizzle-orm": "catalog:",
     "pg": "catalog:",
     "postgres": "catalog:"

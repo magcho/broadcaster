@@ -16,7 +16,6 @@
     "@tanstack/react-router": "catalog:",
     "@tanstack/react-start": "catalog:",
     "@typescript/native-preview": "catalog:",
-    "better-auth": "catalog:",
     "broadcaster-components": "workspace:*",
     "broadcaster-db": "workspace:*",
     "date-fns": "catalog:",

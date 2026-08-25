@@ -9,17 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SigninRouteImport } from './routes/signin'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiSponsorRouteImport } from './routes/api/sponsor'
 import { Route as ApiLabelRouteImport } from './routes/api/label'
-import { Route as AuthedSignoutRouteImport } from './routes/_authed.signout'
 import { Route as AuthedSponsorsIndexRouteImport } from './routes/_authed.sponsors.index'
 import { Route as AuthedMessageIndexRouteImport } from './routes/_authed.message.index'
 import { Route as AuthedLabelsIndexRouteImport } from './routes/_authed.labels.index'
 import { Route as ApiCronSendMessageRouteImport } from './routes/api/cron/send-message'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthedSponsorsNewRouteImport } from './routes/_authed.sponsors.new'
 import { Route as AuthedMessageSendRouteImport } from './routes/_authed.message.send'
 import { Route as AuthedLabelsNewRouteImport } from './routes/_authed.labels.new'
@@ -32,11 +29,6 @@ import { Route as AuthedLabelsLabelIdDeleteRouteImport } from './routes/_authed.
 import { Route as ApiLabelReadableIdLabelIdRemoveRouteImport } from './routes/api/label/$readableId/$labelId/remove'
 import { Route as ApiLabelReadableIdLabelIdAddRouteImport } from './routes/api/label/$readableId/$labelId/add'
 
-const SigninRoute = SigninRouteImport.update({
-  id: '/signin',
-  path: '/signin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
   getParentRoute: () => rootRouteImport,
@@ -56,11 +48,6 @@ const ApiLabelRoute = ApiLabelRouteImport.update({
   path: '/api/label',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthedSignoutRoute = AuthedSignoutRouteImport.update({
-  id: '/signout',
-  path: '/signout',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedSponsorsIndexRoute = AuthedSponsorsIndexRouteImport.update({
   id: '/sponsors/',
   path: '/sponsors/',
@@ -79,11 +66,6 @@ const AuthedLabelsIndexRoute = AuthedLabelsIndexRouteImport.update({
 const ApiCronSendMessageRoute = ApiCronSendMessageRouteImport.update({
   id: '/api/cron/send-message',
   path: '/api/cron/send-message',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedSponsorsNewRoute = AuthedSponsorsNewRouteImport.update({
@@ -149,8 +131,6 @@ const ApiLabelReadableIdLabelIdAddRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/signin': typeof SigninRoute
-  '/signout': typeof AuthedSignoutRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
@@ -158,7 +138,6 @@ export interface FileRoutesByFullPath {
   '/labels/new': typeof AuthedLabelsNewRoute
   '/message/send': typeof AuthedMessageSendRoute
   '/sponsors/new': typeof AuthedSponsorsNewRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/cron/send-message': typeof ApiCronSendMessageRoute
   '/labels/': typeof AuthedLabelsIndexRoute
   '/message/': typeof AuthedMessageIndexRoute
@@ -172,8 +151,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/signin': typeof SigninRoute
-  '/signout': typeof AuthedSignoutRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
@@ -181,7 +158,6 @@ export interface FileRoutesByTo {
   '/labels/new': typeof AuthedLabelsNewRoute
   '/message/send': typeof AuthedMessageSendRoute
   '/sponsors/new': typeof AuthedSponsorsNewRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/cron/send-message': typeof ApiCronSendMessageRoute
   '/labels': typeof AuthedLabelsIndexRoute
   '/message': typeof AuthedMessageIndexRoute
@@ -197,8 +173,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
-  '/signin': typeof SigninRoute
-  '/_authed/signout': typeof AuthedSignoutRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/_authed/channel/$channel': typeof AuthedChannelChannelRoute
@@ -206,7 +180,6 @@ export interface FileRoutesById {
   '/_authed/labels/new': typeof AuthedLabelsNewRoute
   '/_authed/message/send': typeof AuthedMessageSendRoute
   '/_authed/sponsors/new': typeof AuthedSponsorsNewRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/cron/send-message': typeof ApiCronSendMessageRoute
   '/_authed/labels/': typeof AuthedLabelsIndexRoute
   '/_authed/message/': typeof AuthedMessageIndexRoute
@@ -222,8 +195,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/signin'
-    | '/signout'
     | '/api/label'
     | '/api/sponsor'
     | '/channel/$channel'
@@ -231,7 +202,6 @@ export interface FileRouteTypes {
     | '/labels/new'
     | '/message/send'
     | '/sponsors/new'
-    | '/api/auth/$'
     | '/api/cron/send-message'
     | '/labels/'
     | '/message/'
@@ -245,8 +215,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/signin'
-    | '/signout'
     | '/api/label'
     | '/api/sponsor'
     | '/channel/$channel'
@@ -254,7 +222,6 @@ export interface FileRouteTypes {
     | '/labels/new'
     | '/message/send'
     | '/sponsors/new'
-    | '/api/auth/$'
     | '/api/cron/send-message'
     | '/labels'
     | '/message'
@@ -269,8 +236,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authed'
-    | '/signin'
-    | '/_authed/signout'
     | '/api/label'
     | '/api/sponsor'
     | '/_authed/channel/$channel'
@@ -278,7 +243,6 @@ export interface FileRouteTypes {
     | '/_authed/labels/new'
     | '/_authed/message/send'
     | '/_authed/sponsors/new'
-    | '/api/auth/$'
     | '/api/cron/send-message'
     | '/_authed/labels/'
     | '/_authed/message/'
@@ -294,22 +258,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
-  SigninRoute: typeof SigninRoute
   ApiLabelRoute: typeof ApiLabelRouteWithChildren
   ApiSponsorRoute: typeof ApiSponsorRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCronSendMessageRoute: typeof ApiCronSendMessageRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/signin': {
-      id: '/signin'
-      path: '/signin'
-      fullPath: '/signin'
-      preLoaderRoute: typeof SigninRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authed': {
       id: '/_authed'
       path: ''
@@ -338,13 +293,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiLabelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authed/signout': {
-      id: '/_authed/signout'
-      path: '/signout'
-      fullPath: '/signout'
-      preLoaderRoute: typeof AuthedSignoutRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/sponsors/': {
       id: '/_authed/sponsors/'
       path: '/sponsors'
@@ -371,13 +319,6 @@ declare module '@tanstack/react-router' {
       path: '/api/cron/send-message'
       fullPath: '/api/cron/send-message'
       preLoaderRoute: typeof ApiCronSendMessageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/sponsors/new': {
@@ -461,7 +402,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthedRouteChildren {
-  AuthedSignoutRoute: typeof AuthedSignoutRoute
   AuthedChannelChannelRoute: typeof AuthedChannelChannelRoute
   AuthedLabelsAssignRoute: typeof AuthedLabelsAssignRoute
   AuthedLabelsNewRoute: typeof AuthedLabelsNewRoute
@@ -477,7 +417,6 @@ interface AuthedRouteChildren {
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedSignoutRoute: AuthedSignoutRoute,
   AuthedChannelChannelRoute: AuthedChannelChannelRoute,
   AuthedLabelsAssignRoute: AuthedLabelsAssignRoute,
   AuthedLabelsNewRoute: AuthedLabelsNewRoute,
@@ -512,10 +451,8 @@ const ApiLabelRouteWithChildren = ApiLabelRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
-  SigninRoute: SigninRoute,
   ApiLabelRoute: ApiLabelRouteWithChildren,
   ApiSponsorRoute: ApiSponsorRoute,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCronSendMessageRoute: ApiCronSendMessageRoute,
 }
 export const routeTree = rootRouteImport

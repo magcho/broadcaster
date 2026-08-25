@@ -1,16 +1,6 @@
-import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router"
-import { getSessionServerFn } from "../libs/better-auth/functions.js"
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_authed")({
-  beforeLoad: async () => {
-    const session = await getSessionServerFn()
-
-    if (session == null) {
-      throw redirect({ to: "/signin" })
-    }
-
-    return { session }
-  },
   component: AuthedLayout,
 })
 
@@ -55,9 +45,6 @@ function AuthedLayout() {
         </Link>
         <Link to="/labels" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Labels
-        </Link>
-        <Link to="/signout" className="w-full rounded px-3 py-3 hover:bg-slate-100">
-          Sign Out
         </Link>
       </nav>
       <main
