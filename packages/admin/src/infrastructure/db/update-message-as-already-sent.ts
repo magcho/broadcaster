@@ -1,10 +1,14 @@
-import { db } from "broadcaster-db/db.js"
-import { messageTable } from "broadcaster-db/schema.js"
-import { eq } from "drizzle-orm"
+import { MessageCollection, mongoDb } from "../../libs/db"
 
 export const updateMessageAsAlreadySent = async (id: string) => {
-  await db
-    .update(messageTable)
-    .set({ sentAt: new Date() })
-    .where(eq(messageTable.id, id))
+  await mongoDb.collection<MessageCollection>(MessageCollection.name).updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        sentAt: new Date().toISOString(),
+      },
+    },
+  )
 }

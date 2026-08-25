@@ -27,3 +27,26 @@ export const LabelCollection = {
   }),
 }
 export type LabelCollection = z.infer<typeof LabelCollection.schema>
+
+export const MessageCollection = {
+  name: "messages",
+  schema: z.object({
+    _id: z.string(),
+    message: z.string(),
+    addMention: z.boolean(),
+    scheduledAt: z.iso.datetime(),
+    sentAt: z.iso.datetime().nullable(),
+    target: z.discriminatedUnion("type", [
+      z.object({
+        type: z.literal("Sponsor"),
+        sponsorIds: z.array(z.string()),
+      }),
+      z.object({
+        type: z.literal("Label"),
+        labelIds: z.array(z.string()),
+      }),
+    ]),
+    createdAt: z.iso.datetime(),
+  }),
+}
+export type MessageCollection = z.infer<typeof MessageCollection.schema>

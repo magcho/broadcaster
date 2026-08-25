@@ -1,27 +1,24 @@
-import { db } from "broadcaster-db/db.js"
-import { labelTable } from "broadcaster-db/schema.js"
+import { LabelCollection, mongoDb } from "../../libs/db"
 
-export const upsertLabel = async (
-  id: string,
-  data: { label: string; color: string },
-) => {
-  const maxOrderPlan = await db.query.label.findFirst({
-    orderBy: (label, { desc }) => [desc(label.order)],
-  })
+export const upsertLabel = async (id: string, data: { label: string; color: string }) => {
+  const maxOrderPlan = await mongoDb
+    .collection<LabelCollection>(LabelCollection.name)
+    .findOne({}, { sort: { order: "desc" } })
+  const nextOrder = maxOrderPlan?.order ?? 0
 
-  await db
-    .insert(labelTable)
-    .values({
-      id,
-      label: data.label,
-      color: data.color,
-      order: maxOrderPlan ? maxOrderPlan.order + 1 : 0,
-    })
-    .onConflictDoUpdate({
-      set: {
+  await mongoDb.collection<LabelCollection>(LabelCollection.name).updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
         label: data.label,
         color: data.color,
+        order: nextOrder,
       },
-      target: labelTable.id,
-    })
+    },
+    {
+      upsert: true,
+    },
+  )
 }

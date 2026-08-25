@@ -1,7 +1,20 @@
-import { db } from "broadcaster-db/db.js"
-import { labelTable } from "broadcaster-db/schema.js"
-import { inArray } from "drizzle-orm"
+import { LabelCollection, mongoDb, SponsorCollection } from "../../libs/db"
 
 export const deleteLabels = async (labelIds: string[]) => {
-  await db.delete(labelTable).where(inArray(labelTable.id, labelIds))
+  await mongoDb.collection<LabelCollection>(LabelCollection.name).deleteMany({
+    _id: {
+      $in: labelIds,
+    },
+  })
+
+  await mongoDb.collection<SponsorCollection>(SponsorCollection.name).updateMany(
+    {},
+    {
+      $pull: {
+        labelIds: {
+          $in: labelIds,
+        },
+      },
+    },
+  )
 }

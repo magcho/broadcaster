@@ -1,19 +1,18 @@
-import { db } from "broadcaster-db/db.js"
-import { sponsorLabelTable } from "broadcaster-db/schema.js"
+import { mongoDb, SponsorCollection } from "../../libs/db"
 
-export const createSponsorLabels = async (
-  sponsorIds: string[],
-  labelIds: string[],
-) => {
-  await db
-    .insert(sponsorLabelTable)
-    .values(
-      sponsorIds.flatMap((sponsorId) =>
-        labelIds.map((labelId) => ({
-          sponsorId,
-          labelId,
-        })),
-      ),
-    )
-    .onConflictDoNothing()
+export const createSponsorLabels = async (sponsorIds: string[], labelIds: string[]) => {
+  await mongoDb.collection<SponsorCollection>(SponsorCollection.name).updateMany(
+    {
+      _id: {
+        $in: sponsorIds,
+      },
+    },
+    {
+      $addToSet: {
+        labelIds: {
+          $each: labelIds,
+        },
+      },
+    },
+  )
 }

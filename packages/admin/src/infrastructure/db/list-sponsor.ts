@@ -1,30 +1,33 @@
-import { db } from "broadcaster-db/db.js"
 import type { Sponsor } from "../../domain/model/Sponsor.js"
+import { mongoDb, SponsorCollection } from "../../libs/db.js"
+import { getLabels } from "./get-labels.js"
 
 export const listSponsors = async (): Promise<Sponsor[]> => {
-  const rows = await db.query.sponsor.findMany({
-    with: {
-      slackUsers: true,
-      labels: {
-        orderBy: (label, { asc }) => [asc(label.order)],
-      },
-    },
-    orderBy: (sponsor, { asc }) => [asc(sponsor.readableId)],
-  })
+  const docs = await mongoDb
+    .collection<SponsorCollection>(SponsorCollection.name)
+    .find({})
+    .toArray()
 
-  return rows.map(
-    (row) =>
-      ({
-        id: row.id,
-        name: row.name,
-        readableId: row.readableId,
-        slackChannelId: row.slackChannelId ?? undefined,
-        slackUsers: row.slackUsers.map((user) => user.slackUserId),
-        labels: row.labels.map((label) => ({
-          id: label.id,
-          label: label.label,
-          color: label.color,
-        })),
-      }) satisfies Sponsor,
-  )
+  const labelIds = docs.flatMap((doc) => doc.labelIds)
+  const labels = await getLabels(labelIds)
+  const labelMap = new Map(labels.map((doc) => [doc.id, doc]))
+
+  return docs.map((doc) => {
+    return {
+      id: doc._id,
+      name: doc.name,
+      readableId: doc.readableId,
+      slackChannelId: doc.slackChannelId,
+      slackUsers: [],
+      labels: doc.labelIds
+        .map((labelId) => {
+          const label = labelMap.get(labelId)
+          if (label == null) {
+            console.warn("Label not found", labelId)
+          }
+          return label
+        })
+        .filter((label) => label != null),
+    }
+  })
 }

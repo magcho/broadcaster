@@ -1,7 +1,9 @@
-import { db } from "broadcaster-db/db.js"
-import { sponsorTable } from "broadcaster-db/schema.js"
-import { inArray } from "drizzle-orm"
+import { mongoDb, SponsorCollection } from "../../libs/db"
 
 export const deleteSponsors = async (sponsorIds: string[]) => {
-  await db.delete(sponsorTable).where(inArray(sponsorTable.id, sponsorIds))
+  await mongoDb.collection<SponsorCollection>(SponsorCollection.name).deleteMany({
+    _id: {
+      $in: sponsorIds,
+    },
+  })
 }

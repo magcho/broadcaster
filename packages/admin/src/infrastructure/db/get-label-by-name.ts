@@ -1,19 +1,23 @@
-import { db } from "broadcaster-db/db.js"
+import { LabelCollection, mongoDb } from "../../libs/db"
+
+export const getLabelsByNames = async (labelNames: string[]) => {
+  const labels = await mongoDb
+    .collection<LabelCollection>(LabelCollection.name)
+    .find({
+      label: {
+        $in: labelNames,
+      },
+    })
+    .map((doc) => ({
+      id: doc._id,
+      label: doc.label,
+      color: doc.color,
+    }))
+    .toArray()
+
+  return labels
+}
 
 export const getLabelByName = async (label: string) => {
-  const row = await db.query.label.findFirst({
-    where: {
-      label,
-    },
-  })
-
-  if (row == null) {
-    return null
-  }
-
-  return {
-    id: row.id,
-    label: row.label,
-    color: row.color,
-  }
+  return getLabelsByNames([label])
 }

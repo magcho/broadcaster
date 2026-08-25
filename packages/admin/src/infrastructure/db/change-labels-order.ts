@@ -1,17 +1,32 @@
-import { db } from "broadcaster-db/db.js"
-import { labelTable } from "broadcaster-db/schema.js"
-import { inArray, sql } from "drizzle-orm"
+import { listLabels2 } from "./list-labels"
+import { LabelCollection, mongoDb } from "../../libs/db"
 
 export const changeLabelsOrder = async (ids: string[]) => {
-  if (0 < ids.length) {
-    await db
-      .update(labelTable)
-      .set({
-        order: sql`CASE ${labelTable.id} ${sql.join(
-          ids.map((id, index) => sql`WHEN ${id} THEN ${index}::int`),
-          sql` `,
-        )} END`,
-      })
-      .where(inArray(labelTable.id, ids))
-  }
+  const labels = await listLabels2()
+  const labelMap = new Map(labels.map((label) => [label.id, label]))
+  const ordered = ids
+    .map((id, index) => {
+      const label = labelMap.get(id)
+      return {
+        ...label,
+        order: index,
+      }
+    })
+    .filter((label) => label != null)
+
+  await mongoDb.collection<LabelCollection>(LabelCollection.name).bulkWrite(
+    ordered.map((label) => ({
+      updateOne: {
+        filter: {
+          _id: label.id,
+        },
+        update: {
+          $set: {
+            order: label.order,
+          },
+        },
+        upsert: true,
+      },
+    })),
+  )
 }
