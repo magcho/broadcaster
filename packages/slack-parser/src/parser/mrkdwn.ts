@@ -153,8 +153,6 @@ function parseBlocks(
     })
   }
 
-  console.log(blocks)
-
   return blocks
 }
 

@@ -1,24 +1,36 @@
 import type { ComponentProps } from "react"
-import { cn } from "./utils/cn.js"
 
 const Root = (props: ComponentProps<"table">) => (
   <table
-    className={cn(
-      "border-separate border-spacing-0 overflow-hidden rounded-lg bg-white border border-slate-200",
-      "[&>thead>tr>th]:bg-stone-100 [&>thead>tr>th]:px-3 [&>thead>tr>th]:py-2 [&>thead>tr>th]:text-start [&>thead>tr>th]:font-bold [&>thead>tr>th]:text-sm",
-      "[&>tbody>tr]:even:bg-slate-100 [&>tbody>tr]:hover:bg-slate-200",
-      "[&>tbody>tr>td]:px-3 [&>tbody>tr>td]:py-2 [&>thead>tr>td]:text-sm",
-      "data-full-width:w-full",
-    )}
+    className="border-separate border-spacing-0 overflow-hidden rounded-lg bg-white border border-slate-200 data-full-width:w-full"
     {...props}
   />
 )
-const THead = (props: ComponentProps<"thead">) => <thead {...props} />
-const TBody = (props: ComponentProps<"tbody">) => <tbody {...props} />
-const TFoot = (props: ComponentProps<"tfoot">) => <tfoot {...props} />
-const Tr = (props: ComponentProps<"tr">) => <tr {...props} />
-const Th = (props: ComponentProps<"th">) => <th {...props} />
-const Td = (props: ComponentProps<"td">) => <td {...props} />
+const THead = ({ children }: { children?: React.ReactNode }) => (
+  <thead className="bg-stone-100 px-3 py-2 text-start font-bold text-sm">{children}</thead>
+)
+const TBody = ({ children }: { children?: React.ReactNode }) => <tbody>{children}</tbody>
+const TFoot = ({ children }: { children?: React.ReactNode }) => <tfoot>{children}</tfoot>
+const Tr = ({
+  children,
+  highlight = false,
+}: {
+  children?: React.ReactNode
+  highlight?: boolean
+}) => (
+  <tr
+    data-highlight={highlight ? "true" : undefined}
+    className="even:bg-slate-100 hover:bg-slate-200 data-highlight:bg-orange-100"
+  >
+    {children}
+  </tr>
+)
+const Th = ({ children }: { children?: React.ReactNode }) => (
+  <th className="px-3 py-2 text-sm text-start">{children}</th>
+)
+const Td = ({ children }: { children?: React.ReactNode }) => (
+  <td className="px-3 py-2 text-sm">{children}</td>
+)
 
 export const Table = {
   Root,
