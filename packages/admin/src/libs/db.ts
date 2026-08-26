@@ -4,6 +4,13 @@ import z from "zod"
 const client = new MongoClient(process.env.MONGODB_URI!)
 export const mongoDb = client.db("broadcaster")
 
+export const initMongoDb = async () => {
+  // Create Index
+  await mongoDb
+    .collection(SlackTokenCollection.name)
+    .createIndex({ expiredAt: 1 }, { expireAfterSeconds: 0 })
+}
+
 export const SponsorCollection = {
   name: "sponsors",
   schema: z.object({
@@ -50,3 +57,14 @@ export const MessageCollection = {
   }),
 }
 export type MessageCollection = z.infer<typeof MessageCollection.schema>
+
+export const SlackTokenCollection = {
+  name: "slack_tokens",
+  schema: z.object({
+    _id: z.string(),
+    encryptedToken: z.string(),
+    createdAt: z.iso.datetime(),
+    expiredAt: z.date(),
+  }),
+}
+export type SlackTokenCollection = z.infer<typeof SlackTokenCollection.schema>
