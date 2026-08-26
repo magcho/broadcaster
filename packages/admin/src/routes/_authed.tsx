@@ -46,6 +46,9 @@ function AuthedLayout() {
         <Link to="/labels" className="w-full rounded px-3 py-3 hover:bg-slate-100">
           Labels
         </Link>
+        <Link to="/slack" className="w-full rounded px-3 py-3 hover:bg-slate-100">
+          Slack
+        </Link>
       </nav>
       <main
         style={{

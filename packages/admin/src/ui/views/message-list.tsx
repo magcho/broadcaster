@@ -3,6 +3,7 @@ import { MaxWidth } from "broadcaster-components/max-width.js"
 import { Table } from "broadcaster-components/table.js"
 import type { MessageTemplateWithDetail } from "../../domain/model/Message.js"
 import { LabelDisplay } from "../components/label-display.js"
+import { isFuture } from "date-fns"
 
 type MessageListViewProps = {
   messages: MessageTemplateWithDetail[]
@@ -13,29 +14,37 @@ export const MessageListView = ({ messages }: MessageListViewProps) => {
     <Table.Root>
       <Table.THead>
         <Table.Tr>
+          <Table.Th>ステータス</Table.Th>
           <Table.Th>メッセージ</Table.Th>
-          <Table.Th>送信予定</Table.Th>
-          <Table.Th>送信日時</Table.Th>
           <Table.Th>送信対象</Table.Th>
+          <Table.Th>送信日時</Table.Th>
           <Table.Th>作成日時</Table.Th>
         </Table.Tr>
       </Table.THead>
       <Table.TBody>
         {messages.map((message) => (
-          <Table.Tr key={message.id}>
+          <Table.Tr key={message.id} highlight={isFuture(message.scheduledAt)}>
+            {/* ステータス */}
+            <Table.Td>
+              {isFuture(message.scheduledAt) ? (
+                <div className="border border-orange-400 bg-orange-200 rounded-full w-max px-2 py-1 leading-none text-orange-700 text-xs">
+                  未送信
+                </div>
+              ) : (
+                <div className="border border-blue-500 bg-blue-100 rounded-full w-max px-2 py-1 leading-none text-blue-800 text-xs">
+                  送信済
+                </div>
+              )}
+            </Table.Td>
+
+            {/* メッセージ */}
             <Table.Td>
               <MaxWidth maxWidth={300} maxLine={3} className="text-xs">
                 {message.message}
               </MaxWidth>
             </Table.Td>
-            <Table.Td>
-              <Datetime fallback="即時" format={FORMATS.datetime}>
-                {message.scheduledAt === "Immediate" ? null : message.scheduledAt}
-              </Datetime>
-            </Table.Td>
-            <Table.Td>
-              <Datetime format={FORMATS.datetime}>{message.sentAt}</Datetime>
-            </Table.Td>
+
+            {/* 送信対象 */}
             <Table.Td>
               <div className="flex flex-wrap gap-1 text-sm">
                 {message.target.type === "Label"
@@ -47,8 +56,17 @@ export const MessageListView = ({ messages }: MessageListViewProps) => {
                     ))}
               </div>
             </Table.Td>
+
+            {/* 送信日時 */}
             <Table.Td>
-              <Datetime>{message.createdAt}</Datetime>
+              <Datetime>
+                {message.scheduledAt == "Immediate" ? new Date() : message.scheduledAt}
+              </Datetime>
+            </Table.Td>
+
+            {/* 作成日時 */}
+            <Table.Td>
+              <Datetime format={FORMATS.datetime}>{message.createdAt}</Datetime>
             </Table.Td>
           </Table.Tr>
         ))}

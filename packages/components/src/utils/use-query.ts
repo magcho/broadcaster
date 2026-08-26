@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 
 type PromiseState<Data> =
-  | { status: "loading" }
+  | { status: "loading" | "not-started" }
   | { status: "success"; data: Data }
   | { status: "error"; error: unknown }
 
@@ -11,7 +11,7 @@ type UseQueryReturn<Data> = {
   revalidate: () => void
 } & (
   | {
-      status: "loading"
+      status: "loading" | "not-started"
       isLoading: true
       isError: false
       data: undefined
@@ -30,9 +30,16 @@ type UseQueryReturn<Data> = {
     }
 )
 
-export const useQuery = <Data>(fetcher: Fetcher<Data>): UseQueryReturn<Data> => {
+type UseQueryOption = {
+  lazy?: boolean
+}
+export const useQuery = <Data>(
+  fetcher: Fetcher<Data>,
+  { lazy = false }: UseQueryOption = {},
+  deps: string[] = [],
+): UseQueryReturn<Data> => {
   const [state, setState] = useState<PromiseState<Data>>({
-    status: "loading",
+    status: "not-started",
   })
   const acRef = useRef<AbortController | null>(null)
 
@@ -57,9 +64,11 @@ export const useQuery = <Data>(fetcher: Fetcher<Data>): UseQueryReturn<Data> => 
   }
 
   useEffect(() => {
-    const ac = doFetch()
-    return () => ac.abort()
-  }, [])
+    if (!lazy) {
+      const ac = doFetch()
+      return () => ac.abort()
+    }
+  }, [lazy, ...deps])
 
   const revalidate = () => {
     doFetch()
@@ -68,6 +77,14 @@ export const useQuery = <Data>(fetcher: Fetcher<Data>): UseQueryReturn<Data> => 
   if (state.status === "loading") {
     return {
       status: "loading",
+      isLoading: true,
+      isError: false,
+      data: undefined,
+      revalidate,
+    }
+  } else if (state.status === "not-started") {
+    return {
+      status: "not-started",
       isLoading: true,
       isError: false,
       data: undefined,

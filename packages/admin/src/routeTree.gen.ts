@@ -13,6 +13,7 @@ import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiSponsorRouteImport } from './routes/api/sponsor'
 import { Route as ApiLabelRouteImport } from './routes/api/label'
+import { Route as AuthedSlackRouteImport } from './routes/_authed.slack'
 import { Route as AuthedSponsorsIndexRouteImport } from './routes/_authed.sponsors.index'
 import { Route as AuthedMessageIndexRouteImport } from './routes/_authed.message.index'
 import { Route as AuthedLabelsIndexRouteImport } from './routes/_authed.labels.index'
@@ -22,6 +23,8 @@ import { Route as AuthedMessageSendRouteImport } from './routes/_authed.message.
 import { Route as AuthedLabelsNewRouteImport } from './routes/_authed.labels.new'
 import { Route as AuthedLabelsAssignRouteImport } from './routes/_authed.labels.assign'
 import { Route as AuthedChannelChannelRouteImport } from './routes/_authed.channel.$channel'
+import { Route as ApiAuthSlackCallbackRouteImport } from './routes/api/auth/slack/callback'
+import { Route as ApiAuthSlackAuthorizeRouteImport } from './routes/api/auth/slack/authorize'
 import { Route as AuthedSponsorsSponsorIdEditRouteImport } from './routes/_authed.sponsors.$sponsorId.edit'
 import { Route as AuthedSponsorsSponsorIdDeleteRouteImport } from './routes/_authed.sponsors.$sponsorId.delete'
 import { Route as AuthedLabelsLabelIdEditRouteImport } from './routes/_authed.labels.$labelId.edit'
@@ -47,6 +50,11 @@ const ApiLabelRoute = ApiLabelRouteImport.update({
   id: '/api/label',
   path: '/api/label',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedSlackRoute = AuthedSlackRouteImport.update({
+  id: '/slack',
+  path: '/slack',
+  getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedSponsorsIndexRoute = AuthedSponsorsIndexRouteImport.update({
   id: '/sponsors/',
@@ -93,6 +101,16 @@ const AuthedChannelChannelRoute = AuthedChannelChannelRouteImport.update({
   path: '/channel/$channel',
   getParentRoute: () => AuthedRoute,
 } as any)
+const ApiAuthSlackCallbackRoute = ApiAuthSlackCallbackRouteImport.update({
+  id: '/api/auth/slack/callback',
+  path: '/api/auth/slack/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAuthSlackAuthorizeRoute = ApiAuthSlackAuthorizeRouteImport.update({
+  id: '/api/auth/slack/authorize',
+  path: '/api/auth/slack/authorize',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthedSponsorsSponsorIdEditRoute =
   AuthedSponsorsSponsorIdEditRouteImport.update({
     id: '/sponsors/$sponsorId/edit',
@@ -131,6 +149,7 @@ const ApiLabelReadableIdLabelIdAddRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
@@ -146,11 +165,14 @@ export interface FileRoutesByFullPath {
   '/labels/$labelId/edit': typeof AuthedLabelsLabelIdEditRoute
   '/sponsors/$sponsorId/delete': typeof AuthedSponsorsSponsorIdDeleteRoute
   '/sponsors/$sponsorId/edit': typeof AuthedSponsorsSponsorIdEditRoute
+  '/api/auth/slack/authorize': typeof ApiAuthSlackAuthorizeRoute
+  '/api/auth/slack/callback': typeof ApiAuthSlackCallbackRoute
   '/api/label/$readableId/$labelId/add': typeof ApiLabelReadableIdLabelIdAddRoute
   '/api/label/$readableId/$labelId/remove': typeof ApiLabelReadableIdLabelIdRemoveRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
@@ -166,6 +188,8 @@ export interface FileRoutesByTo {
   '/labels/$labelId/edit': typeof AuthedLabelsLabelIdEditRoute
   '/sponsors/$sponsorId/delete': typeof AuthedSponsorsSponsorIdDeleteRoute
   '/sponsors/$sponsorId/edit': typeof AuthedSponsorsSponsorIdEditRoute
+  '/api/auth/slack/authorize': typeof ApiAuthSlackAuthorizeRoute
+  '/api/auth/slack/callback': typeof ApiAuthSlackCallbackRoute
   '/api/label/$readableId/$labelId/add': typeof ApiLabelReadableIdLabelIdAddRoute
   '/api/label/$readableId/$labelId/remove': typeof ApiLabelReadableIdLabelIdRemoveRoute
 }
@@ -173,6 +197,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
   '/api/sponsor': typeof ApiSponsorRoute
   '/_authed/channel/$channel': typeof AuthedChannelChannelRoute
@@ -188,6 +213,8 @@ export interface FileRoutesById {
   '/_authed/labels/$labelId/edit': typeof AuthedLabelsLabelIdEditRoute
   '/_authed/sponsors/$sponsorId/delete': typeof AuthedSponsorsSponsorIdDeleteRoute
   '/_authed/sponsors/$sponsorId/edit': typeof AuthedSponsorsSponsorIdEditRoute
+  '/api/auth/slack/authorize': typeof ApiAuthSlackAuthorizeRoute
+  '/api/auth/slack/callback': typeof ApiAuthSlackCallbackRoute
   '/api/label/$readableId/$labelId/add': typeof ApiLabelReadableIdLabelIdAddRoute
   '/api/label/$readableId/$labelId/remove': typeof ApiLabelReadableIdLabelIdRemoveRoute
 }
@@ -195,6 +222,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/slack'
     | '/api/label'
     | '/api/sponsor'
     | '/channel/$channel'
@@ -210,11 +238,14 @@ export interface FileRouteTypes {
     | '/labels/$labelId/edit'
     | '/sponsors/$sponsorId/delete'
     | '/sponsors/$sponsorId/edit'
+    | '/api/auth/slack/authorize'
+    | '/api/auth/slack/callback'
     | '/api/label/$readableId/$labelId/add'
     | '/api/label/$readableId/$labelId/remove'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/slack'
     | '/api/label'
     | '/api/sponsor'
     | '/channel/$channel'
@@ -230,12 +261,15 @@ export interface FileRouteTypes {
     | '/labels/$labelId/edit'
     | '/sponsors/$sponsorId/delete'
     | '/sponsors/$sponsorId/edit'
+    | '/api/auth/slack/authorize'
+    | '/api/auth/slack/callback'
     | '/api/label/$readableId/$labelId/add'
     | '/api/label/$readableId/$labelId/remove'
   id:
     | '__root__'
     | '/'
     | '/_authed'
+    | '/_authed/slack'
     | '/api/label'
     | '/api/sponsor'
     | '/_authed/channel/$channel'
@@ -251,6 +285,8 @@ export interface FileRouteTypes {
     | '/_authed/labels/$labelId/edit'
     | '/_authed/sponsors/$sponsorId/delete'
     | '/_authed/sponsors/$sponsorId/edit'
+    | '/api/auth/slack/authorize'
+    | '/api/auth/slack/callback'
     | '/api/label/$readableId/$labelId/add'
     | '/api/label/$readableId/$labelId/remove'
   fileRoutesById: FileRoutesById
@@ -261,6 +297,8 @@ export interface RootRouteChildren {
   ApiLabelRoute: typeof ApiLabelRouteWithChildren
   ApiSponsorRoute: typeof ApiSponsorRoute
   ApiCronSendMessageRoute: typeof ApiCronSendMessageRoute
+  ApiAuthSlackAuthorizeRoute: typeof ApiAuthSlackAuthorizeRoute
+  ApiAuthSlackCallbackRoute: typeof ApiAuthSlackCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -292,6 +330,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/label'
       preLoaderRoute: typeof ApiLabelRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authed/slack': {
+      id: '/_authed/slack'
+      path: '/slack'
+      fullPath: '/slack'
+      preLoaderRoute: typeof AuthedSlackRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/_authed/sponsors/': {
       id: '/_authed/sponsors/'
@@ -356,6 +401,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedChannelChannelRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/api/auth/slack/callback': {
+      id: '/api/auth/slack/callback'
+      path: '/api/auth/slack/callback'
+      fullPath: '/api/auth/slack/callback'
+      preLoaderRoute: typeof ApiAuthSlackCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/slack/authorize': {
+      id: '/api/auth/slack/authorize'
+      path: '/api/auth/slack/authorize'
+      fullPath: '/api/auth/slack/authorize'
+      preLoaderRoute: typeof ApiAuthSlackAuthorizeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed/sponsors/$sponsorId/edit': {
       id: '/_authed/sponsors/$sponsorId/edit'
       path: '/sponsors/$sponsorId/edit'
@@ -402,6 +461,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthedRouteChildren {
+  AuthedSlackRoute: typeof AuthedSlackRoute
   AuthedChannelChannelRoute: typeof AuthedChannelChannelRoute
   AuthedLabelsAssignRoute: typeof AuthedLabelsAssignRoute
   AuthedLabelsNewRoute: typeof AuthedLabelsNewRoute
@@ -417,6 +477,7 @@ interface AuthedRouteChildren {
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedSlackRoute: AuthedSlackRoute,
   AuthedChannelChannelRoute: AuthedChannelChannelRoute,
   AuthedLabelsAssignRoute: AuthedLabelsAssignRoute,
   AuthedLabelsNewRoute: AuthedLabelsNewRoute,
@@ -454,6 +515,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiLabelRoute: ApiLabelRouteWithChildren,
   ApiSponsorRoute: ApiSponsorRoute,
   ApiCronSendMessageRoute: ApiCronSendMessageRoute,
+  ApiAuthSlackAuthorizeRoute: ApiAuthSlackAuthorizeRoute,
+  ApiAuthSlackCallbackRoute: ApiAuthSlackCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

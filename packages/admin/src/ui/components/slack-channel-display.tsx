@@ -1,4 +1,4 @@
-import { TbHash, TbLock, TbShare, TbTrash } from "react-icons/tb"
+import { TbBuilding, TbHash, TbLock, TbShare, TbTrash } from "react-icons/tb"
 import type { SlackChannel } from "../../domain/model/SlackChannel.js"
 
 type Props = {
@@ -20,6 +20,7 @@ export const SlackChannelDisplay = ({ channel }: Props) => {
     <div className="flex items-center gap-2">
       {icon}
       <div>{channel.name}</div>
+      <div>{channel.isExtShared && <TbBuilding />}</div>
     </div>
   )
 }

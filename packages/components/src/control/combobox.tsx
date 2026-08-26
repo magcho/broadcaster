@@ -1,6 +1,6 @@
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox"
 import { useRef } from "react"
-import { TbChevronDown, TbHash, TbSearch } from "react-icons/tb"
+import { TbChevronDown, TbHash, TbLoader, TbSearch } from "react-icons/tb"
 import { BASE_HEIGHT } from "./height.js"
 
 type SelectItem<Id extends string> = {
@@ -13,8 +13,9 @@ type Props<Id extends string, Item extends SelectItem<Id>> = {
   items: Item[]
   value: Id
   onValueChange?: (value: Id) => void
-  placeholder?: string
   renderItem?: (item: Item) => React.ReactNode
+  onOpen?: () => unknown
+  isOptionLoading?: boolean
 }
 
 export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
@@ -23,6 +24,8 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
   onValueChange,
   items,
   renderItem,
+  onOpen,
+  isOptionLoading = false,
 }: Props<Id, Item>) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const itemMap = new Map(items.map((item) => [item.id, item]))
@@ -36,10 +39,15 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
           onValueChange?.(value)
         }
       }}
+      onOpenChange={(opened) => {
+        if (opened) {
+          onOpen?.()
+        }
+      }}
     >
       <BaseCombobox.Trigger
         id={id}
-        className="flex w-full items-center gap-1 rounded-md bg-white border border-slate-400 bg-transparent px-1.5 py-1 pl-2 text-base text-gray-900 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100 data-popup-open:ring-1 data-popup-open:ring-offset-2"
+        className="flex w-full items-center gap-1 rounded-md bg-white border border-slate-400 px-1.5 py-1 pl-2 text-base text-gray-900 outline-none ring-slate-500 ring-offset-0 transition placeholder:text-slate-300 focus-within:ring-1 focus-within:ring-offset-2 hover:not-focus-within:bg-slate-100 data-popup-open:ring-1 data-popup-open:ring-offset-2"
         style={{
           minHeight: BASE_HEIGHT,
         }}
@@ -77,7 +85,14 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
               />
             </div>
             <BaseCombobox.Empty className="p-4 pl-10 text-sm empty:m-0 empty:p-0">
-              見つかりません
+              {isOptionLoading ? (
+                <div className="flex gap-1 items-center">
+                  <TbLoader className="animate-spin" />
+                  取得中
+                </div>
+              ) : (
+                "見つかりません"
+              )}
             </BaseCombobox.Empty>
             <BaseCombobox.List>
               {(item: Item) => (

@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "setup": "tsx --env-file-if-exists .env.local ./src/setup.ts",
     "dev": "vite dev",
     "build": "pnpm build:cache && pnpm build:app",
     "build:app": "vite build",

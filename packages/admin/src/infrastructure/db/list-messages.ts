@@ -3,12 +3,17 @@ import { LabelCollection, MessageCollection, mongoDb, SponsorCollection } from "
 import type { Label, Sponsor } from "../../domain/model/Sponsor.js"
 
 export const listMessages = async (): Promise<MessageTemplateWithDetail[]> => {
-  const rows = await mongoDb.collection<MessageCollection>(MessageCollection.name).find().toArray()
+  const rows = await mongoDb
+    .collection<MessageCollection>(MessageCollection.name)
+    .find()
+    .sort({
+      createdAt: "desc",
+    })
+    .toArray()
 
   const sponsorIds = rows.flatMap((row) =>
     row.target.type === "Sponsor" ? row.target.sponsorIds : [],
   )
-  const labelIds = rows.flatMap((row) => (row.target.type === "Label" ? row.target.labelIds : []))
 
   const [sponsorsRows, labelsRows] = await Promise.all([
     mongoDb
