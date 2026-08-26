@@ -19,5 +19,10 @@ export const getLabelsByNames = async (labelNames: string[]) => {
 }
 
 export const getLabelByName = async (label: string) => {
-  return getLabelsByNames([label])
+  const labels = await getLabelsByNames([label])
+  const first = labels[0]
+  if (first == null) {
+    throw new Error("Label not found")
+  }
+  return first
 }

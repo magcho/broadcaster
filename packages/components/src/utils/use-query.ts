@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { AssertNever } from "../libs/assert-never"
 
 type PromiseState<Data> =
   | { status: "loading" | "not-started" }
@@ -11,7 +12,13 @@ type UseQueryReturn<Data> = {
   revalidate: () => void
 } & (
   | {
-      status: "loading" | "not-started"
+      status: "not-started"
+      isLoading: true
+      isError: false
+      data: undefined
+    }
+  | {
+      status: "loading"
       isLoading: true
       isError: false
       data: undefined
@@ -98,7 +105,7 @@ export const useQuery = <Data>(
       data: undefined,
       revalidate,
     }
-  } else {
+  } else if (state.status === "success") {
     return {
       status: "success",
       isLoading: false,
@@ -106,5 +113,7 @@ export const useQuery = <Data>(
       data: state.data,
       revalidate,
     }
+  } else {
+    throw new AssertNever(state.status)
   }
 }

@@ -5,6 +5,10 @@ services:
       - "27017:27017"
     volumes:
       - broadcaster-mongodb-data:/data/db
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7
+    ports:
+      - "4180:4180"
 
 volumes:
   broadcaster-mongodb-data:

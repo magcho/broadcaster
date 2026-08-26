@@ -5,18 +5,15 @@
   "scripts": {
     "setup": "tsx --env-file-if-exists .env.local ./src/setup.ts",
     "dev": "vite dev",
-    "build": "pnpm build:cache && pnpm build:app",
-    "build:app": "vite build",
+    "build": "tsc --noEmit && vite build",
     "start": "vite preview --host 0.0.0.0",
-    "type-check": "tsgo -p tsconfig.json",
-    "build:cache": "tsx --env-file-if-exists .env.local ./scripts/cache/slack-channels.ts"
+    "type-check": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
     "@slack/web-api": "catalog:",
     "@tanstack/react-router": "catalog:",
     "@tanstack/react-start": "catalog:",
-    "@typescript/native-preview": "catalog:",
     "broadcaster-components": "workspace:*",
     "date-fns": "catalog:",
     "fast-fuzzy": "catalog:",

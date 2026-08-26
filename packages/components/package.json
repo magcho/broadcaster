@@ -3,14 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "type-check": "tsgo -p tsconfig.json"
+    "type-check": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "date-fns": "catalog:"
   },
   "devDependencies": {
     "@standard-schema/spec": "catalog:",
-    "@typescript/native-preview": "catalog:",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {

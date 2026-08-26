@@ -2,34 +2,32 @@ import type { Sponsor } from "../../domain/model/Sponsor"
 import { mongoDb, SponsorCollection } from "../../libs/db"
 import { getLabels } from "./get-labels"
 
-export const getSponsorByReadableId = async (readableId: string): Promise<Sponsor[]> => {
-  const docs = await mongoDb
-    .collection<SponsorCollection>(SponsorCollection.name)
-    .find({
-      readableId,
-    })
-    .toArray()
+export const getSponsorByReadableId = async (readableId: string): Promise<Sponsor> => {
+  const doc = await mongoDb.collection<SponsorCollection>(SponsorCollection.name).findOne({
+    readableId,
+  })
 
-  const labelIds = docs.flatMap((doc) => doc.labelIds)
-  const labels = await getLabels(labelIds)
+  if (doc == null) {
+    throw new Error("Sponsor not found")
+  }
+
+  const labels = await getLabels(doc?.labelIds)
   const labelMap = new Map(labels.map((doc) => [doc.id, doc]))
 
-  return docs.map((doc) => {
-    return {
-      id: doc._id,
-      name: doc.name,
-      readableId: doc.readableId,
-      slackChannelId: doc.slackChannelId,
-      slackUsers: [],
-      labels: doc.labelIds
-        .map((labelId) => {
-          const label = labelMap.get(labelId)
-          if (label == null) {
-            console.warn("Label not found", labelId)
-          }
-          return label
-        })
-        .filter((label) => label != null),
-    }
-  })
+  return {
+    id: doc._id,
+    name: doc.name,
+    readableId: doc.readableId,
+    slackChannelId: doc.slackChannelId,
+    slackUsers: [],
+    labels: doc.labelIds
+      .map((labelId) => {
+        const label = labelMap.get(labelId)
+        if (label == null) {
+          console.warn("Label not found", labelId)
+        }
+        return label
+      })
+      .filter((label) => label != null),
+  }
 }
