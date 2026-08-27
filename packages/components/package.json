@@ -6,10 +6,10 @@
     "type-check": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "@standard-schema/spec": "catalog:",
     "date-fns": "catalog:"
   },
   "devDependencies": {
-    "@standard-schema/spec": "catalog:",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
