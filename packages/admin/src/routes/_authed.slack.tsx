@@ -22,7 +22,7 @@ function RouteComponent() {
   }
 
   const handleRemoveSlackAccessToken = async () => {
-    await removeSlackAccessTokenController({ data: { userId: "TEST_USER_ID" } })
+    await removeSlackAccessTokenController()
     window.location.reload()
   }
 

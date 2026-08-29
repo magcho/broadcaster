@@ -1,15 +1,10 @@
 import { createServerFn } from "@tanstack/react-start"
 import { mongoDb, SlackTokenCollection } from "../libs/db"
-import z from "zod"
 
-export const removeSlackAccessTokenController = createServerFn({ method: "POST" })
-  .inputValidator(
-    z.object({
-      userId: z.string(),
-    }),
-  )
-  .handler(async ({ data: { userId } }) => {
+export const removeSlackAccessTokenController = createServerFn({ method: "POST" }).handler(
+  async ({ context: { user } }) => {
     await mongoDb.collection<SlackTokenCollection>(SlackTokenCollection.name).deleteOne({
-      _id: userId,
+      _id: user.id,
     })
-  })
+  },
+)

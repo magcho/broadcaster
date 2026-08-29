@@ -49,9 +49,8 @@ export const loggerMiddleware = createMiddleware()
     } catch (e) {
       console.error(
         JSON.stringify({
-          severity: "INFO",
+          severity: "ERROR",
           message: {
-            url: request.url,
             user: {
               id: context.user.id,
             },

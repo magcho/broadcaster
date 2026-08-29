@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { slackClientId } from "../../../constants.js"
+import { slackClientId } from "../../../../constants"
 
 export const Route = createFileRoute("/api/auth/slack/authorize")({
   server: {

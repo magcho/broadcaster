@@ -23,7 +23,7 @@ type SlackOAuthV2AccessResponse = {
 export const Route = createFileRoute("/api/auth/slack/callback")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
+      GET: async ({ request, context: { user } }) => {
         const query = new URLSearchParams(new URL(request.url).search)
         const code = query.get("code") as string | undefined
         if (code == null) {
@@ -60,7 +60,7 @@ export const Route = createFileRoute("/api/auth/slack/callback")({
           return new Response("Failed", { status: 500 })
         }
 
-        await saveSlackAccessToken("TEST_USER_ID", result.authed_user.access_token)
+        await saveSlackAccessToken(user.id, result.authed_user.access_token)
 
         return new Response(null, {
           status: 302,
