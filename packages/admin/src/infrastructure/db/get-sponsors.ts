@@ -6,7 +6,7 @@ export const getSponsors = async (sponsorIds: string[]): Promise<Sponsor[]> => {
   const docs = await mongoDb
     .collection<SponsorCollection>(SponsorCollection.name)
     .find({
-      id: {
+      _id: {
         $in: sponsorIds,
       },
     })
