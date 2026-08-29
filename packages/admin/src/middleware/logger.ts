@@ -7,57 +7,63 @@ export const loggerMiddleware = createMiddleware()
   .middleware([authMiddleware])
   .server(async ({ next, request, context }) => {
     const trace = getRequestHeader("traceparent") || randomUUID()
-    console.info({
-      severity: "INFO",
-      message: {
-        url: request.url,
-        user: {
-          id: context.user.id,
+    console.info(
+      JSON.stringify({
+        severity: "INFO",
+        message: {
+          url: request.url,
+          user: {
+            id: context.user.id,
+          },
         },
-      },
-      httpRequest: { requestMethod: request.method, requestUrl: request.url },
-      time: new Date().toISOString(),
-      "logging.googleapis.com/trace": trace,
-    })
+        httpRequest: { requestMethod: request.method, requestUrl: request.url },
+        time: new Date().toISOString(),
+        "logging.googleapis.com/trace": trace,
+      }),
+    )
 
     try {
       const ret = await next()
 
-      console.info({
-        severity: "INFO",
-        message: {
-          url: request.url,
-          user: {
-            id: context.user.id,
+      console.info(
+        JSON.stringify({
+          severity: "INFO",
+          message: {
+            url: request.url,
+            user: {
+              id: context.user.id,
+            },
           },
-        },
-        httpRequest: {
-          requestMethod: request.method,
-          requestUrl: request.url,
-          status: ret.response.status,
-        },
-        time: new Date().toISOString(),
-        "logging.googleapis.com/trace": trace,
-      })
+          httpRequest: {
+            requestMethod: request.method,
+            requestUrl: request.url,
+            status: ret.response.status,
+          },
+          time: new Date().toISOString(),
+          "logging.googleapis.com/trace": trace,
+        }),
+      )
 
       return ret
     } catch (e) {
-      console.error({
-        severity: "INFO",
-        message: {
-          url: request.url,
-          user: {
-            id: context.user.id,
+      console.error(
+        JSON.stringify({
+          severity: "INFO",
+          message: {
+            url: request.url,
+            user: {
+              id: context.user.id,
+            },
           },
-        },
-        httpRequest: {
-          requestMethod: request.method,
-          requestUrl: request.url,
-          status: 500,
-        },
-        time: new Date().toISOString(),
-        "logging.googleapis.com/trace": trace,
-      })
+          httpRequest: {
+            requestMethod: request.method,
+            requestUrl: request.url,
+            status: 500,
+          },
+          time: new Date().toISOString(),
+          "logging.googleapis.com/trace": trace,
+        }),
+      )
 
       throw e
     }

@@ -42,7 +42,6 @@ export const Select = <Id extends string, Item extends SelectItem<Id>>({
       multiple={multiple ?? false}
       value={value}
       onValueChange={(value) => {
-        console.log(value)
         if (!multiple && value == null) {
           return
         }

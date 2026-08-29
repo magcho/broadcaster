@@ -7,13 +7,18 @@ Slack 一斉送信などを行うための管理ツール
 - packages/admin: 管理ツール本体
 - packages/components: UI コンポーネント群
 
-## Slack Workflow
+### 開発サーバー
 
-- slack: Slack Workflow 定義
+```sh
+cd packages/admin
+pnpm dev
+```
 
-## GAS
+### 開発サーバー（認証付き）
 
-- gas: Google Apps Script (GAS) で動作する cron 用のスクリプト
+```sh
+docker compose up -d
+```
 
 ## デプロイ
 

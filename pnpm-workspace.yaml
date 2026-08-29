@@ -56,3 +56,5 @@ catalog:
 catalogMode: strict
 
 injectWorkspacePackages: true
+
+trustLockfile: true
