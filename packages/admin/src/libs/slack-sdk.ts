@@ -3,13 +3,13 @@ import type { SlackChannel } from "../domain/model/SlackChannel.js"
 import { safeLoop } from "../utils/loop.js"
 import { waitFor } from "../utils/wait.js"
 
-const SLACK_TOKEN = process.env.SLACK_TOKEN
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN
 
-if (SLACK_TOKEN == null) {
-  throw new Error("SLACK_TOKEN is not defined")
+if (SLACK_BOT_TOKEN == null) {
+  throw new Error("SLACK_BOT_TOKEN is not defined")
 }
 
-const slack = new WebClient(SLACK_TOKEN)
+const slack = new WebClient(SLACK_BOT_TOKEN)
 
 export type PostMessageItem = {
   channel: string
