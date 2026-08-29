@@ -55,6 +55,7 @@ export const loggerMiddleware = createMiddleware()
             user: {
               id: context.user.id,
             },
+            error: e instanceof Error ? { name: e.name, message: e.message } : e,
           },
           httpRequest: {
             requestMethod: request.method,
