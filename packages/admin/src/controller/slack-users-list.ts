@@ -12,8 +12,8 @@ export const listSlackUsersController = createServerFn()
       channelId: z.string(),
     }),
   )
-  .handler(async ({ data: { channelId } }) => {
-    const token = await getSlackAccessToken("TEST_USER_ID")
+  .handler(async ({ data: { channelId }, context: { user } }) => {
+    const token = await getSlackAccessToken(user.id)
     if (token == null) {
       // TODO: 取得処理
       return []

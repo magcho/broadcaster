@@ -3,7 +3,7 @@ import z from "zod"
 import { getLabelController } from "./label-get.js"
 
 const LabelEditPageDataSchema = z.object({
-  labelId: z.string().uuid(),
+  labelId: z.uuid(),
 })
 
 export const getLabelEditPageDataController = createServerFn({

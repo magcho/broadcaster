@@ -3,8 +3,8 @@ import { getSlackAccessToken } from "./slack-access-token-get"
 import { slackApi } from "../libs/slack-api"
 import type { SlackChannel } from "../domain/model/SlackChannel"
 
-export const listSlackChannelsController = createServerFn().handler(async () => {
-  const token = await getSlackAccessToken("TEST_USER_ID")
+export const listSlackChannelsController = createServerFn().handler(async ({ context }) => {
+  const token = await getSlackAccessToken(context.user.id)
   if (token == null) {
     return {
       err: "SLACK_TOKEN_NOT_FOUND",

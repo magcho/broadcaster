@@ -9,7 +9,7 @@ const schema = z.object({
   label: z.string(),
 })
 
-export const assignLabelWithReadableIdController = createServerFn()
+export const assignLabelWithReadableIdController = createServerFn({ method: "POST" })
   .inputValidator(schema)
   .handler(async ({ data }) => {
     const sponsor = await getSponsorByReadableId(data.readableId)

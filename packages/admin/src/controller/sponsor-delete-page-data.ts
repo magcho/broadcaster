@@ -3,7 +3,7 @@ import z from "zod"
 import { getSponsorController } from "./sponsor-get.js"
 
 const SponsorDeletePageDataSchema = z.object({
-  sponsorId: z.string().uuid(),
+  sponsorId: z.uuid(),
 })
 
 export const getSponsorDeletePageDataController = createServerFn({
