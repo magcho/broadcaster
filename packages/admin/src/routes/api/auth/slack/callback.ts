@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { createServerOnlyFn } from "@tanstack/react-start"
 import { saveSlackAccessToken } from "../../../../controller/slack-access-token-save"
+import { slackClientId, slackClientSecret } from "../../../../constants.js"
 
-const slackClientId = createServerOnlyFn(() => process.env.SLACK_CLIENT_ID!)
-const slackClientSecret = createServerOnlyFn(() => process.env.SLACK_CLIENT_SECRET!)
 const slackWorkspaceId = createServerOnlyFn(() => process.env.SLACK_WORKSPACE_ID!)
 
 type SlackOAuthV2AccessResponse = {
@@ -32,8 +31,8 @@ export const Route = createFileRoute("/api/auth/slack/callback")({
         }
 
         const body = new URLSearchParams({
-          client_id: slackClientId(),
-          client_secret: slackClientSecret(),
+          client_id: slackClientId,
+          client_secret: slackClientSecret,
           code,
           redirect_uri: "http://localhost:3000/api/auth/slack/callback",
         })
