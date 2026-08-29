@@ -7,6 +7,7 @@ export const loggerMiddleware = createMiddleware()
   .middleware([authMiddleware])
   .server(async ({ next, request, context }) => {
     const trace = getRequestHeader("traceparent") || randomUUID()
+    const requestUrl = new URL(request.url).pathname
     console.info(
       JSON.stringify({
         severity: "INFO",
@@ -16,7 +17,7 @@ export const loggerMiddleware = createMiddleware()
             id: context.user.id,
           },
         },
-        httpRequest: { requestMethod: request.method, requestUrl: request.url },
+        httpRequest: { requestMethod: request.method, requestUrl },
         time: new Date().toISOString(),
         "logging.googleapis.com/trace": trace,
       }),
@@ -57,7 +58,7 @@ export const loggerMiddleware = createMiddleware()
           },
           httpRequest: {
             requestMethod: request.method,
-            requestUrl: request.url,
+            requestUrl,
             status: 500,
           },
           time: new Date().toISOString(),
