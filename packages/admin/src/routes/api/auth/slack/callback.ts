@@ -4,6 +4,11 @@ import { saveSlackAccessToken } from "../../../../controller/slack-access-token-
 import { slackClientId, slackClientSecret } from "../../../../constants.js"
 
 const slackWorkspaceId = createServerOnlyFn(() => process.env.SLACK_WORKSPACE_ID!)
+const baseUrl = process.env.BASE_URL
+
+if (baseUrl == null) {
+  throw new Error("BASE_URL not found")
+}
 
 type SlackOAuthV2AccessResponse = {
   ok: boolean
@@ -34,7 +39,7 @@ export const Route = createFileRoute("/api/auth/slack/callback")({
           client_id: slackClientId,
           client_secret: slackClientSecret,
           code,
-          redirect_uri: "http://localhost:3000/api/auth/slack/callback",
+          redirect_uri: new URL("/api/auth/slack/callback", baseUrl).toString(),
         })
 
         const res = await fetch("https://slack.com/api/oauth.v2.access", {

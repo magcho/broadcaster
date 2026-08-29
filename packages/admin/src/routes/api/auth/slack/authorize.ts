@@ -1,6 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { slackClientId } from "../../../../constants"
 
+const baseUrl = process.env.BASE_URL
+
+if (baseUrl == null) {
+  throw new Error("BASE_URL not found")
+}
+
 export const Route = createFileRoute("/api/auth/slack/authorize")({
   server: {
     handlers: {
@@ -8,7 +14,7 @@ export const Route = createFileRoute("/api/auth/slack/authorize")({
         const params = new URLSearchParams({
           client_id: slackClientId,
           user_scope: "channels:read,groups:read,users:read",
-          redirect_uri: "http://localhost:3000/api/auth/slack/callback",
+          redirect_uri: new URL("/api/auth/slack/callback", baseUrl).toString(),
         })
 
         return new Response(null, {
