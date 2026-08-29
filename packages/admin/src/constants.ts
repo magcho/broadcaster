@@ -10,7 +10,5 @@ const SlackClientIdSecretSchema = z.object({
   client_secret: z.string().min(1),
 })
 
-const { client_id, client_secret } = SlackClientIdSecretSchema.parse(JSON.parse(raw))
-
-export const slackClientId = client_id
-export const slackClientSecret = client_secret
+export const { client_id: slackClientId, client_secret: slackClientSecret } =
+  SlackClientIdSecretSchema.parse(JSON.parse(raw))

@@ -17,7 +17,7 @@ export const SlackChannelDisplay = ({ channel }: Props) => {
       <TbShare />
     )
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       {icon}
       <div>{channel.name}</div>
       <div>{channel.isExtShared && <TbBuilding />}</div>

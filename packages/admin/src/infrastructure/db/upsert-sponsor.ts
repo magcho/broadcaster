@@ -1,3 +1,5 @@
+import { getSlackAccessToken } from "../../controller/slack-access-token-get"
+import type { SlackChannel } from "../../domain/model/SlackChannel"
 import { mongoDb, SponsorCollection } from "../../libs/db"
 import { getLabelsByNames } from "./get-label-by-name"
 
@@ -6,7 +8,7 @@ export const upsertSponsor = async (
   sponsor: {
     name: string
     readableId: string
-    slackChannelId: string
+    slackChannel: SlackChannel
     slackUserIds: string[]
     labels: string[]
   },
@@ -22,7 +24,12 @@ export const upsertSponsor = async (
       $set: {
         name: sponsor.name,
         readableId: sponsor.readableId,
-        slackChannelId: sponsor.slackChannelId,
+        slackChannel: {
+          id: sponsor.slackChannel.id,
+          name: sponsor.slackChannel.name,
+          kind: sponsor.slackChannel.kind,
+          isExtShared: sponsor.slackChannel.isExtShared,
+        },
         slackUserIds: sponsor.slackUserIds,
         labelIds: sponsor.labels
           .map((labelName) => {

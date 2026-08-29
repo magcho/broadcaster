@@ -18,7 +18,12 @@ export const getSponsorByChannel = async (slackChannelId: string): Promise<Spons
     id: doc._id,
     name: doc.name,
     readableId: doc.readableId,
-    slackChannelId: doc.slackChannelId,
+    slackChannel: {
+      id: doc.slackChannel.id,
+      name: doc.slackChannel.name,
+      kind: doc.slackChannel.kind,
+      isExtShared: doc.slackChannel.isExtShared,
+    },
     slackUsers: [],
     labels: doc.labelIds
       .map((labelId) => {

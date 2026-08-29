@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiSponsorRouteImport } from './routes/api/sponsor'
 import { Route as ApiLabelRouteImport } from './routes/api/label'
 import { Route as AuthedSlackRouteImport } from './routes/_authed.slack'
 import { Route as AuthedSponsorsIndexRouteImport } from './routes/_authed.sponsors.index'
@@ -39,11 +38,6 @@ const AuthedRoute = AuthedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSponsorRoute = ApiSponsorRouteImport.update({
-  id: '/api/sponsor',
-  path: '/api/sponsor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiLabelRoute = ApiLabelRouteImport.update({
@@ -151,7 +145,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
-  '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
   '/labels/assign': typeof AuthedLabelsAssignRoute
   '/labels/new': typeof AuthedLabelsNewRoute
@@ -174,7 +167,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
-  '/api/sponsor': typeof ApiSponsorRoute
   '/channel/$channel': typeof AuthedChannelChannelRoute
   '/labels/assign': typeof AuthedLabelsAssignRoute
   '/labels/new': typeof AuthedLabelsNewRoute
@@ -199,7 +191,6 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/_authed/slack': typeof AuthedSlackRoute
   '/api/label': typeof ApiLabelRouteWithChildren
-  '/api/sponsor': typeof ApiSponsorRoute
   '/_authed/channel/$channel': typeof AuthedChannelChannelRoute
   '/_authed/labels/assign': typeof AuthedLabelsAssignRoute
   '/_authed/labels/new': typeof AuthedLabelsNewRoute
@@ -224,7 +215,6 @@ export interface FileRouteTypes {
     | '/'
     | '/slack'
     | '/api/label'
-    | '/api/sponsor'
     | '/channel/$channel'
     | '/labels/assign'
     | '/labels/new'
@@ -247,7 +237,6 @@ export interface FileRouteTypes {
     | '/'
     | '/slack'
     | '/api/label'
-    | '/api/sponsor'
     | '/channel/$channel'
     | '/labels/assign'
     | '/labels/new'
@@ -271,7 +260,6 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/_authed/slack'
     | '/api/label'
-    | '/api/sponsor'
     | '/_authed/channel/$channel'
     | '/_authed/labels/assign'
     | '/_authed/labels/new'
@@ -295,7 +283,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   ApiLabelRoute: typeof ApiLabelRouteWithChildren
-  ApiSponsorRoute: typeof ApiSponsorRoute
   ApiCronSendMessageRoute: typeof ApiCronSendMessageRoute
   ApiAuthSlackAuthorizeRoute: typeof ApiAuthSlackAuthorizeRoute
   ApiAuthSlackCallbackRoute: typeof ApiAuthSlackCallbackRoute
@@ -315,13 +302,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/sponsor': {
-      id: '/api/sponsor'
-      path: '/api/sponsor'
-      fullPath: '/api/sponsor'
-      preLoaderRoute: typeof ApiSponsorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/label': {
@@ -513,7 +493,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
   ApiLabelRoute: ApiLabelRouteWithChildren,
-  ApiSponsorRoute: ApiSponsorRoute,
   ApiCronSendMessageRoute: ApiCronSendMessageRoute,
   ApiAuthSlackAuthorizeRoute: ApiAuthSlackAuthorizeRoute,
   ApiAuthSlackCallbackRoute: ApiAuthSlackCallbackRoute,

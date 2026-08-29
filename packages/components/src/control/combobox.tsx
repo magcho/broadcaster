@@ -84,16 +84,17 @@ export const Combobox = <Id extends string, Item extends SelectItem<Id>>({
                 className="w-full rounded-lg py-2 pr-2.5 placeholder:text-slate-300 focus:outline-none"
               />
             </div>
-            <BaseCombobox.Empty className="p-4 pl-10 text-sm empty:m-0 empty:p-0">
-              {isOptionLoading ? (
-                <div className="flex gap-1 items-center">
-                  <TbLoader className="animate-spin" />
-                  取得中
-                </div>
-              ) : (
-                "見つかりません"
-              )}
-            </BaseCombobox.Empty>
+            {isOptionLoading ? (
+              <div className="flex gap-1 items-center pl-10 p-4 text-sm">
+                <TbLoader className="animate-spin" />
+                取得中
+              </div>
+            ) : (
+              <BaseCombobox.Empty className="p-4 pl-10 text-sm empty:m-0 empty:p-0">
+                見つかりません
+              </BaseCombobox.Empty>
+            )}
+
             <BaseCombobox.List>
               {(item: Item) => (
                 <BaseCombobox.Item

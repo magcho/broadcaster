@@ -4,6 +4,7 @@ import { Table } from "broadcaster-components/table.js"
 import { TbEdit, TbTrash } from "react-icons/tb"
 import type { Sponsor } from "../../domain/model/Sponsor.js"
 import { LabelDisplay } from "../components/label-display.js"
+import { SlackChannelDisplay } from "../components/slack-channel-display.js"
 
 type SponsorListViewProps = {
   sponsors: Sponsor[]
@@ -33,7 +34,11 @@ export const SponsorListView = ({ sponsors }: SponsorListViewProps) => {
                 ))}
               </div>
             </Table.Td>
-            <Table.Td>{sponsor.slackChannelId}</Table.Td>
+            <Table.Td>
+              {sponsor.slackChannel != null && (
+                <SlackChannelDisplay channel={sponsor.slackChannel} />
+              )}
+            </Table.Td>
             <Table.Td>
               <div className="flex gap-2">
                 <Button

@@ -45,7 +45,12 @@ export const listMessages = async (): Promise<MessageTemplateWithDetail[]> => {
         id: row._id,
         name: row.name,
         readableId: row.readableId,
-        slackChannelId: row.slackChannelId,
+        slackChannel: {
+          id: row.slackChannel.id,
+          name: row.slackChannel.name,
+          kind: row.slackChannel.kind,
+          isExtShared: row.slackChannel.isExtShared,
+        },
         slackUsers: row.slackUserIds,
         labels: row.labelIds.map((labelId) => labelsMap.get(labelId)!),
       }) satisfies Sponsor,

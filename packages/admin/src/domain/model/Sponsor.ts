@@ -1,8 +1,10 @@
+import type { SlackChannel } from "./SlackChannel"
+
 export type Sponsor = {
   id: string
   name: string
   readableId: string
-  slackChannelId?: string
+  slackChannel?: SlackChannel
   slackUsers: string[]
   labels: Label[]
 }

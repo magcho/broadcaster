@@ -22,7 +22,7 @@ export const sendSlackMessage = async (message: MessageTemplateWithDetail) => {
   }
 
   const messageItems = sponsors.flatMap((sponsor) => {
-    if (sponsor.slackChannelId == null || sponsor.slackChannelId === "") {
+    if (sponsor.slackChannel == null) {
       return []
     }
 
@@ -34,7 +34,7 @@ export const sendSlackMessage = async (message: MessageTemplateWithDetail) => {
       : message.message
 
     return {
-      channel: sponsor.slackChannelId,
+      channel: sponsor.slackChannel.id,
       blocks: serializeForChatPostMessage(
         parseMrkdwn(resolveMessageTemplate(baseMessage, variables)).document,
       ).blocks,

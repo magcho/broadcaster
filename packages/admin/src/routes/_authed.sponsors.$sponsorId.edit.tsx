@@ -28,7 +28,7 @@ function RouteComponent() {
         initValue={{
           name: sponsor.name,
           readableId: sponsor.readableId,
-          slackChannelId: sponsor.slackChannelId ?? "",
+          slackChannelId: sponsor.slackChannel?.id ?? "",
           slackUserIds: sponsor.slackUsers,
           labels: sponsor.labels.map((label) => label.label),
         }}

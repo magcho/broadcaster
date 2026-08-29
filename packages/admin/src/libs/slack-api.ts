@@ -31,6 +31,35 @@ const conversationsList = async (token: string) => {
   return result.channels
 }
 
+type ConversationsInfoResponse = {
+  ok: boolean
+  channel: {
+    id: string
+    name: string
+    is_channel: boolean
+    is_private: boolean
+    is_shared: boolean
+  }
+}
+const conversationsInfo = async (token: string, channelId: string) => {
+  const url = new URL("conversations.info", slackApiBaseUrl)
+  url.searchParams.append("channel", channelId)
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!res.ok) {
+    console.error(res)
+    throw new Error()
+  }
+
+  const result: ConversationsInfoResponse = await res.json()
+  return result.channel
+}
+
 type ConversationsMembersReponse = {
   members: string[]
   response_metadata: {
@@ -111,6 +140,7 @@ const usersInfo = async (token: string, userId: string) => {
 }
 
 export const slackApi = {
+  conversationsInfo,
   conversationsList,
   conversationsMembers,
   usersInfo,

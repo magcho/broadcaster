@@ -17,7 +17,12 @@ export const SponsorCollection = {
     _id: z.string(),
     name: z.string(),
     readableId: z.string(),
-    slackChannelId: z.string(),
+    slackChannel: z.object({
+      id: z.string(),
+      name: z.string(),
+      kind: z.enum(["public", "private"]),
+      isExtShared: z.boolean(),
+    }),
     slackUserIds: z.array(z.string()),
     labelIds: z.array(z.string()),
   }),

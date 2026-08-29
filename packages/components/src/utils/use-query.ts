@@ -75,7 +75,19 @@ export const useQuery = <Data>(
       const ac = doFetch()
       return () => ac.abort()
     }
-  }, [lazy, ...deps])
+  }, [lazy])
+
+  const isInitialFetch = useRef(true)
+
+  useEffect(() => {
+    const shouldFetch = isInitialFetch.current ? !lazy : true
+    isInitialFetch.current = false
+    if (shouldFetch) {
+      console.log("UPDATE")
+      const ac = doFetch()
+      return () => ac.abort()
+    }
+  }, [...deps])
 
   const revalidate = () => {
     doFetch()

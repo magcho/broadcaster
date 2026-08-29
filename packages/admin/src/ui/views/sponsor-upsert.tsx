@@ -49,12 +49,18 @@ export const SponsorUpsertForm = ({ sponsor, labels, initValue, onComplete }: Pr
     revalidate,
   } = useQuery(() => listSlackChannelsController(), { lazy: true })
 
-  const { data: slackUsers, isLoading } = useQuery(
+  const {
+    data: slackUsers,
+    status: slackUsersStatus,
+    revalidate: revalidateSlackUsers,
+  } = useQuery(
     () =>
       values.slackChannelId === ""
         ? Promise.resolve(null)
         : listSlackUsersController({ data: { channelId: values.slackChannelId } }),
-    {},
+    {
+      lazy: true,
+    },
     [values.slackChannelId],
   )
 
@@ -112,7 +118,17 @@ export const SponsorUpsertForm = ({ sponsor, labels, initValue, onComplete }: Pr
               id: channel.id,
               label: channel.name,
               channel,
-            })) ?? []
+            })) ??
+            // まだデータをフェッチしていない場合で sponsor が指定されている場合は、現在の値を表示するために現在のsponsorのチャンネルを選択肢として表示しておく
+            (sponsor?.slackChannel != null
+              ? [
+                  {
+                    id: sponsor.slackChannel.id,
+                    label: sponsor.slackChannel.name,
+                    channel: sponsor.slackChannel,
+                  },
+                ]
+              : [])
           }
           value={values.slackChannelId}
           onValueChange={(value) => setValue("slackChannelId", value)}
@@ -142,13 +158,21 @@ export const SponsorUpsertForm = ({ sponsor, labels, initValue, onComplete }: Pr
       <FormControl label="メンション先" error={errors.slackUserIds}>
         {slackUsers == null ? (
           <div className="bg-white px-3 py-2 rounded-lg border border-slate-400 text-sm text-slate-400">
-            {isLoading ? (
+            {slackUsersStatus === "loading" ? (
               <div className="flex gap-1 items-center">
                 <TbLoader className="animate-spin" />
                 取得中...
               </div>
-            ) : (
+            ) : sponsor == null ? (
               "先にチャンネルを選択してください"
+            ) : (
+              <button
+                type="button"
+                onClick={() => revalidateSlackUsers()}
+                className="text-sky-600 underline hover:no-underline transition"
+              >
+                ユーザーを見る
+              </button>
             )}
           </div>
         ) : (

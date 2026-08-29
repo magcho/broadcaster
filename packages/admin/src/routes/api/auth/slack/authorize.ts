@@ -11,6 +11,7 @@ export const Route = createFileRoute("/api/auth/slack/authorize")({
   server: {
     handlers: {
       GET: async () => {
+        console.log(slackClientId)
         const params = new URLSearchParams({
           client_id: slackClientId,
           user_scope: "channels:read,groups:read,users:read",
