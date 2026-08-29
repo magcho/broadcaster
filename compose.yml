@@ -4,7 +4,7 @@ services:
     expose:
       - 3000
     environment:
-      BASE_URL: http://localhost:4180
+      BASE_URL: http://localhost:${PORT:-8080}
       M2M_API_TOKENS: '{"slack":"secret","gas":"secret"}'
       MONGODB_URI: mongodb://mongodb:27017
     env_file:
@@ -13,16 +13,16 @@ services:
   oauth2-proxy:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.3
     ports:
-      - "4180:4180"
+      - "${PORT:-8080}:8080"
     environment:
-      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:4180"
+      OAUTH2_PROXY_HTTP_ADDRESS: "0.0.0.0:8080"
       OAUTH2_PROXY_UPSTREAMS: "http://app:3000/"
-      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:4180/oauth2/callback"
+      OAUTH2_PROXY_REDIRECT_URL: "http://localhost:${PORT:-8080}/oauth2/callback"
       OAUTH2_PROXY_COOKIE_SECURE: "false"
       OAUTH2_PROXY_PROVIDER: google
       OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
-      OAUTH2_PROXY_EMAIL_DOMAINS: "*"
       OAUTH2_PROXY_PASS_USER_HEADERS: true
+      OAUTH2_PROXY_SET_XAUTHREQUEST: true
     env_file:
       - .env
 

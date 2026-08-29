@@ -11,5 +11,6 @@ dist
 .slack/apps.dev.json
 .output
 .pnpm-store
+compose.yml
 gas/
 prod/
